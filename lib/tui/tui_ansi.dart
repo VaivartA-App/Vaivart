@@ -41,7 +41,7 @@ class TuiAnsi {
     sb.writeln('$neonPurple$bold  ╚██╗ ██╔╝██╔══██║██║╚██╗ ██╔╝██╔══██║██╔══██╗   ██║   $reset');
     sb.writeln('$skyBlue$bold   ╚████╔╝ ██║  ██║██║ ╚████╔╝ ██║  ██║██║  ██║   ██║   $reset');
     sb.writeln('$skyBlue$bold    ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   $reset');
-    sb.writeln('$dim$gray  ────────────── Offline Universal File Converter TUI ──────────────$reset\n');
+    sb.writeln('$dim$gray  ────────────── Offline Universal File Converter TUI v1.1.0 ──────────────$reset\n');
     return sb.toString();
   }
 

@@ -93,7 +93,7 @@ Future<void> _handleConvertCli(List<String> args) async {
   final fileName = p.basename(sourcePath);
   final ext = p.extension(sourcePath).replaceAll('.', '');
 
-  stdout.writeln('${TuiAnsi.cyan}${TuiAnsi.bold}Vaivart CLI Conversion${TuiAnsi.reset}');
+  stdout.writeln('${TuiAnsi.cyan}${TuiAnsi.bold}Vaivart CLI Conversion (v1.1.0)${TuiAnsi.reset}');
   stdout.writeln('  Source: $fileName');
   stdout.writeln('  Target: $targetFormat');
 
