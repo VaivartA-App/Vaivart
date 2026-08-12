@@ -10,8 +10,8 @@ Free. Offline. Open source. Forever.
 [![Flutter](https://img.shields.io/badge/Flutter-3.41+-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20macOS-lightgrey)](#)
 [![License](https://img.shields.io/badge/License-BSL%201.1-blue.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-v1.1.0-brightgreen)](#)
-[![Build](https://img.shields.io/github/actions/workflow/status/Khutwad-Bhavesh/Vaivart/release.yml?label=build)](https://github.com/Khutwad-Bhavesh/Vaivart/actions)
+[![Status](https://img.shields.io/badge/Status-v1.1.0-brightgreen)](https://github.com/VaivartA-App/Vaivart/releases/tag/v1.1.0)
+[![Build](https://img.shields.io/github/actions/workflow/status/VaivartA-App/Vaivart/release.yml?label=build)](https://github.com/VaivartA-App/Vaivart/releases/tag/v1.1.0)
 
 No ads. No watermarks. No sign-in. No internet. No nonsense.
 
@@ -33,9 +33,9 @@ Inspired by WinRAR's philosophy: simple, reliable, always there when you need it
 
 | Platform | Link |
 |----------|------|
-| 🐧 Linux | [Vaivart-linux-x64.tar.gz](https://github.com/Khutwad-Bhavesh/Vaivart/releases/latest) |
-| 🪟 Windows | [Vaivart-windows-x64.zip](https://github.com/Khutwad-Bhavesh/Vaivart/releases/latest) |
-| 🍎 macOS | [Vaivart-macos.zip](https://github.com/Khutwad-Bhavesh/Vaivart/releases/latest) |
+| 🐧 Linux | [Vaivart-linux-x64.tar.gz](https://github.com/VaivartA-App/Vaivart/releases/latest) |
+| 🪟 Windows | [Vaivart-windows-x64.zip](https://github.com/VaivartA-App/Vaivart/releases/latest) |
+| 🍎 macOS | [Vaivart-macos.zip](https://github.com/VaivartA-App/Vaivart/releases/latest) |
 
 ---
 
@@ -84,7 +84,7 @@ Pick your engine on first launch. Change anytime in Settings.
 
 **Option A: Install via PKGBUILD (Recommended)**
 ```bash
-git clone https://github.com/Khutwad-Bhavesh/Vaivart.git
+git clone https://github.com/VaivartA-App/Vaivart.git
 cd Vaivart/packaging/arch
 makepkg -si
 ```
@@ -92,7 +92,7 @@ makepkg -si
 **Option B: Run from source**
 ```bash
 sudo pacman -S flutter ffmpeg libreoffice-fresh calibre libheif
-git clone https://github.com/Khutwad-Bhavesh/Vaivart.git
+git clone https://github.com/VaivartA-App/Vaivart.git
 cd Vaivart
 flutter pub get
 flutter run -d linux
@@ -103,7 +103,7 @@ flutter run -d linux
 ```bash
 sudo apt install flutter ffmpeg libreoffice calibre libheif-examples
 
-git clone https://github.com/Khutwad-Bhavesh/Vaivart.git
+git clone https://github.com/VaivartA-App/Vaivart.git
 cd Vaivart
 
 flutter pub get
@@ -113,7 +113,7 @@ flutter run -d linux
 ### Windows
 
 ```bash
-git clone https://github.com/Khutwad-Bhavesh/Vaivart.git
+git clone https://github.com/VaivartA-App/Vaivart.git
 cd Vaivart
 flutter pub get
 flutter run -d windows
@@ -122,7 +122,7 @@ flutter run -d windows
 ### macOS
 
 ```bash
-git clone https://github.com/Khutwad-Bhavesh/Vaivart.git
+git clone https://github.com/VaivartA-App/Vaivart.git
 cd Vaivart
 flutter pub get
 flutter run -d macos
