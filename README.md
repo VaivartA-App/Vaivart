@@ -10,7 +10,7 @@ Free. Offline. Open source. Forever.
 [![Flutter](https://img.shields.io/badge/Flutter-3.41+-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20macOS-lightgrey)](#)
 [![License](https://img.shields.io/badge/License-BSL%201.1-blue.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-v1.0.10-brightgreen)](#)
+[![Status](https://img.shields.io/badge/Status-v1.1.0-brightgreen)](#)
 [![Build](https://img.shields.io/github/actions/workflow/status/Khutwad-Bhavesh/Vaivart/release.yml?label=build)](https://github.com/Khutwad-Bhavesh/Vaivart/actions)
 
 No ads. No watermarks. No sign-in. No internet. No nonsense.
@@ -61,6 +61,7 @@ Inspired by WinRAR's philosophy: simple, reliable, always there when you need it
 - **Output folder** — choose exactly where your files go
 - **History** — searchable log of every conversion with open-folder shortcut
 - **Auto light/dark theme** — follows your system, no manual toggle needed
+- **Terminal UI (TUI) & CLI** — full interactive terminal dashboard and CLI commands
 - **100% offline** — nothing ever leaves your machine, ever
 
 ---
@@ -126,6 +127,26 @@ cd Vaivart
 flutter pub get
 flutter run -d macos
 ```
+
+---
+
+## 💻 Terminal UI & CLI (New in v1.1.0)
+
+For the hardcore terminal users, Vaivart now includes a fully interactive ANSI Terminal UI with real-time animated progress bars!
+
+**Run the interactive dashboard:**
+```bash
+dart run bin/vaivart_tui.dart
+```
+
+**Run direct CLI conversions:**
+```bash
+dart run bin/vaivart_tui.dart convert document.docx -t PDF -o ~/Documents
+dart run bin/vaivart_tui.dart tools
+dart run bin/vaivart_tui.dart history
+```
+
+*Pro-tip: If you're on Linux or macOS, you can set up a global alias (e.g., `alias vt="dart run ~/Projects/Vaivart/bin/vaivart_tui.dart"`) to run it instantly from anywhere.*
 
 ---
 
