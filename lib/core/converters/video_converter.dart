@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:path/path.dart' as p;
-import 'ffmpeg_kit_helper.dart';
 
 import '../engine/tool_resolver.dart';
 
@@ -14,25 +13,14 @@ class VideoConverter {
     final outPath = p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
     final args = _buildArgs(sourcePath: sourcePath, outPath: outPath, targetFormat: targetFormat.toUpperCase());
 
-    if (Platform.isAndroid) {
-      // Use ffmpeg_kit on Android
-      final cmd = args.join(' ');
-      final session = await FFmpegKit.execute(cmd);
-      final rc = await session.getReturnCode();
-      if (!ReturnCode.isSuccess(rc)) {
-        final logs = await session.getLogsAsString();
-        throw Exception('ffmpeg error: $logs');
-      }
-    } else {
-      // Desktop: ffmpeg resolved dynamically
-      final ffmpegPath = await ToolResolver.findExecutable('ffmpeg');
-      if (ffmpegPath == null) {
-        throw Exception('ffmpeg not found. Please install ffmpeg or check Settings.');
-      }
-      final result = await Process.run(ffmpegPath, args);
-      if (result.exitCode != 0) {
-        throw Exception('ffmpeg error: ${result.stderr}');
-      }
+    // Desktop/CLI: ffmpeg resolved dynamically
+    final ffmpegPath = await ToolResolver.findExecutable('ffmpeg');
+    if (ffmpegPath == null) {
+      throw Exception('ffmpeg not found. Please install ffmpeg or check Settings.');
+    }
+    final result = await Process.run(ffmpegPath, args);
+    if (result.exitCode != 0) {
+      throw Exception('ffmpeg error: ${result.stderr}');
     }
 
     return outPath;
@@ -89,24 +77,13 @@ class VideoConverter {
     final baseName = p.basenameWithoutExtension(sourcePath);
     final outPath = p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
     final args = ['-i', sourcePath, '-y', '-vn', '-codec:a', 'copy', outPath];
-
-    if (Platform.isAndroid) {
-      final cmd = args.join(' ');
-      final session = await FFmpegKit.execute(cmd);
-      final rc = await session.getReturnCode();
-      if (!ReturnCode.isSuccess(rc)) {
-        final logs = await session.getLogsAsString();
-        throw Exception('ffmpeg extract audio error: $logs');
-      }
-    } else {
-      final ffmpegPath = await ToolResolver.findExecutable('ffmpeg');
-      if (ffmpegPath == null) {
-        throw Exception('ffmpeg not found. Please install ffmpeg or check Settings.');
-      }
-      final result = await Process.run(ffmpegPath, args);
-      if (result.exitCode != 0) {
-        throw Exception('ffmpeg extract audio error: ${result.stderr}');
-      }
+    final ffmpegPath = await ToolResolver.findExecutable('ffmpeg');
+    if (ffmpegPath == null) {
+      throw Exception('ffmpeg not found. Please install ffmpeg or check Settings.');
+    }
+    final result = await Process.run(ffmpegPath, args);
+    if (result.exitCode != 0) {
+      throw Exception('ffmpeg extract audio error: ${result.stderr}');
     }
 
     return outPath;

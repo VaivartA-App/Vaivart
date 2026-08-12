@@ -101,7 +101,7 @@ List<String> get availableFormats {
     case 'ram': return ['MP3', 'WAV', 'OGG', 'FLAC', 'AAC'];
 
     // ── Documents ──
-    case 'pdf': return ['DOCX', 'PNG', 'JPG'];
+    case 'pdf': return ['PNG', 'JPG', 'TXT', 'DOCX', 'WEBP', 'BMP'];
     case 'docx': case 'doc': return ['PDF'];
     case 'txt': return ['PDF'];
     case 'md':
