@@ -11,6 +11,7 @@ import 'video_converter.dart';
 import 'audio_converter.dart';
 import '../models/conversion_job.dart';
 
+/// Central routing engine that inspects conversion jobs and dispatches to appropriate specialized converters.
 class ConverterDispatcher {
   // ── Format sets ────────────────────────────────────────────────
   static const _videoFormats = {'mp4', 'avi', 'mkv', 'mov', 'webm', 'flv', 'wmv', '3gp', 'vob', 'mts', 'm2ts', 'ts', 'divx', 'asf'};
