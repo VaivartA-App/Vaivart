@@ -2,6 +2,7 @@ import 'package:path/path.dart' as p;
 
 enum JobStatus { waiting, converting, done, failed }
 
+/// Represents a single file conversion job and its available target formats.
 class ConversionJob {
   final String sourcePath;
   final String fileName;
