@@ -4,6 +4,7 @@ import 'ffmpeg_kit_helper.dart';
 
 import '../engine/tool_resolver.dart';
 
+/// Handles audio conversions using FFmpeg for various standard and legacy audio codecs.
 class AudioConverter {
   static Future<String> convert({
     required String sourcePath,
