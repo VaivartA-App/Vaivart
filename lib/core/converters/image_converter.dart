@@ -5,6 +5,7 @@ import 'package:path/path.dart' as p;
 
 import '../engine/tool_resolver.dart';
 
+/// Handles image conversions including raster formats, vector graphics, HEIC, TRES, and RES.
 class ImageConverter {
   static Future<String> convert({
     required String sourcePath,
