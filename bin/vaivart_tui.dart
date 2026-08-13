@@ -9,6 +9,7 @@ import 'package:vaivart/core/services/output_service.dart';
 import 'package:vaivart/tui/tui_ansi.dart';
 import 'package:vaivart/tui/tui_app.dart';
 
+/// Entry point for the Vaivart Terminal UI (TUI) and Command-Line Interface (CLI).
 void main(List<String> args) async {
   if (args.isEmpty || args.contains('-i') || args.contains('--interactive') || args.contains('tui')) {
     await TuiApp().run();
