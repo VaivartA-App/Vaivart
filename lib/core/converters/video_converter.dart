@@ -4,6 +4,7 @@ import 'ffmpeg_kit_helper.dart';
 
 import '../engine/tool_resolver.dart';
 
+/// Handles video format conversions, GIF generation, and audio stream extraction.
 class VideoConverter {
   static Future<String> convert({
     required String sourcePath,
