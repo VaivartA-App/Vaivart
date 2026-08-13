@@ -15,14 +15,16 @@ class TuiApp {
   // Supported extensions map
   static const Map<String, List<String>> _targetFormatMap = {
     // Images
-    'png': ['JPG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF'],
-    'jpg': ['PNG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF'],
-    'jpeg': ['PNG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF'],
-    'webp': ['PNG', 'JPG', 'PDF', 'BMP', 'GIF', 'ICO'],
-    'bmp': ['PNG', 'JPG', 'WEBP', 'PDF'],
-    'gif': ['PNG', 'JPG', 'MP4', 'WEBP'],
-    'svg': ['PNG', 'JPG', 'PDF'],
-    'ico': ['PNG', 'JPG'],
+    'png': ['JPG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF', 'TGA', 'RES', 'TRES'],
+    'jpg': ['PNG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF', 'TGA', 'RES', 'TRES'],
+    'jpeg': ['PNG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF', 'TGA', 'RES', 'TRES'],
+    'webp': ['PNG', 'JPG', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF', 'TGA', 'RES', 'TRES'],
+    'bmp': ['PNG', 'JPG', 'WEBP', 'PDF', 'TIFF', 'TGA', 'RES', 'TRES'],
+    'gif': ['PNG', 'JPG', 'MP4', 'WEBP', 'BMP', 'RES', 'TRES'],
+    'svg': ['PNG', 'JPG', 'PDF', 'RES', 'TRES'],
+    'ico': ['PNG', 'JPG', 'BMP', 'RES', 'TRES'],
+    'res': ['PNG', 'JPG', 'WEBP', 'BMP', 'TIFF', 'TGA'],
+    'tres': ['PNG', 'JPG', 'WEBP', 'BMP', 'TIFF', 'TGA'],
 
     // Documents
     'pdf': ['PNG', 'JPG', 'TXT'],
@@ -140,7 +142,8 @@ class TuiApp {
     }
 
     final ext = p.extension(inputPath).toLowerCase().replaceAll('.', '');
-    final targets = _targetFormatMap[ext];
+    final job = ConversionJob.fromFile(inputPath);
+    final targets = job.availableFormats.isNotEmpty ? job.availableFormats : _targetFormatMap[ext];
 
     stdout.writeln('\n${TuiAnsi.emerald}✔ File verified:${TuiAnsi.reset} ${p.basename(inputPath)} (${(file.lengthSync() / 1024).toStringAsFixed(1)} KB)');
     stdout.writeln('${TuiAnsi.dim}Detected extension: .$ext${TuiAnsi.reset}\n');

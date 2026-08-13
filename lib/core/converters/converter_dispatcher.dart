@@ -15,7 +15,7 @@ class ConverterDispatcher {
   // ── Format sets ────────────────────────────────────────────────
   static const _videoFormats = {'mp4', 'avi', 'mkv', 'mov', 'webm', 'flv', 'wmv', '3gp', 'vob', 'mts', 'm2ts', 'ts', 'divx', 'asf'};
   static const _audioFormats = {'mp3', 'wav', 'ogg', 'flac', 'aac', 'm4a', 'wma', 'aiff', 'opus', 'amr', 'ac3', 'au', 'snd', 'dts', 'ra', 'ram'};
-  static const _imageFormats = {'jpg', 'jpeg', 'png', 'webp', 'bmp', 'tiff', 'tif', 'gif', 'ico', 'heic', 'tga', 'psd', 'pnm', 'pbm', 'pgm', 'ppm', 'exr', 'pvr', 'cur'};
+  static const _imageFormats = {'jpg', 'jpeg', 'png', 'webp', 'bmp', 'tiff', 'tif', 'gif', 'ico', 'heic', 'tga', 'psd', 'pnm', 'pbm', 'pgm', 'ppm', 'exr', 'pvr', 'cur', 'res', 'tres'};
   static const _audioTargets = {'MP3', 'WAV', 'OGG', 'FLAC', 'AAC', 'M4A', 'WMA', 'AIFF', 'OPUS', 'AMR', 'AC3', 'AU', 'DTS', 'RA'};
 
   static Future<String> run(ConversionJob job) async {
@@ -176,6 +176,18 @@ class ConverterDispatcher {
         );
       } else if (ext == 'svg') {
         outPath = await ImageConverter.svgToImage(
+          sourcePath: job.sourcePath,
+          targetFormat: target,
+          outputDir: outputDir,
+        );
+      } else if (ext == 'tres') {
+        outPath = await ImageConverter.tresToImage(
+          sourcePath: job.sourcePath,
+          targetFormat: target,
+          outputDir: outputDir,
+        );
+      } else if (ext == 'res') {
+        outPath = await ImageConverter.resToImage(
           sourcePath: job.sourcePath,
           targetFormat: target,
           outputDir: outputDir,

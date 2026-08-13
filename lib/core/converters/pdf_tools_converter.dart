@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'pdf_tools_helper.dart';
 import 'package:path/path.dart' as p;
+// ignore: unused_import
+import 'dart:ui';
 
 class PdfToolsConverter {
   static Future<String> merge({

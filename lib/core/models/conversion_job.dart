@@ -46,25 +46,27 @@ List<String> get availableFormats {
   switch (extension.toLowerCase()) {
     // ── Images ──
     case 'jpg':
-    case 'jpeg': return ['PNG', 'WEBP', 'BMP', 'TIFF', 'GIF', 'TGA', 'ICO', 'PDF'];
-    case 'png': return ['JPG', 'WEBP', 'BMP', 'TIFF', 'GIF', 'TGA', 'ICO', 'PDF'];
-    case 'webp': return ['JPG', 'PNG', 'BMP', 'TIFF', 'TGA', 'PDF'];
-    case 'bmp': return ['JPG', 'PNG', 'WEBP', 'TIFF', 'TGA', 'PDF'];
+    case 'jpeg': return ['PNG', 'WEBP', 'BMP', 'TIFF', 'GIF', 'TGA', 'ICO', 'RES', 'TRES', 'PDF'];
+    case 'png': return ['JPG', 'WEBP', 'BMP', 'TIFF', 'GIF', 'TGA', 'ICO', 'RES', 'TRES', 'PDF'];
+    case 'webp': return ['JPG', 'PNG', 'BMP', 'TIFF', 'TGA', 'RES', 'TRES', 'PDF'];
+    case 'bmp': return ['JPG', 'PNG', 'WEBP', 'TIFF', 'TGA', 'RES', 'TRES', 'PDF'];
     case 'tiff':
-    case 'tif': return ['JPG', 'PNG', 'WEBP', 'BMP', 'TGA', 'PDF'];
-    case 'gif': return ['JPG', 'PNG', 'WEBP', 'BMP', 'TIFF', 'TGA'];
-    case 'ico': return ['PNG', 'JPG', 'BMP', 'TGA'];
-    case 'heic': return ['JPG', 'PNG', 'WEBP', 'BMP'];
-    case 'svg': return ['PNG', 'JPG', 'PDF'];
-    case 'tga': return ['PNG', 'JPG', 'BMP', 'TIFF', 'WEBP'];
-    case 'psd': return ['PNG', 'JPG', 'BMP', 'TIFF', 'WEBP', 'TGA'];
+    case 'tif': return ['JPG', 'PNG', 'WEBP', 'BMP', 'TGA', 'RES', 'TRES', 'PDF'];
+    case 'gif': return ['JPG', 'PNG', 'WEBP', 'BMP', 'TIFF', 'TGA', 'RES', 'TRES'];
+    case 'ico': return ['PNG', 'JPG', 'BMP', 'TGA', 'RES', 'TRES'];
+    case 'heic': return ['JPG', 'PNG', 'WEBP', 'BMP', 'RES', 'TRES'];
+    case 'svg': return ['PNG', 'JPG', 'RES', 'TRES', 'PDF'];
+    case 'tga': return ['PNG', 'JPG', 'BMP', 'TIFF', 'WEBP', 'RES', 'TRES'];
+    case 'psd': return ['PNG', 'JPG', 'BMP', 'TIFF', 'WEBP', 'TGA', 'RES', 'TRES'];
     case 'pnm':
     case 'pbm':
     case 'pgm':
-    case 'ppm': return ['PNG', 'JPG', 'BMP', 'TIFF', 'WEBP', 'TGA'];
-    case 'exr': return ['PNG', 'JPG', 'BMP', 'TIFF', 'WEBP', 'TGA'];
-    case 'pvr': return ['PNG', 'JPG', 'BMP', 'TIFF'];
-    case 'cur': return ['PNG', 'JPG', 'BMP'];
+    case 'ppm': return ['PNG', 'JPG', 'BMP', 'TIFF', 'WEBP', 'TGA', 'RES', 'TRES'];
+    case 'exr': return ['PNG', 'JPG', 'BMP', 'TIFF', 'WEBP', 'TGA', 'RES', 'TRES'];
+    case 'pvr': return ['PNG', 'JPG', 'BMP', 'TIFF', 'RES', 'TRES'];
+    case 'cur': return ['PNG', 'JPG', 'BMP', 'RES', 'TRES'];
+    case 'res': return ['PNG', 'JPG', 'WEBP', 'BMP', 'TIFF', 'TGA'];
+    case 'tres': return ['PNG', 'JPG', 'WEBP', 'BMP', 'TIFF', 'TGA'];
 
     // ── Video ──
     case 'mp4': return ['AVI', 'MKV', 'WEBM', 'MOV', 'FLV', 'WMV', '3GP', 'VOB', 'TS', 'GIF', 'MP3'];
