@@ -5,6 +5,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path/path.dart' as p;
 
+/// Handles structured data conversions including CSV, TSV, JSON, XLSX, and tabular PDF rendering.
 class DataConverter {
   static Future<String> csvToXlsx({
     required String sourcePath,
