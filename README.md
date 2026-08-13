@@ -43,7 +43,7 @@ Inspired by WinRAR's philosophy: simple, reliable, always there when you need it
 
 | Category | Conversions |
 |----------|-------------|
-| 🖼 Images | JPG ↔ PNG ↔ WEBP ↔ BMP ↔ HEIC, Images → PDF, SVG → PNG/JPG/PDF |
+| 🖼 Images | JPG ↔ PNG ↔ WEBP ↔ BMP ↔ HEIC ↔ TRES ↔ RES, Images → PDF, SVG → PNG/JPG/PDF |
 | 📊 Data | CSV ↔ XLSX |
 | 📄 Documents | DOCX → PDF, TXT → PDF, EPUB → PDF, HTML → PDF, MD → PDF, PDF → DOCX |
 | 🔧 PDF Tools | Merge PDFs, Split by range / every N pages / odd-even |
