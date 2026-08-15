@@ -173,7 +173,24 @@ class TuiApp {
       return;
     }
 
-    await _executeJob(inputPath, targetFormat);
+    String? resolution;
+    if (job.isVideo) {
+      stdout.writeln('\n${TuiAnsi.bold}${TuiAnsi.cyan}Select target video resolution (optional):${TuiAnsi.reset}');
+      for (var i = 0; i < ConversionJob.videoResolutions.length; i++) {
+        final res = ConversionJob.videoResolutions[i];
+        stdout.writeln('  ${TuiAnsi.gold}[${i + 1}]${TuiAnsi.reset} $res');
+      }
+      stdout.write('\n${TuiAnsi.cyan}Select resolution [1-${ConversionJob.videoResolutions.length}] (default: Original): ${TuiAnsi.reset}');
+      final resInput = _readLine().trim();
+      final resIdx = int.tryParse(resInput);
+      if (resIdx != null && resIdx >= 1 && resIdx <= ConversionJob.videoResolutions.length) {
+        resolution = ConversionJob.videoResolutions[resIdx - 1];
+      } else if (resInput.isNotEmpty) {
+        resolution = resInput;
+      }
+    }
+
+    await _executeJob(inputPath, targetFormat, resolution: resolution);
     _promptPressEnter();
   }
 
@@ -246,13 +263,19 @@ class TuiApp {
     _promptPressEnter();
   }
 
-  /// Execute single conversion job with real-time animated progress bar
-  Future<bool> _executeJob(String sourcePath, String targetFormat) async {
+  Future<bool> _executeJob(
+    String sourcePath,
+    String targetFormat, {
+    String? resolution,
+  }) async {
     final startTime = DateTime.now();
     final fileName = p.basename(sourcePath);
     final ext = p.extension(sourcePath).replaceAll('.', '');
 
-    stdout.writeln('\n${TuiAnsi.statusBadge("CONVERTING...", warning: true)} $fileName → $targetFormat');
+    final label = resolution != null && resolution != 'Original'
+        ? '$fileName → $targetFormat ($resolution)'
+        : '$fileName → $targetFormat';
+    stdout.writeln('\n${TuiAnsi.statusBadge("CONVERTING...", warning: true)} $label');
 
     // Progress animation state
     double progress = 0.05;
@@ -284,7 +307,10 @@ class TuiApp {
     });
 
     try {
-      final job = ConversionJob.fromFile(sourcePath).copyWith(targetFormat: targetFormat);
+      final job = ConversionJob.fromFile(sourcePath).copyWith(
+        targetFormat: targetFormat,
+        videoResolution: resolution,
+      );
       final outPath = await ConverterDispatcher.run(job);
 
       done = true;
