@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+/// Represents a completed conversion log entry.
 class HistoryEntry {
   final String fileName;
   final String fromFormat;
