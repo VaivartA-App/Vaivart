@@ -68,7 +68,7 @@ class TuiApp {
       final engine = await EngineConfig.getEngine();
 
       stdout.writeln(
-        '  ${TuiAnsi.bold}${TuiAnsi.white}Version:${TuiAnsi.reset} ${TuiAnsi.gold}v1.1.0${TuiAnsi.reset}  │  '
+        '  ${TuiAnsi.bold}${TuiAnsi.white}Version:${TuiAnsi.reset} ${TuiAnsi.gold}v1.1.1${TuiAnsi.reset}  │  '
         '${TuiAnsi.bold}${TuiAnsi.white}Engine Mode:${TuiAnsi.reset} ${TuiAnsi.emerald}${engine.name.toUpperCase()}${TuiAnsi.reset}  │  '
         '${TuiAnsi.bold}${TuiAnsi.white}Output Dir:${TuiAnsi.reset} ${TuiAnsi.skyBlue}$outputDir${TuiAnsi.reset}\n',
       );

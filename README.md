@@ -10,8 +10,8 @@ Free. Offline. Open source. Forever.
 [![Flutter](https://img.shields.io/badge/Flutter-3.41+-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20macOS-lightgrey)](#)
 [![License](https://img.shields.io/badge/License-BSL%201.1-blue.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-v1.1.0-brightgreen)](https://github.com/VaivartA-App/Vaivart/releases/tag/v1.1.0)
-[![Build](https://img.shields.io/github/actions/workflow/status/VaivartA-App/Vaivart/release.yml?label=build)](https://github.com/VaivartA-App/Vaivart/releases/tag/v1.1.0)
+[![Status](https://img.shields.io/badge/Status-v1.1.1-brightgreen)](https://github.com/VaivartA-App/Vaivart/releases/tag/v1.1.1)
+[![Build](https://img.shields.io/github/actions/workflow/status/VaivartA-App/Vaivart/release.yml?label=build)](https://github.com/VaivartA-App/Vaivart/releases/tag/v1.1.1)
 
 No ads. No watermarks. No sign-in. No internet. No nonsense.
 
