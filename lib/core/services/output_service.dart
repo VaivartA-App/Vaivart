@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+/// Manages persistent output directory configurations and fallback system downloads pathing.
 class OutputService {
   static const _key = 'output_dir';
   static String? _cliOutputDir;
