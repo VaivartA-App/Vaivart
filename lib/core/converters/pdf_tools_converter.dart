@@ -4,6 +4,7 @@ import 'package:path/path.dart' as p;
 // ignore: unused_import
 import 'dart:ui';
 
+/// Handles PDF manipulations such as document merging, page splitting, and page extraction.
 class PdfToolsConverter {
   static Future<String> merge({
     required List<String> sourcePaths,
