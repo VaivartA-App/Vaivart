@@ -58,6 +58,10 @@ class _ConverterScreenState extends State<ConverterScreen> {
     setState(() => _queue[index] = _queue[index].copyWith(targetFormat: format));
   }
 
+  void _updateResolution(int index, String resolution) {
+    setState(() => _queue[index] = _queue[index].copyWith(videoResolution: resolution));
+  }
+
   Future<void> _convertAll() async {
     setState(() { _converting = true; _doneCount = 0; });
     for (int i = 0; i < _queue.length; i++) {
@@ -194,6 +198,7 @@ void _showEngineError(String message) {
                   job: _queue[i],
                   onRemove: () => _removeJob(i),
                   onFormatChanged: (f) => _updateFormat(i, f),
+                  onResolutionChanged: (r) => _updateResolution(i, r),
                 ),
               ),
             ),

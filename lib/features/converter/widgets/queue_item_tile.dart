@@ -7,12 +7,14 @@ class QueueItemTile extends StatelessWidget {
   final ConversionJob job;
   final VoidCallback onRemove;
   final ValueChanged<String> onFormatChanged;
+  final ValueChanged<String>? onResolutionChanged;
 
   const QueueItemTile({
     super.key,
     required this.job,
     required this.onRemove,
     required this.onFormatChanged,
+    this.onResolutionChanged,
   });
 
   @override
@@ -41,6 +43,37 @@ class QueueItemTile extends StatelessWidget {
               style: AppTypography.body.copyWith(color: textPrimary, fontWeight: FontWeight.w500),
             ),
           ),
+          if (job.isVideo && onResolutionChanged != null) ...[
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 90),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  border: Border.all(color: border, width: 0.5),
+                  borderRadius: BorderRadius.circular(6),
+                  color: isDark ? AppColors.darkBgTertiary : AppColors.lightBgSecondary,
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: job.videoResolution ?? 'Original',
+                    isDense: true,
+                    isExpanded: true,
+                    style: AppTypography.caption.copyWith(color: textPrimary, fontSize: 11),
+                    items: ConversionJob.videoResolutions
+                        .map((res) => DropdownMenuItem(
+                              value: res,
+                              child: Text(res == 'Original' ? 'Res: Auto' : res),
+                            ))
+                        .toList(),
+                    onChanged: (v) {
+                      if (v != null) onResolutionChanged!(v);
+                    },
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 6),
+          ],
           if (job.availableFormats.isNotEmpty)
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 90),
@@ -109,7 +142,7 @@ class _FilePill extends StatelessWidget {
         return [AppColors.docBg, AppColors.docFg];
       case 'csv': case 'xlsx':
         return [AppColors.csvBg, AppColors.csvFg];
-      case 'mp4': case 'avi': case 'mkv':
+      case 'mp4': case 'avi': case 'mkv': case 'webm': case 'mov':
         return [AppColors.vidBg, AppColors.vidFg];
       default:
         return [AppColors.lightBgTertiary, AppColors.lightTextSecondary];
