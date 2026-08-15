@@ -56,6 +56,7 @@ class ConverterDispatcher {
         outPath = await VideoConverter.convert(
           sourcePath: job.sourcePath,
           targetFormat: target,
+          resolution: job.videoResolution,
           outputDir: outputDir,
         );
       }
