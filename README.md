@@ -33,8 +33,10 @@ Inspired by WinRAR's philosophy: simple, reliable, always there when you need it
 
 | Platform | Link |
 |----------|------|
-| 🐧 Linux | [Vaivart-linux-x64.tar.gz](https://github.com/VaivartA-App/Vaivart/releases/latest) |
-| 🪟 Windows | [Vaivart-windows-x64.zip](https://github.com/VaivartA-App/Vaivart/releases/latest) |
+| 🪟 Windows Setup | [Vaivart-Setup-x64.exe](https://github.com/VaivartA-App/Vaivart/releases/latest) |
+| 🪟 Windows Portable | [Vaivart-windows-x64.zip](https://github.com/VaivartA-App/Vaivart/releases/latest) |
+| 🐧 Linux DEB | [Vaivart-linux-amd64.deb](https://github.com/VaivartA-App/Vaivart/releases/latest) |
+| 🐧 Linux Tarball | [Vaivart-linux-x64.tar.gz](https://github.com/VaivartA-App/Vaivart/releases/latest) |
 | 🍎 macOS | [Vaivart-macos.zip](https://github.com/VaivartA-App/Vaivart/releases/latest) |
 
 ---

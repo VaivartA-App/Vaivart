@@ -87,7 +87,7 @@ jobs:
             Vaivart-linux-amd64.deb
 
   build-windows:
-    name: Build Windows Portable (.zip)
+    name: Build Windows Packages (.zip & Setup.exe)
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -105,6 +105,13 @@ jobs:
       - name: Build Windows release binary
         run: flutter build windows --release
 
+      - name: Install Inno Setup
+        run: choco install innosetup -y
+
+      - name: Compile Inno Setup Windows Installer Wizard
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" packaging/windows/setup.iss
+
       - name: Package Windows Zip
         shell: pwsh
         run: |
@@ -120,7 +127,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-artifacts
-          path: Vaivart-windows-x64.zip
+          path: |
+            Vaivart-windows-x64.zip
+            dist/Vaivart-Setup-x64.exe
 
   build-macos:
     name: Build macOS Application (.zip)
@@ -186,7 +195,7 @@ jobs:
       - name: Consolidate Release Files
         run: |
           mkdir -p release_dist
-          find release-artifacts -type f \( -name "*.tar.gz" -o -name "*.deb" -o -name "*.zip" \) -exec cp {} release_dist/ \;
+          find release-artifacts -type f \( -name "*.tar.gz" -o -name "*.deb" -o -name "*.zip" -o -name "*.exe" \) -exec cp {} release_dist/ \;
           ls -la release_dist/
 
       - name: Create GitHub Release
@@ -199,9 +208,10 @@ jobs:
             Free. Offline. Open source. Forever.
             
             ### Download Packages
+            - **🪟 Windows (Setup Wizard Installer)**: `Vaivart-Setup-x64.exe`
+            - **🪟 Windows (Portable Zip)**: `Vaivart-windows-x64.zip`
             - **🐧 Linux (Debian / Ubuntu)**: `Vaivart-linux-amd64.deb`
             - **🐧 Linux (Portable Tarball)**: `Vaivart-linux-x64.tar.gz`
-            - **🪟 Windows (Portable Zip)**: `Vaivart-windows-x64.zip`
             - **🍎 macOS (App Zip)**: `Vaivart-macos.zip`
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
