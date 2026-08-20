@@ -7,6 +7,7 @@ import 'package:path/path.dart' as p;
 import 'pdf_converter.dart';
 import '../engine/tool_resolver.dart';
 
+/// Handles document conversions for text, markdown, HTML, office formats, e-books, and code files.
 class DocumentConverter {
   static Future<String> _getSoffice() async {
     final path = await ToolResolver.findExecutable('soffice');

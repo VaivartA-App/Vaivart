@@ -15,14 +15,16 @@ class TuiApp {
   // Supported extensions map
   static const Map<String, List<String>> _targetFormatMap = {
     // Images
-    'png': ['JPG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF'],
-    'jpg': ['PNG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF'],
-    'jpeg': ['PNG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF'],
-    'webp': ['PNG', 'JPG', 'PDF', 'BMP', 'GIF', 'ICO'],
-    'bmp': ['PNG', 'JPG', 'WEBP', 'PDF'],
-    'gif': ['PNG', 'JPG', 'MP4', 'WEBP'],
-    'svg': ['PNG', 'JPG', 'PDF'],
-    'ico': ['PNG', 'JPG'],
+    'png': ['JPG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF', 'TGA', 'RES', 'TRES'],
+    'jpg': ['PNG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF', 'TGA', 'RES', 'TRES'],
+    'jpeg': ['PNG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF', 'TGA', 'RES', 'TRES'],
+    'webp': ['PNG', 'JPG', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF', 'TGA', 'RES', 'TRES'],
+    'bmp': ['PNG', 'JPG', 'WEBP', 'PDF', 'TIFF', 'TGA', 'RES', 'TRES'],
+    'gif': ['PNG', 'JPG', 'MP4', 'WEBP', 'BMP', 'RES', 'TRES'],
+    'svg': ['PNG', 'JPG', 'PDF', 'RES', 'TRES'],
+    'ico': ['PNG', 'JPG', 'BMP', 'RES', 'TRES'],
+    'res': ['PNG', 'JPG', 'WEBP', 'BMP', 'TIFF', 'TGA'],
+    'tres': ['PNG', 'JPG', 'WEBP', 'BMP', 'TIFF', 'TGA'],
 
     // Documents
     'pdf': ['PNG', 'JPG', 'TXT'],
@@ -66,7 +68,7 @@ class TuiApp {
       final engine = await EngineConfig.getEngine();
 
       stdout.writeln(
-        '  ${TuiAnsi.bold}${TuiAnsi.white}Version:${TuiAnsi.reset} ${TuiAnsi.gold}v1.1.0${TuiAnsi.reset}  │  '
+        '  ${TuiAnsi.bold}${TuiAnsi.white}Version:${TuiAnsi.reset} ${TuiAnsi.gold}v1.1.1${TuiAnsi.reset}  │  '
         '${TuiAnsi.bold}${TuiAnsi.white}Engine Mode:${TuiAnsi.reset} ${TuiAnsi.emerald}${engine.name.toUpperCase()}${TuiAnsi.reset}  │  '
         '${TuiAnsi.bold}${TuiAnsi.white}Output Dir:${TuiAnsi.reset} ${TuiAnsi.skyBlue}$outputDir${TuiAnsi.reset}\n',
       );
@@ -140,7 +142,8 @@ class TuiApp {
     }
 
     final ext = p.extension(inputPath).toLowerCase().replaceAll('.', '');
-    final targets = _targetFormatMap[ext];
+    final job = ConversionJob.fromFile(inputPath);
+    final targets = job.availableFormats.isNotEmpty ? job.availableFormats : _targetFormatMap[ext];
 
     stdout.writeln('\n${TuiAnsi.emerald}✔ File verified:${TuiAnsi.reset} ${p.basename(inputPath)} (${(file.lengthSync() / 1024).toStringAsFixed(1)} KB)');
     stdout.writeln('${TuiAnsi.dim}Detected extension: .$ext${TuiAnsi.reset}\n');
@@ -170,7 +173,38 @@ class TuiApp {
       return;
     }
 
-    await _executeJob(inputPath, targetFormat);
+    String? resolution;
+    if (job.isVideo) {
+      stdout.writeln('\n${TuiAnsi.bold}${TuiAnsi.cyan}Select target video resolution (optional):${TuiAnsi.reset}');
+      for (var i = 0; i < ConversionJob.videoResolutions.length; i++) {
+        final res = ConversionJob.videoResolutions[i];
+        stdout.writeln('  ${TuiAnsi.gold}[${i + 1}]${TuiAnsi.reset} $res');
+      }
+      stdout.write('\n${TuiAnsi.cyan}Select resolution [1-${ConversionJob.videoResolutions.length}] (default: Original): ${TuiAnsi.reset}');
+      final resInput = _readLine().trim();
+      final resIdx = int.tryParse(resInput);
+      if (resIdx != null && resIdx >= 1 && resIdx <= ConversionJob.videoResolutions.length) {
+        resolution = ConversionJob.videoResolutions[resIdx - 1];
+      } else if (resInput.isNotEmpty) {
+        resolution = resInput;
+      }
+    } else if (job.isImage) {
+      stdout.writeln('\n${TuiAnsi.bold}${TuiAnsi.cyan}Select target image resolution (optional):${TuiAnsi.reset}');
+      for (var i = 0; i < ConversionJob.imageResolutions.length; i++) {
+        final res = ConversionJob.imageResolutions[i];
+        stdout.writeln('  ${TuiAnsi.gold}[${i + 1}]${TuiAnsi.reset} $res');
+      }
+      stdout.write('\n${TuiAnsi.cyan}Select resolution [1-${ConversionJob.imageResolutions.length}] (default: Original) or enter custom (e.g. 800x600): ${TuiAnsi.reset}');
+      final resInput = _readLine().trim();
+      final resIdx = int.tryParse(resInput);
+      if (resIdx != null && resIdx >= 1 && resIdx <= ConversionJob.imageResolutions.length) {
+        resolution = ConversionJob.imageResolutions[resIdx - 1];
+      } else if (resInput.isNotEmpty) {
+        resolution = resInput;
+      }
+    }
+
+    await _executeJob(inputPath, targetFormat, resolution: resolution);
     _promptPressEnter();
   }
 
@@ -243,13 +277,19 @@ class TuiApp {
     _promptPressEnter();
   }
 
-  /// Execute single conversion job with real-time animated progress bar
-  Future<bool> _executeJob(String sourcePath, String targetFormat) async {
+  Future<bool> _executeJob(
+    String sourcePath,
+    String targetFormat, {
+    String? resolution,
+  }) async {
     final startTime = DateTime.now();
     final fileName = p.basename(sourcePath);
     final ext = p.extension(sourcePath).replaceAll('.', '');
 
-    stdout.writeln('\n${TuiAnsi.statusBadge("CONVERTING...", warning: true)} $fileName → $targetFormat');
+    final label = resolution != null && resolution != 'Original'
+        ? '$fileName → $targetFormat ($resolution)'
+        : '$fileName → $targetFormat';
+    stdout.writeln('\n${TuiAnsi.statusBadge("CONVERTING...", warning: true)} $label');
 
     // Progress animation state
     double progress = 0.05;
@@ -281,7 +321,10 @@ class TuiApp {
     });
 
     try {
-      final job = ConversionJob.fromFile(sourcePath).copyWith(targetFormat: targetFormat);
+      final job = ConversionJob.fromFile(sourcePath).copyWith(
+        targetFormat: targetFormat,
+        resolution: resolution,
+      );
       final outPath = await ConverterDispatcher.run(job);
 
       done = true;

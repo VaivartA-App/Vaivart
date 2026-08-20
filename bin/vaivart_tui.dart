@@ -9,6 +9,7 @@ import 'package:vaivart/core/services/output_service.dart';
 import 'package:vaivart/tui/tui_ansi.dart';
 import 'package:vaivart/tui/tui_app.dart';
 
+/// Entry point for the Vaivart Terminal UI (TUI) and Command-Line Interface (CLI).
 void main(List<String> args) async {
   if (args.isEmpty || args.contains('-i') || args.contains('--interactive') || args.contains('tui')) {
     await TuiApp().run();
@@ -60,12 +61,16 @@ Future<void> _handleConvertCli(List<String> args) async {
 
   String? sourcePath;
   String? targetFormat;
+  String? resolution;
   String? outputDir;
 
   for (int i = 0; i < args.length; i++) {
     final arg = args[i];
     if ((arg == '-t' || arg == '--target') && i + 1 < args.length) {
       targetFormat = args[i + 1].toUpperCase();
+      i++;
+    } else if ((arg == '-r' || arg == '--resolution') && i + 1 < args.length) {
+      resolution = args[i + 1];
       i++;
     } else if ((arg == '-o' || arg == '--output') && i + 1 < args.length) {
       outputDir = args[i + 1];
@@ -93,14 +98,20 @@ Future<void> _handleConvertCli(List<String> args) async {
   final fileName = p.basename(sourcePath);
   final ext = p.extension(sourcePath).replaceAll('.', '');
 
-  stdout.writeln('${TuiAnsi.cyan}${TuiAnsi.bold}Vaivart CLI Conversion (v1.1.0)${TuiAnsi.reset}');
+  stdout.writeln('${TuiAnsi.cyan}${TuiAnsi.bold}Vaivart CLI Conversion (v1.1.1)${TuiAnsi.reset}');
   stdout.writeln('  Source: $fileName');
   stdout.writeln('  Target: $targetFormat');
+  if (resolution != null) {
+    stdout.writeln('  Resolution: $resolution');
+  }
 
   final startTime = DateTime.now();
 
   try {
-    final job = ConversionJob.fromFile(sourcePath).copyWith(targetFormat: targetFormat);
+    final job = ConversionJob.fromFile(sourcePath).copyWith(
+      targetFormat: targetFormat,
+      resolution: resolution,
+    );
 
     final outPath = await ConverterDispatcher.run(job);
 
@@ -176,12 +187,14 @@ ${TuiAnsi.bold}${TuiAnsi.cyan}COMMANDS:${TuiAnsi.reset}
 
 ${TuiAnsi.bold}${TuiAnsi.cyan}OPTIONS:${TuiAnsi.reset}
   -t, --target <FORMAT>            Target format (e.g. PDF, PNG, MP3, WEBP)
+  -r, --resolution <RES>           Target video resolution (e.g. 1080p, 720p, 480p, 360p, 240p)
   -o, --output <DIR>               Custom output directory path
   -i, --interactive                Force interactive TUI dashboard mode
 
 ${TuiAnsi.bold}${TuiAnsi.cyan}EXAMPLES:${TuiAnsi.reset}
   dart run bin/vaivart_tui.dart
   dart run bin/vaivart_tui.dart convert document.docx -t pdf
+  dart run bin/vaivart_tui.dart convert video.mp4 -t avi -r 720p
   dart run bin/vaivart_tui.dart convert video.mp4 -t mp3 -o ~/Music
 ''');
 }

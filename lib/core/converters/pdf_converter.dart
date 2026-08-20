@@ -6,6 +6,7 @@ import 'package:path/path.dart' as p;
 import '../engine/tool_resolver.dart';
 import 'image_converter.dart';
 
+/// Performs PDF document generation from image sequences and document rendering.
 class PdfConverter {
   static Future<String> imageToPdf({
     required List<String> imagePaths,

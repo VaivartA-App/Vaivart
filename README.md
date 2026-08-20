@@ -10,8 +10,8 @@ Free. Offline. Open source. Forever.
 [![Flutter](https://img.shields.io/badge/Flutter-3.41+-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20macOS-lightgrey)](#)
 [![License](https://img.shields.io/badge/License-BSL%201.1-blue.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-v1.1.0-brightgreen)](https://github.com/VaivartA-App/Vaivart/releases/tag/v1.1.0)
-[![Build](https://img.shields.io/github/actions/workflow/status/VaivartA-App/Vaivart/release.yml?label=build)](https://github.com/VaivartA-App/Vaivart/releases/tag/v1.1.0)
+[![Status](https://img.shields.io/badge/Status-v1.1.1-brightgreen)](https://github.com/VaivartA-App/Vaivart/releases/tag/v1.1.1)
+[![Build](https://img.shields.io/github/actions/workflow/status/VaivartA-App/Vaivart/release.yml?label=build)](https://github.com/VaivartA-App/Vaivart/releases/tag/v1.1.1)
 
 No ads. No watermarks. No sign-in. No internet. No nonsense.
 
@@ -33,8 +33,10 @@ Inspired by WinRAR's philosophy: simple, reliable, always there when you need it
 
 | Platform | Link |
 |----------|------|
-| 🐧 Linux | [Vaivart-linux-x64.tar.gz](https://github.com/VaivartA-App/Vaivart/releases/latest) |
-| 🪟 Windows | [Vaivart-windows-x64.zip](https://github.com/VaivartA-App/Vaivart/releases/latest) |
+| 🪟 Windows Setup | [Vaivart-Setup-x64.exe](https://github.com/VaivartA-App/Vaivart/releases/latest) |
+| 🪟 Windows Portable | [Vaivart-windows-x64.zip](https://github.com/VaivartA-App/Vaivart/releases/latest) |
+| 🐧 Linux DEB | [Vaivart-linux-amd64.deb](https://github.com/VaivartA-App/Vaivart/releases/latest) |
+| 🐧 Linux Tarball | [Vaivart-linux-x64.tar.gz](https://github.com/VaivartA-App/Vaivart/releases/latest) |
 | 🍎 macOS | [Vaivart-macos.zip](https://github.com/VaivartA-App/Vaivart/releases/latest) |
 
 ---
@@ -43,7 +45,7 @@ Inspired by WinRAR's philosophy: simple, reliable, always there when you need it
 
 | Category | Conversions |
 |----------|-------------|
-| 🖼 Images | JPG ↔ PNG ↔ WEBP ↔ BMP ↔ HEIC, Images → PDF, SVG → PNG/JPG/PDF |
+| 🖼 Images | JPG ↔ PNG ↔ WEBP ↔ BMP ↔ HEIC ↔ TRES ↔ RES, Images → PDF, SVG → PNG/JPG/PDF |
 | 📊 Data | CSV ↔ XLSX |
 | 📄 Documents | DOCX → PDF, TXT → PDF, EPUB → PDF, HTML → PDF, MD → PDF, PDF → DOCX |
 | 🔧 PDF Tools | Merge PDFs, Split by range / every N pages / odd-even |

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:path/path.dart' as p;
 
+/// Status report model for external binary tools (FFmpeg, LibreOffice, ImageMagick, etc.).
 class ToolStatus {
   final String name;
   final bool isInstalled;

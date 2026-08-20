@@ -5,6 +5,7 @@ import 'tool_resolver.dart';
 enum EngineType { lightweight, powerful, manual }
 enum FfmpegBuildType { gpl, lgpl }
 
+/// Configures and manages conversion engine profiles (Lightweight, Powerful, Manual).
 class EngineConfig {
   static bool get isAndroid => Platform.isAndroid;
   static bool get isDesktop =>
