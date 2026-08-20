@@ -59,7 +59,7 @@ class _ConverterScreenState extends State<ConverterScreen> {
   }
 
   void _updateResolution(int index, String resolution) {
-    setState(() => _queue[index] = _queue[index].copyWith(videoResolution: resolution));
+    setState(() => _queue[index] = _queue[index].copyWith(resolution: resolution));
   }
 
   Future<void> _convertAll() async {

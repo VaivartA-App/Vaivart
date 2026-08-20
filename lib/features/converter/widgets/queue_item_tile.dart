@@ -55,7 +55,7 @@ class QueueItemTile extends StatelessWidget {
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    value: job.videoResolution ?? 'Original',
+                    value: job.resolution ?? 'Original',
                     isDense: true,
                     isExpanded: true,
                     style: AppTypography.caption.copyWith(color: textPrimary, fontSize: 11),

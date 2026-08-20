@@ -323,7 +323,7 @@ class TuiApp {
     try {
       final job = ConversionJob.fromFile(sourcePath).copyWith(
         targetFormat: targetFormat,
-        videoResolution: resolution,
+        resolution: resolution,
       );
       final outPath = await ConverterDispatcher.run(job);
 
