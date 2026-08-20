@@ -4,6 +4,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path/path.dart' as p;
 
+import 'pdf_converter.dart';
 import '../engine/tool_resolver.dart';
 
 /// Handles document conversions for text, markdown, HTML, office formats, e-books, and code files.
@@ -84,30 +85,20 @@ class DocumentConverter {
     required String sourcePath,
     required String outputDir,
   }) async {
-    final bytes = await File(sourcePath).readAsBytes();
-    final text = _extractTextFromPdf(bytes);
+    final txtPath = await PdfConverter.pdfToTxt(
+      sourcePath: sourcePath,
+      outputDir: outputDir,
+    );
+    final text = await File(txtPath).readAsString();
+    if (await File(txtPath).exists()) {
+      await File(txtPath).delete();
+    }
     final baseName = p.basenameWithoutExtension(sourcePath);
     final outPath = p.join(outputDir, '$baseName.docx');
     await File(outPath).writeAsString(text);
     return outPath;
   }
 
-  static String _extractTextFromPdf(List<int> bytes) {
-    try {
-      final raw = String.fromCharCodes(bytes);
-      final matches = RegExp(r'BT(.*?)ET', dotAll: true)
-          .allMatches(raw)
-          .map((m) => m.group(1) ?? '')
-          .join('\n');
-      final cleaned = matches
-          .replaceAll(RegExp(r'\(([^)]*)\)\s*Tj'), r'$1')
-          .replaceAll(RegExp(r'[^\x20-\x7E\n]'), '')
-          .trim();
-      return cleaned.isEmpty ? 'Could not extract text from this PDF.' : cleaned;
-    } catch (_) {
-      return 'Could not extract text from this PDF.';
-    }
-  }
 
   static Future<String> epubToPdf({
     required String sourcePath,

@@ -9,9 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: ^8.2.1
-  file_picker: ^11.0.3
-  shared_preferences: ^2.3.2
   path: ^1.9.0
   path_provider: ^2.1.5
   archive: ^3.6.1
@@ -20,7 +17,6 @@ dependencies:
   printing: ^5.14.3
   excel: ^4.0.2
   syncfusion_flutter_pdf: ^33.2.13
-  ffmpeg_kit_flutter_new: ^4.6.2   # Maintained ffmpeg fork for Flutter
   crypto: ^3.0.3
 
 dev_dependencies:
@@ -30,6 +26,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/icons/
-    - assets/fonts/

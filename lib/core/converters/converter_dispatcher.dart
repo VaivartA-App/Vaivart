@@ -381,14 +381,29 @@ class ConverterDispatcher {
         '-format=pdf', job.sourcePath, outPath,
       ]);
       if (result.exitCode != 0) throw Exception('ddjvu error: ${result.stderr}');
-    } else if (ext == 'pdf' && target == 'DOCX') {
-      if (Platform.isAndroid) {
-        throw Exception('PDF → DOCX is not supported on Android.\nUse the desktop app for this conversion.');
+    } else if (ext == 'pdf') {
+      if (target == 'DOCX') {
+        if (Platform.isAndroid) {
+          throw Exception('PDF → DOCX is not supported on Android.\nUse the desktop app for this conversion.');
+        }
+        outPath = await DocumentConverter.pdfToDocx(
+          sourcePath: job.sourcePath,
+          outputDir: outputDir,
+        );
+      } else if (target == 'TXT') {
+        outPath = await PdfConverter.pdfToTxt(
+          sourcePath: job.sourcePath,
+          outputDir: outputDir,
+        );
+      } else if (['PNG', 'JPG', 'JPEG', 'WEBP', 'BMP', 'TIFF', 'TIF'].contains(target)) {
+        outPath = await PdfConverter.pdfToImage(
+          sourcePath: job.sourcePath,
+          targetFormat: target,
+          outputDir: outputDir,
+        );
+      } else {
+        throw Exception('Unsupported conversion: $ext → $target');
       }
-      outPath = await DocumentConverter.pdfToDocx(
-        sourcePath: job.sourcePath,
-        outputDir: outputDir,
-      );
     }
 
     else {

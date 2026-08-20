@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:path/path.dart' as p;
-import 'ffmpeg_kit_helper.dart';
 
 import '../engine/tool_resolver.dart';
 
@@ -15,23 +14,13 @@ class AudioConverter {
     final outPath = p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
     final args = _buildArgs(sourcePath: sourcePath, outPath: outPath, targetFormat: targetFormat.toUpperCase());
 
-    if (Platform.isAndroid) {
-      final cmd = args.join(' ');
-      final session = await FFmpegKit.execute(cmd);
-      final rc = await session.getReturnCode();
-      if (!ReturnCode.isSuccess(rc)) {
-        final logs = await session.getLogsAsString();
-        throw Exception('ffmpeg audio error: $logs');
-      }
-    } else {
-      final ffmpegPath = await ToolResolver.findExecutable('ffmpeg');
-      if (ffmpegPath == null) {
-        throw Exception('ffmpeg not found. Please install ffmpeg or check Settings.');
-      }
-      final result = await Process.run(ffmpegPath, args);
-      if (result.exitCode != 0) {
-        throw Exception('ffmpeg audio error: ${result.stderr}');
-      }
+    final ffmpegPath = await ToolResolver.findExecutable('ffmpeg');
+    if (ffmpegPath == null) {
+      throw Exception('ffmpeg not found. Please install ffmpeg or check Settings.');
+    }
+    final result = await Process.run(ffmpegPath, args);
+    if (result.exitCode != 0) {
+      throw Exception('ffmpeg audio error: ${result.stderr}');
     }
 
     return outPath;
