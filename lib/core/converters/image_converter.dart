@@ -11,6 +11,7 @@ class ImageConverter {
     required String sourcePath,
     required String targetFormat,
     required String outputDir,
+    String? resolution,
   }) async {
     final tf = targetFormat.toUpperCase();
     if (tf == 'TRES') {
@@ -20,8 +21,19 @@ class ImageConverter {
     }
 
     final bytes = await File(sourcePath).readAsBytes();
-    final decoded = img.decodeImage(bytes);
+    var decoded = img.decodeImage(bytes);
     if (decoded == null) throw Exception('Could not decode image');
+
+    if (resolution != null && resolution.toLowerCase() != 'original') {
+      if (resolution.contains('x')) {
+        final parts = resolution.split('x');
+        final w = int.tryParse(parts[0]);
+        final h = int.tryParse(parts[1]);
+        if (w != null && h != null) {
+          decoded = img.copyResize(decoded, width: w, height: h);
+        }
+      }
+    }
 
     final baseName = p.basenameWithoutExtension(sourcePath);
     final outPath = p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');

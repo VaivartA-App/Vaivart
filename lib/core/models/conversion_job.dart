@@ -9,16 +9,26 @@ class ConversionJob {
   final String extension;
   final String fileSize;
   final String? targetFormat;
-  final String? videoResolution;
+  final String? resolution;
   final JobStatus status;
 
   static const List<String> videoResolutions = [
     'Original',
+    '4K',
     '1080p',
     '720p',
     '480p',
     '360p',
     '240p',
+  ];
+
+  static const List<String> imageResolutions = [
+    'Original',
+    '1920x1080',
+    '1280x720',
+    '1024x768',
+    '800x600',
+    '640x480',
   ];
 
   const ConversionJob({
@@ -27,7 +37,7 @@ class ConversionJob {
     required this.extension,
     required this.fileSize,
     this.targetFormat,
-    this.videoResolution,
+    this.resolution,
     this.status = JobStatus.waiting,
   });
 
@@ -35,6 +45,13 @@ class ConversionJob {
     final ext = extension.toLowerCase();
     return const {
       'mp4', 'avi', 'mkv', 'mov', 'webm', 'flv', 'wmv', '3gp', 'vob', 'mts', 'm2ts', 'ts', 'divx', 'asf'
+    }.contains(ext);
+  }
+
+  bool get isImage {
+    final ext = extension.toLowerCase();
+    return const {
+      'jpg', 'jpeg', 'png', 'webp', 'bmp', 'tiff', 'tif', 'gif', 'tga', 'ico', 'cur', 'pvr', 'exr', 'psd', 'svg', 'heic'
     }.contains(ext);
   }
 
@@ -52,7 +69,7 @@ class ConversionJob {
 
   ConversionJob copyWith({
     String? targetFormat,
-    String? videoResolution,
+    String? resolution,
     JobStatus? status,
   }) {
     return ConversionJob(
@@ -61,7 +78,7 @@ class ConversionJob {
       extension: extension,
       fileSize: fileSize,
       targetFormat: targetFormat ?? this.targetFormat,
-      videoResolution: videoResolution ?? this.videoResolution,
+      resolution: resolution ?? this.resolution,
       status: status ?? this.status,
     );
   }

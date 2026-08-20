@@ -188,6 +188,20 @@ class TuiApp {
       } else if (resInput.isNotEmpty) {
         resolution = resInput;
       }
+    } else if (job.isImage) {
+      stdout.writeln('\n${TuiAnsi.bold}${TuiAnsi.cyan}Select target image resolution (optional):${TuiAnsi.reset}');
+      for (var i = 0; i < ConversionJob.imageResolutions.length; i++) {
+        final res = ConversionJob.imageResolutions[i];
+        stdout.writeln('  ${TuiAnsi.gold}[${i + 1}]${TuiAnsi.reset} $res');
+      }
+      stdout.write('\n${TuiAnsi.cyan}Select resolution [1-${ConversionJob.imageResolutions.length}] (default: Original) or enter custom (e.g. 800x600): ${TuiAnsi.reset}');
+      final resInput = _readLine().trim();
+      final resIdx = int.tryParse(resInput);
+      if (resIdx != null && resIdx >= 1 && resIdx <= ConversionJob.imageResolutions.length) {
+        resolution = ConversionJob.imageResolutions[resIdx - 1];
+      } else if (resInput.isNotEmpty) {
+        resolution = resInput;
+      }
     }
 
     await _executeJob(inputPath, targetFormat, resolution: resolution);
