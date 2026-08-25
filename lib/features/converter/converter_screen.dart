@@ -55,17 +55,23 @@ class _ConverterScreenState extends State<ConverterScreen> {
   void _removeJob(int index) => setState(() => _queue.removeAt(index));
 
   void _updateFormat(int index, String format) {
-    setState(() => _queue[index] = _queue[index].copyWith(targetFormat: format));
+    setState(
+        () => _queue[index] = _queue[index].copyWith(targetFormat: format));
   }
 
   void _updateResolution(int index, String resolution) {
-    setState(() => _queue[index] = _queue[index].copyWith(resolution: resolution));
+    setState(
+        () => _queue[index] = _queue[index].copyWith(resolution: resolution));
   }
 
   Future<void> _convertAll() async {
-    setState(() { _converting = true; _doneCount = 0; });
+    setState(() {
+      _converting = true;
+      _doneCount = 0;
+    });
     for (int i = 0; i < _queue.length; i++) {
-      setState(() => _queue[i] = _queue[i].copyWith(status: JobStatus.converting));
+      setState(
+          () => _queue[i] = _queue[i].copyWith(status: JobStatus.converting));
       try {
         await ConverterDispatcher.run(_queue[i]);
         setState(() {
@@ -75,49 +81,54 @@ class _ConverterScreenState extends State<ConverterScreen> {
         await Future.delayed(const Duration(milliseconds: 100));
       } catch (e) {
         debugPrint('Conversion error: $e');
-        setState(() => _queue[i] = _queue[i].copyWith(status: JobStatus.failed));
-  if (e.toString().contains('engine')) {
-    _showEngineError(e.toString().replaceAll('Exception: ', ''));
-  }
-}
+        setState(
+            () => _queue[i] = _queue[i].copyWith(status: JobStatus.failed));
+        if (e.toString().contains('engine')) {
+          _showEngineError(e.toString().replaceAll('Exception: ', ''));
+        }
+      }
     }
     setState(() => _converting = false);
   }
-void _showEngineError(String message) {
-  showDialog(
-    context: context,
-    builder: (_) => AlertDialog(
-      backgroundColor: Theme.of(context).brightness == Brightness.dark
-          ? AppColors.darkBgSecondary
-          : AppColors.lightBg,
-      title: Text('Engine limitation',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Theme.of(context).brightness == Brightness.dark
-                ? AppColors.darkText
-                : AppColors.lightText,
-          )),
-      content: Text(message,
-          style: AppTypography.body.copyWith(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? AppColors.darkTextSecondary
-                : AppColors.lightTextSecondary,
-          )),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text('OK', style: TextStyle(color: AppColors.teal)),
-        ),
-      ],
-    ),
-  );
-}
+
+  void _showEngineError(String message) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.darkBgSecondary
+            : AppColors.lightBg,
+        title: Text('Engine limitation',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.darkText
+                  : AppColors.lightText,
+            )),
+        content: Text(message,
+            style: AppTypography.body.copyWith(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.darkTextSecondary
+                  : AppColors.lightTextSecondary,
+            )),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('OK', style: TextStyle(color: AppColors.teal)),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textSecondary = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
-    final textTertiary = isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
+    final textSecondary =
+        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final textTertiary =
+        isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
 
     return Padding(
@@ -142,11 +153,14 @@ void _showEngineError(String message) {
                   Expanded(
                     child: Text(
                       _outputDir.isEmpty ? 'Loading...' : _outputDir,
-                      style: AppTypography.caption.copyWith(color: textSecondary),
+                      style:
+                          AppTypography.caption.copyWith(color: textSecondary),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  Text('change', style: AppTypography.caption.copyWith(color: AppColors.teal)),
+                  Text('change',
+                      style: AppTypography.caption
+                          .copyWith(color: AppColors.teal)),
                 ],
               ),
             ),
@@ -167,14 +181,17 @@ void _showEngineError(String message) {
                   style: TextButton.styleFrom(
                     backgroundColor: _converting ? border : AppColors.teal,
                     foregroundColor: AppColors.tealLight,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6)),
                     minimumSize: Size.zero,
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: Text(
                     _converting ? 'Converting...' : 'Convert all',
-                    style: AppTypography.label.copyWith(color: AppColors.tealLight),
+                    style: AppTypography.label
+                        .copyWith(color: AppColors.tealLight),
                   ),
                 ),
               ],

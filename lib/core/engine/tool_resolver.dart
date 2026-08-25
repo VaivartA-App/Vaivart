@@ -21,7 +21,9 @@ class ToolResolver {
 
   /// Get the app's dedicated local binary storage directory (~/.local/share/vaivart/bin or LocalAppData/vaivart/bin)
   static Future<Directory> getAppBinDir() async {
-    final home = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'] ?? '.';
+    final home = Platform.environment['HOME'] ??
+        Platform.environment['USERPROFILE'] ??
+        '.';
     final binDir = Directory(p.join(home, '.local', 'share', 'vaivart', 'bin'));
     if (!await binDir.exists()) {
       await binDir.create(recursive: true);
@@ -193,7 +195,8 @@ class ToolResolver {
 
 extension ToolStatusListExtension on List<ToolStatus> {
   bool get hasFfmpeg => any((t) => t.name == 'ffmpeg' && t.isInstalled);
-  bool get hasLibreOffice => any((t) => (t.name == 'libreoffice' || t.name == 'soffice') && t.isInstalled);
+  bool get hasLibreOffice => any(
+      (t) => (t.name == 'libreoffice' || t.name == 'soffice') && t.isInstalled);
   bool get hasAnyConverter => any((t) => t.isInstalled);
   List<ToolStatus> get installedTools => where((t) => t.isInstalled).toList();
 }

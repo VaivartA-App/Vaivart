@@ -14,10 +14,79 @@ import '../models/conversion_job.dart';
 /// Central routing engine that inspects conversion jobs and dispatches to appropriate specialized converters.
 class ConverterDispatcher {
   // ── Format sets ────────────────────────────────────────────────
-  static const _videoFormats = {'mp4', 'avi', 'mkv', 'mov', 'webm', 'flv', 'wmv', '3gp', 'vob', 'mts', 'm2ts', 'ts', 'divx', 'asf'};
-  static const _audioFormats = {'mp3', 'wav', 'ogg', 'flac', 'aac', 'm4a', 'wma', 'aiff', 'opus', 'amr', 'ac3', 'au', 'snd', 'dts', 'ra', 'ram'};
-  static const _imageFormats = {'jpg', 'jpeg', 'png', 'webp', 'bmp', 'tiff', 'tif', 'gif', 'ico', 'heic', 'tga', 'psd', 'pnm', 'pbm', 'pgm', 'ppm', 'exr', 'pvr', 'cur', 'res', 'tres'};
-  static const _audioTargets = {'MP3', 'WAV', 'OGG', 'FLAC', 'AAC', 'M4A', 'WMA', 'AIFF', 'OPUS', 'AMR', 'AC3', 'AU', 'DTS', 'RA'};
+  static const _videoFormats = {
+    'mp4',
+    'avi',
+    'mkv',
+    'mov',
+    'webm',
+    'flv',
+    'wmv',
+    '3gp',
+    'vob',
+    'mts',
+    'm2ts',
+    'ts',
+    'divx',
+    'asf'
+  };
+  static const _audioFormats = {
+    'mp3',
+    'wav',
+    'ogg',
+    'flac',
+    'aac',
+    'm4a',
+    'wma',
+    'aiff',
+    'opus',
+    'amr',
+    'ac3',
+    'au',
+    'snd',
+    'dts',
+    'ra',
+    'ram'
+  };
+  static const _imageFormats = {
+    'jpg',
+    'jpeg',
+    'png',
+    'webp',
+    'bmp',
+    'tiff',
+    'tif',
+    'gif',
+    'ico',
+    'heic',
+    'tga',
+    'psd',
+    'pnm',
+    'pbm',
+    'pgm',
+    'ppm',
+    'exr',
+    'pvr',
+    'cur',
+    'res',
+    'tres'
+  };
+  static const _audioTargets = {
+    'MP3',
+    'WAV',
+    'OGG',
+    'FLAC',
+    'AAC',
+    'M4A',
+    'WMA',
+    'AIFF',
+    'OPUS',
+    'AMR',
+    'AC3',
+    'AU',
+    'DTS',
+    'RA'
+  };
 
   static Future<String> run(ConversionJob job) async {
     final outputDir = await OutputService.getOutputDir();
@@ -222,13 +291,17 @@ class ConverterDispatcher {
     else if (ext == 'csv') {
       switch (target) {
         case 'XLSX':
-          outPath = await DataConverter.csvToXlsx(sourcePath: job.sourcePath, outputDir: outputDir);
+          outPath = await DataConverter.csvToXlsx(
+              sourcePath: job.sourcePath, outputDir: outputDir);
         case 'JSON':
-          outPath = await DataConverter.csvToJson(sourcePath: job.sourcePath, outputDir: outputDir);
+          outPath = await DataConverter.csvToJson(
+              sourcePath: job.sourcePath, outputDir: outputDir);
         case 'TSV':
-          outPath = await DataConverter.csvToTsv(sourcePath: job.sourcePath, outputDir: outputDir);
+          outPath = await DataConverter.csvToTsv(
+              sourcePath: job.sourcePath, outputDir: outputDir);
         case 'PDF':
-          outPath = await DataConverter.csvToPdf(sourcePath: job.sourcePath, outputDir: outputDir);
+          outPath = await DataConverter.csvToPdf(
+              sourcePath: job.sourcePath, outputDir: outputDir);
         default:
           throw Exception('Unsupported CSV target: $target');
       }
@@ -238,9 +311,11 @@ class ConverterDispatcher {
     else if (ext == 'xlsx') {
       switch (target) {
         case 'CSV':
-          outPath = await DataConverter.xlsxToCsv(sourcePath: job.sourcePath, outputDir: outputDir);
+          outPath = await DataConverter.xlsxToCsv(
+              sourcePath: job.sourcePath, outputDir: outputDir);
         case 'JSON':
-          outPath = await DataConverter.xlsxToJson(sourcePath: job.sourcePath, outputDir: outputDir);
+          outPath = await DataConverter.xlsxToJson(
+              sourcePath: job.sourcePath, outputDir: outputDir);
         default:
           throw Exception('Unsupported XLSX target: $target');
       }
@@ -248,16 +323,19 @@ class ConverterDispatcher {
 
     // ── Data: TSV ─────────────────────────────────────────────────
     else if (ext == 'tsv') {
-      outPath = await DataConverter.tsvToCsv(sourcePath: job.sourcePath, outputDir: outputDir);
+      outPath = await DataConverter.tsvToCsv(
+          sourcePath: job.sourcePath, outputDir: outputDir);
     }
 
     // ── Data: JSON → CSV ──────────────────────────────────────────
     else if (ext == 'json') {
       switch (target) {
         case 'CSV':
-          outPath = await DataConverter.jsonToCsv(sourcePath: job.sourcePath, outputDir: outputDir);
+          outPath = await DataConverter.jsonToCsv(
+              sourcePath: job.sourcePath, outputDir: outputDir);
         case 'PDF':
-          outPath = await DocumentConverter.jsonToPdf(sourcePath: job.sourcePath, outputDir: outputDir);
+          outPath = await DocumentConverter.jsonToPdf(
+              sourcePath: job.sourcePath, outputDir: outputDir);
         default:
           throw Exception('Unsupported JSON target: $target');
       }
@@ -277,8 +355,10 @@ class ConverterDispatcher {
       final targetExt = target.toLowerCase();
       final result = await Process.run(soffice, [
         '--headless',
-        '--convert-to', targetExt,
-        '--outdir', outputDir,
+        '--convert-to',
+        targetExt,
+        '--outdir',
+        outputDir,
         job.sourcePath,
       ]);
       if (result.exitCode != 0) {
@@ -347,9 +427,15 @@ class ConverterDispatcher {
       }
       final soffice = await _findSoffice();
       final result = await Process.run(soffice, [
-        '--headless', '--convert-to', 'pdf', '--outdir', outputDir, job.sourcePath,
+        '--headless',
+        '--convert-to',
+        'pdf',
+        '--outdir',
+        outputDir,
+        job.sourcePath,
       ]);
-      if (result.exitCode != 0) throw Exception('LibreOffice error: ${result.stderr}');
+      if (result.exitCode != 0)
+        throw Exception('LibreOffice error: ${result.stderr}');
       final baseName = job.fileName.split('.').first;
       outPath = '$outputDir/$baseName.pdf';
     } else if (ext == 'xps' || ext == 'oxps') {
@@ -362,36 +448,46 @@ class ConverterDispatcher {
       }
       final soffice = await _findSoffice();
       final result = await Process.run(soffice, [
-        '--headless', '--convert-to', 'pdf', '--outdir', outputDir, job.sourcePath,
+        '--headless',
+        '--convert-to',
+        'pdf',
+        '--outdir',
+        outputDir,
+        job.sourcePath,
       ]);
-      if (result.exitCode != 0) throw Exception('LibreOffice error: ${result.stderr}');
+      if (result.exitCode != 0)
+        throw Exception('LibreOffice error: ${result.stderr}');
       final baseName = job.fileName.split('.').first;
       outPath = '$outputDir/$baseName.pdf';
     } else if (ext == 'djvu' || ext == 'djv') {
       if (Platform.isAndroid) {
-        throw Exception('DjVu → PDF is not supported on Android.\nUse the desktop app for this conversion.');
+        throw Exception(
+            'DjVu → PDF is not supported on Android.\nUse the desktop app for this conversion.');
       }
       final ddjvu = await ToolResolver.findExecutable('ddjvu');
       if (ddjvu == null) {
-        throw Exception('ddjvu not found. Please install DjVuLibre or check your PATH in Settings.');
+        throw Exception(
+            'ddjvu not found. Please install DjVuLibre or check your PATH in Settings.');
       }
       final baseName = job.fileName.split('.').first;
       outPath = '$outputDir/$baseName.pdf';
       final result = await Process.run(ddjvu, [
-        '-format=pdf', job.sourcePath, outPath,
+        '-format=pdf',
+        job.sourcePath,
+        outPath,
       ]);
-      if (result.exitCode != 0) throw Exception('ddjvu error: ${result.stderr}');
+      if (result.exitCode != 0)
+        throw Exception('ddjvu error: ${result.stderr}');
     } else if (ext == 'pdf' && target == 'DOCX') {
       if (Platform.isAndroid) {
-        throw Exception('PDF → DOCX is not supported on Android.\nUse the desktop app for this conversion.');
+        throw Exception(
+            'PDF → DOCX is not supported on Android.\nUse the desktop app for this conversion.');
       }
       outPath = await DocumentConverter.pdfToDocx(
         sourcePath: job.sourcePath,
         outputDir: outputDir,
       );
-    }
-
-    else {
+    } else {
       throw Exception('Unsupported conversion: $ext → $target');
     }
 
@@ -411,9 +507,9 @@ class ConverterDispatcher {
   static Future<String> _findSoffice() async {
     final path = await ToolResolver.findExecutable('soffice');
     if (path == null) {
-      throw Exception('LibreOffice (soffice) not found. Please install LibreOffice or check your PATH in Settings.');
+      throw Exception(
+          'LibreOffice (soffice) not found. Please install LibreOffice or check your PATH in Settings.');
     }
     return path;
   }
 }
-

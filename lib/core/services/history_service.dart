@@ -76,7 +76,9 @@ class HistoryService {
   }
 
   static File _getHistoryFile() {
-    final home = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'] ?? '.';
+    final home = Platform.environment['HOME'] ??
+        Platform.environment['USERPROFILE'] ??
+        '.';
     return File('$home/.config/vaivart/history.json');
   }
 }

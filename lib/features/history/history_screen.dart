@@ -45,16 +45,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
     setState(() {
       _filtered = q.isEmpty
           ? _entries
-          : _entries.where((e) =>
-              e.fileName.toLowerCase().contains(q) ||
-              e.fromFormat.toLowerCase().contains(q) ||
-              e.toFormat.toLowerCase().contains(q)).toList();
+          : _entries
+              .where((e) =>
+                  e.fileName.toLowerCase().contains(q) ||
+                  e.fromFormat.toLowerCase().contains(q) ||
+                  e.toFormat.toLowerCase().contains(q))
+              .toList();
     });
   }
 
   Future<void> _clearAll() async {
     await HistoryService.clearHistory();
-    setState(() { _entries = []; _filtered = []; });
+    setState(() {
+      _entries = [];
+      _filtered = [];
+    });
   }
 
   void _openFolder(String path) {
@@ -68,7 +73,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
     final bg = isDark ? AppColors.darkBgSecondary : AppColors.lightBgSecondary;
     final textPrimary = isDark ? AppColors.darkText : AppColors.lightText;
-    final textTertiary = isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
+    final textTertiary =
+        isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
 
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -77,12 +83,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
         children: [
           Row(
             children: [
-              Text('History', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: textPrimary)),
+              Text('History',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: textPrimary)),
               const Spacer(),
               if (_entries.isNotEmpty)
                 GestureDetector(
                   onTap: _clearAll,
-                  child: Text('Clear all', style: AppTypography.caption.copyWith(color: const Color(0xFFE24B4A))),
+                  child: Text('Clear all',
+                      style: AppTypography.caption
+                          .copyWith(color: const Color(0xFFE24B4A))),
                 ),
             ],
           ),
@@ -95,7 +107,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
               hintStyle: AppTypography.body.copyWith(color: textTertiary),
               prefixIcon: Icon(Icons.search, size: 16, color: textTertiary),
               isDense: true,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: border, width: 0.5),
                 borderRadius: BorderRadius.circular(8),
@@ -109,16 +122,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
           const SizedBox(height: 16),
           Expanded(
             child: _loading
-                ? const Center(child: CircularProgressIndicator(color: AppColors.teal))
+                ? const Center(
+                    child: CircularProgressIndicator(color: AppColors.teal))
                 : _filtered.isEmpty
-                    ? Center(child: Text('No conversions yet', style: AppTypography.body.copyWith(color: textTertiary)))
+                    ? Center(
+                        child: Text('No conversions yet',
+                            style: AppTypography.body
+                                .copyWith(color: textTertiary)))
                     : ListView.separated(
                         itemCount: _filtered.length,
                         separatorBuilder: (_, __) => const SizedBox(height: 6),
                         itemBuilder: (context, i) {
                           final e = _filtered[i];
                           return Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 10),
                             decoration: BoxDecoration(
                               color: bg,
                               border: Border.all(color: border, width: 0.5),
@@ -127,23 +145,34 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             child: Row(
                               children: [
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 6, vertical: 3),
                                   decoration: BoxDecoration(
-                                    color: AppColors.teal.withValues(alpha: 0.1),
+                                    color:
+                                        AppColors.teal.withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(4),
                                   ),
                                   child: Text(
                                     '${e.fromFormat} → ${e.toFormat}',
-                                    style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w600, color: AppColors.teal),
+                                    style: const TextStyle(
+                                        fontSize: 9,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.teal),
                                   ),
                                 ),
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(e.fileName, style: AppTypography.body.copyWith(color: textPrimary), overflow: TextOverflow.ellipsis),
-                                      Text(_formatDate(e.convertedAt), style: AppTypography.caption.copyWith(color: textTertiary)),
+                                      Text(e.fileName,
+                                          style: AppTypography.body
+                                              .copyWith(color: textPrimary),
+                                          overflow: TextOverflow.ellipsis),
+                                      Text(_formatDate(e.convertedAt),
+                                          style: AppTypography.caption
+                                              .copyWith(color: textTertiary)),
                                     ],
                                   ),
                                 ),
@@ -151,9 +180,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   onTap: () => _openFolder(e.outputPath),
                                   child: Row(
                                     children: [
-                                      Icon(Icons.folder_outlined, size: 13, color: textTertiary),
+                                      Icon(Icons.folder_outlined,
+                                          size: 13, color: textTertiary),
                                       const SizedBox(width: 4),
-                                      Text('open', style: AppTypography.caption.copyWith(color: textTertiary)),
+                                      Text('open',
+                                          style: AppTypography.caption
+                                              .copyWith(color: textTertiary)),
                                     ],
                                   ),
                                 ),

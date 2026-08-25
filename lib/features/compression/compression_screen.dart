@@ -53,8 +53,10 @@ class _CompressionScreenState extends State<CompressionScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textPrimary = isDark ? AppColors.darkText : AppColors.lightText;
-    final textSecondary = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
-    final textTertiary = isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
+    final textSecondary =
+        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final textTertiary =
+        isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
     final bg = isDark ? AppColors.darkBgSecondary : AppColors.lightBgSecondary;
 
@@ -65,7 +67,8 @@ class _CompressionScreenState extends State<CompressionScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (!_checked) ...[
-              const CircularProgressIndicator(color: AppColors.teal, strokeWidth: 1.5),
+              const CircularProgressIndicator(
+                  color: AppColors.teal, strokeWidth: 1.5),
               const SizedBox(height: 20),
               Text('Checking for compression tools...',
                   style: AppTypography.body.copyWith(color: textTertiary)),
@@ -120,8 +123,8 @@ class _CompressionScreenState extends State<CompressionScreen> {
                         ),
                         child: Text(
                           'Get WinRAR →',
-                          style: AppTypography.label.copyWith(
-                              color: AppColors.tealLight),
+                          style: AppTypography.label
+                              .copyWith(color: AppColors.tealLight),
                         ),
                       ),
                     ),

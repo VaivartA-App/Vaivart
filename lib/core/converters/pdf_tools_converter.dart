@@ -29,7 +29,8 @@ class PdfToolsConverter {
       srcDoc.dispose();
     }
 
-    final outPath = p.join(outputDir, 'merged_${DateTime.now().millisecondsSinceEpoch}.pdf');
+    final outPath = p.join(
+        outputDir, 'merged_${DateTime.now().millisecondsSinceEpoch}.pdf');
     await File(outPath).writeAsBytes(await mergedDoc.save());
     mergedDoc.dispose();
     return outPath;

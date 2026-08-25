@@ -54,7 +54,8 @@ class ToolUpdateStatus {
 
 class UpdateCheckerService {
   /// Save version metadata after a successful tool download.
-  static Future<void> saveVersionInfo(String toolName, DownloadToolInfo info) async {
+  static Future<void> saveVersionInfo(
+      String toolName, DownloadToolInfo info) async {
     final binDir = await ToolResolver.getAppBinDir();
     final versionFile = File(p.join(binDir.path, '$toolName.version.json'));
 
@@ -93,11 +94,13 @@ class UpdateCheckerService {
     final results = <ToolUpdateStatus>[];
 
     for (final toolName in toolNames) {
-      final downloadInfo = await BinaryDownloaderService.getDownloadInfoAsync(toolName);
+      final downloadInfo =
+          await BinaryDownloaderService.getDownloadInfoAsync(toolName);
       if (downloadInfo == null) continue;
 
       final latestVersion = downloadInfo.version ?? 'unknown';
-      final isDownloaded = await BinaryDownloaderService.isToolDownloaded(toolName);
+      final isDownloaded =
+          await BinaryDownloaderService.isToolDownloaded(toolName);
 
       if (!isDownloaded) {
         results.add(ToolUpdateStatus(
@@ -119,7 +122,8 @@ class UpdateCheckerService {
           toolName: toolName,
           installedVersion: null,
           latestVersion: latestVersion,
-          updateAvailable: true, // No version file means we can't confirm it's current
+          updateAvailable:
+              true, // No version file means we can't confirm it's current
           isInstalled: true,
         ));
         continue;

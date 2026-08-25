@@ -16,10 +16,14 @@ class _DropZoneState extends State<DropZone> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final border = _hovering ? AppColors.teal : (isDark ? AppColors.darkBorder : AppColors.lightBorder);
+    final border = _hovering
+        ? AppColors.teal
+        : (isDark ? AppColors.darkBorder : AppColors.lightBorder);
     final bg = isDark ? AppColors.darkBgSecondary : AppColors.lightBgSecondary;
-    final textSecondary = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
-    final textTertiary = isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
+    final textSecondary =
+        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final textTertiary =
+        isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
 
     // On mobile (touch), no hover state, no drag hint text
     final isMobile = MediaQuery.of(context).size.width < 600;
@@ -42,12 +46,14 @@ class _DropZoneState extends State<DropZone> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 36, height: 36,
+                width: 36,
+                height: 36,
                 decoration: BoxDecoration(
                   border: Border.all(color: border),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Icon(Icons.upload_outlined, size: 18, color: textTertiary),
+                child:
+                    Icon(Icons.upload_outlined, size: 18, color: textTertiary),
               ),
               const SizedBox(height: 10),
               // Desktop: "Drop files here", Mobile: "Tap to select files"
@@ -57,17 +63,21 @@ class _DropZoneState extends State<DropZone> {
               ),
               if (!isMobile) ...[
                 const SizedBox(height: 4),
-                Text('or', style: AppTypography.caption.copyWith(color: textTertiary)),
+                Text('or',
+                    style: AppTypography.caption.copyWith(color: textTertiary)),
               ],
               const SizedBox(height: 8),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
                 decoration: BoxDecoration(
                   border: Border.all(color: border, width: 0.5),
                   borderRadius: BorderRadius.circular(6),
                   color: isDark ? AppColors.darkBg : AppColors.lightBg,
                 ),
-                child: Text('Browse files', style: AppTypography.caption.copyWith(color: textSecondary)),
+                child: Text('Browse files',
+                    style:
+                        AppTypography.caption.copyWith(color: textSecondary)),
               ),
             ],
           ),

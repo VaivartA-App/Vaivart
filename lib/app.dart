@@ -83,7 +83,8 @@ class _MainShellState extends State<MainShell> {
   Future<void> _checkForToolUpdates() async {
     try {
       final updates = await UpdateCheckerService.checkForUpdates();
-      final available = updates.where((u) => u.updateAvailable && u.isInstalled).toList();
+      final available =
+          updates.where((u) => u.updateAvailable && u.isInstalled).toList();
       if (available.isEmpty || !mounted) return;
 
       final names = available.map((u) {
@@ -110,22 +111,26 @@ class _MainShellState extends State<MainShell> {
 
   Widget _buildScreen() {
     return switch (_selected) {
-      SidebarItem.converter   => const ConverterScreen(),
-      SidebarItem.batch       => const ConverterScreen(),
-      SidebarItem.pdfMerge    => const PdfToolsScreen(),
-      SidebarItem.pdfSplit    => const PdfToolsScreen(),
-      SidebarItem.history     => const HistoryScreen(),
-      SidebarItem.settings    => const SettingsScreen(),
+      SidebarItem.converter => const ConverterScreen(),
+      SidebarItem.batch => const ConverterScreen(),
+      SidebarItem.pdfMerge => const PdfToolsScreen(),
+      SidebarItem.pdfSplit => const PdfToolsScreen(),
+      SidebarItem.history => const HistoryScreen(),
+      SidebarItem.settings => const SettingsScreen(),
       SidebarItem.compression => const CompressionScreen(),
     };
   }
 
   // Bottom nav items for mobile — condensed to 4 tabs
   static const _bottomNavItems = [
-    BottomNavigationBarItem(icon: Icon(Icons.swap_horiz_rounded), label: 'Convert'),
-    BottomNavigationBarItem(icon: Icon(Icons.picture_as_pdf_outlined), label: 'PDF'),
-    BottomNavigationBarItem(icon: Icon(Icons.history_rounded), label: 'History'),
-    BottomNavigationBarItem(icon: Icon(Icons.settings_outlined), label: 'Settings'),
+    BottomNavigationBarItem(
+        icon: Icon(Icons.swap_horiz_rounded), label: 'Convert'),
+    BottomNavigationBarItem(
+        icon: Icon(Icons.picture_as_pdf_outlined), label: 'PDF'),
+    BottomNavigationBarItem(
+        icon: Icon(Icons.history_rounded), label: 'History'),
+    BottomNavigationBarItem(
+        icon: Icon(Icons.settings_outlined), label: 'Settings'),
   ];
 
   static const _bottomNavMap = [
@@ -162,9 +167,10 @@ class _MainShellState extends State<MainShell> {
               currentIndex: _bottomNavIndex,
               onTap: (i) => setState(() => _selected = _bottomNavMap[i]),
               selectedItemColor: AppColors.teal,
-              unselectedItemColor: Theme.of(context).brightness == Brightness.dark
-                  ? AppColors.darkTextSecondary
-                  : AppColors.lightTextSecondary,
+              unselectedItemColor:
+                  Theme.of(context).brightness == Brightness.dark
+                      ? AppColors.darkTextSecondary
+                      : AppColors.lightTextSecondary,
               backgroundColor: Theme.of(context).brightness == Brightness.dark
                   ? AppColors.darkBgSecondary
                   : AppColors.lightBgSecondary,

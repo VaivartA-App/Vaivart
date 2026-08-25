@@ -36,7 +36,8 @@ class ImageConverter {
     }
 
     final baseName = p.basenameWithoutExtension(sourcePath);
-    final outPath = p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
+    final outPath =
+        p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
 
     List<int> encoded;
     switch (tf) {
@@ -77,7 +78,8 @@ class ImageConverter {
   }) async {
     final bytes = await File(sourcePath).readAsBytes();
     final decoded = img.decodeImage(bytes);
-    if (decoded == null) throw Exception('Could not decode image for TRES conversion');
+    if (decoded == null)
+      throw Exception('Could not decode image for TRES conversion');
 
     final width = decoded.width;
     final height = decoded.height;
@@ -121,7 +123,8 @@ class ImageConverter {
 
     final widthMatch = RegExp(r'"width":\s*(\d+)').firstMatch(content);
     final heightMatch = RegExp(r'"height":\s*(\d+)').firstMatch(content);
-    final bytesMatch = RegExp(r'PackedByteArray\(([^)]*)\)').firstMatch(content);
+    final bytesMatch =
+        RegExp(r'PackedByteArray\(([^)]*)\)').firstMatch(content);
 
     if (widthMatch == null || heightMatch == null || bytesMatch == null) {
       throw Exception('Invalid or unsupported .tres image resource format');
@@ -131,10 +134,8 @@ class ImageConverter {
     final height = int.parse(heightMatch.group(1)!);
     final rawBytesStr = bytesMatch.group(1)!;
 
-    final byteValues = rawBytesStr
-        .split(',')
-        .map((s) => int.tryParse(s.trim()) ?? 0)
-        .toList();
+    final byteValues =
+        rawBytesStr.split(',').map((s) => int.tryParse(s.trim()) ?? 0).toList();
 
     final decoded = img.Image(width: width, height: height, numChannels: 4);
     int offset = 0;
@@ -151,7 +152,8 @@ class ImageConverter {
     }
 
     final baseName = p.basenameWithoutExtension(sourcePath);
-    final outPath = p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
+    final outPath =
+        p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
 
     List<int> encoded;
     switch (targetFormat.toUpperCase()) {
@@ -174,7 +176,8 @@ class ImageConverter {
   }) async {
     final bytes = await File(sourcePath).readAsBytes();
     final decoded = img.decodeImage(bytes);
-    if (decoded == null) throw Exception('Could not decode image for RES conversion');
+    if (decoded == null)
+      throw Exception('Could not decode image for RES conversion');
 
     final width = decoded.width;
     final height = decoded.height;
@@ -183,9 +186,19 @@ class ImageConverter {
     // Magic: RES1
     header.add([0x52, 0x45, 0x53, 0x31]);
     // Width (32-bit BE)
-    header.add([(width >> 24) & 0xFF, (width >> 16) & 0xFF, (width >> 8) & 0xFF, width & 0xFF]);
+    header.add([
+      (width >> 24) & 0xFF,
+      (width >> 16) & 0xFF,
+      (width >> 8) & 0xFF,
+      width & 0xFF
+    ]);
     // Height (32-bit BE)
-    header.add([(height >> 24) & 0xFF, (height >> 16) & 0xFF, (height >> 8) & 0xFF, height & 0xFF]);
+    header.add([
+      (height >> 24) & 0xFF,
+      (height >> 16) & 0xFF,
+      (height >> 8) & 0xFF,
+      height & 0xFF
+    ]);
     // Format (4 = RGBA8)
     header.add([0, 0, 0, 4]);
 
@@ -219,13 +232,20 @@ class ImageConverter {
     int width, height;
     int dataOffset = 16;
 
-    if (bytes[0] == 0x52 && bytes[1] == 0x45 && bytes[2] == 0x53 && bytes[3] == 0x31) {
+    if (bytes[0] == 0x52 &&
+        bytes[1] == 0x45 &&
+        bytes[2] == 0x53 &&
+        bytes[3] == 0x31) {
       width = (bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8) | bytes[7];
-      height = (bytes[8] << 24) | (bytes[9] << 16) | (bytes[10] << 8) | bytes[11];
+      height =
+          (bytes[8] << 24) | (bytes[9] << 16) | (bytes[10] << 8) | bytes[11];
     } else {
       final decodedAlt = img.decodeImage(bytes);
       if (decodedAlt != null) {
-        return convert(sourcePath: sourcePath, targetFormat: targetFormat, outputDir: outputDir);
+        return convert(
+            sourcePath: sourcePath,
+            targetFormat: targetFormat,
+            outputDir: outputDir);
       }
       throw Exception('Unrecognized .res image format');
     }
@@ -245,7 +265,8 @@ class ImageConverter {
     }
 
     final baseName = p.basenameWithoutExtension(sourcePath);
-    final outPath = p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
+    final outPath =
+        p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
 
     List<int> encoded;
     switch (targetFormat.toUpperCase()) {
@@ -267,10 +288,12 @@ class ImageConverter {
     required String outputDir,
   }) async {
     final baseName = p.basenameWithoutExtension(sourcePath);
-    final outPath = p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
+    final outPath =
+        p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
     final binPath = await ToolResolver.findExecutable('heif-convert');
     if (binPath == null) {
-      throw Exception('heif-convert not found. Please install libheif tools or convert on Powerful mode.');
+      throw Exception(
+          'heif-convert not found. Please install libheif tools or convert on Powerful mode.');
     }
 
     final result = await Process.run(binPath, [
@@ -291,15 +314,19 @@ class ImageConverter {
     required String outputDir,
   }) async {
     final baseName = p.basenameWithoutExtension(sourcePath);
-    final outPath = p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
+    final outPath =
+        p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
     final binPath = await ToolResolver.findExecutable('rsvg-convert');
     if (binPath == null) {
-      throw Exception('rsvg-convert not found. Please install librsvg or check your PATH.');
+      throw Exception(
+          'rsvg-convert not found. Please install librsvg or check your PATH.');
     }
 
     final result = await Process.run(binPath, [
-      '-f', targetFormat.toLowerCase(),
-      '-o', outPath,
+      '-f',
+      targetFormat.toLowerCase(),
+      '-o',
+      outPath,
       sourcePath,
     ]);
 

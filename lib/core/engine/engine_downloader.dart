@@ -18,7 +18,8 @@ class EngineDownloader {
     if (Platform.isWindows) {
       return const PackageInstallCommand(
         osName: 'Windows',
-        command: 'winget install Gyan.FFmpeg LibreOffice.LibreOffice calibre.calibre',
+        command:
+            'winget install Gyan.FFmpeg LibreOffice.LibreOffice calibre.calibre',
         packageManager: 'winget',
       );
     }
@@ -36,7 +37,9 @@ class EngineDownloader {
         final osRelease = await File('/etc/os-release').readAsString();
         final lower = osRelease.toLowerCase();
 
-        if (lower.contains('arch') || lower.contains('manjaro') || lower.contains('endeavouros')) {
+        if (lower.contains('arch') ||
+            lower.contains('manjaro') ||
+            lower.contains('endeavouros')) {
           return const PackageInstallCommand(
             osName: 'Arch Linux',
             command: 'sudo pacman -S ffmpeg libreoffice-fresh calibre libheif',
@@ -44,7 +47,9 @@ class EngineDownloader {
           );
         }
 
-        if (lower.contains('fedora') || lower.contains('rhel') || lower.contains('centos')) {
+        if (lower.contains('fedora') ||
+            lower.contains('rhel') ||
+            lower.contains('centos')) {
           return const PackageInstallCommand(
             osName: 'Fedora / RHEL',
             command: 'sudo dnf install ffmpeg libreoffice calibre',
@@ -52,10 +57,14 @@ class EngineDownloader {
           );
         }
 
-        if (lower.contains('ubuntu') || lower.contains('debian') || lower.contains('mint') || lower.contains('pop')) {
+        if (lower.contains('ubuntu') ||
+            lower.contains('debian') ||
+            lower.contains('mint') ||
+            lower.contains('pop')) {
           return const PackageInstallCommand(
             osName: 'Ubuntu / Debian',
-            command: 'sudo apt update && sudo apt install -y ffmpeg libreoffice calibre libheif-examples',
+            command:
+                'sudo apt update && sudo apt install -y ffmpeg libreoffice calibre libheif-examples',
             packageManager: 'apt',
           );
         }

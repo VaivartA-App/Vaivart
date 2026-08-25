@@ -12,8 +12,12 @@ class AudioConverter {
     required String outputDir,
   }) async {
     final baseName = p.basenameWithoutExtension(sourcePath);
-    final outPath = p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
-    final args = _buildArgs(sourcePath: sourcePath, outPath: outPath, targetFormat: targetFormat.toUpperCase());
+    final outPath =
+        p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
+    final args = _buildArgs(
+        sourcePath: sourcePath,
+        outPath: outPath,
+        targetFormat: targetFormat.toUpperCase());
 
     if (Platform.isAndroid) {
       final cmd = args.join(' ');
@@ -26,7 +30,8 @@ class AudioConverter {
     } else {
       final ffmpegPath = await ToolResolver.findExecutable('ffmpeg');
       if (ffmpegPath == null) {
-        throw Exception('ffmpeg not found. Please install ffmpeg or check Settings.');
+        throw Exception(
+            'ffmpeg not found. Please install ffmpeg or check Settings.');
       }
       final result = await Process.run(ffmpegPath, args);
       if (result.exitCode != 0) {
@@ -63,7 +68,16 @@ class AudioConverter {
       case 'OPUS':
         return [...base, '-codec:a', 'libopus', '-b:a', '128k', outPath];
       case 'AMR':
-        return [...base, '-codec:a', 'libopencore_amrnb', '-ar', '8000', '-ac', '1', outPath];
+        return [
+          ...base,
+          '-codec:a',
+          'libopencore_amrnb',
+          '-ar',
+          '8000',
+          '-ac',
+          '1',
+          outPath
+        ];
       case 'AC3':
         return [...base, '-codec:a', 'ac3', '-b:a', '192k', outPath];
       case 'AU':

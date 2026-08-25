@@ -3,6 +3,7 @@ import 'dart:io';
 import 'tool_resolver.dart';
 
 enum EngineType { lightweight, powerful, manual }
+
 enum FfmpegBuildType { gpl, lgpl }
 
 /// Configures and manages conversion engine profiles (Lightweight, Powerful, Manual).
@@ -40,7 +41,8 @@ class EngineConfig {
       Map<String, dynamic> data = {};
       if (configFile.existsSync()) {
         try {
-          data = Map<String, dynamic>.from(jsonDecode(configFile.readAsStringSync()));
+          data = Map<String, dynamic>.from(
+              jsonDecode(configFile.readAsStringSync()));
         } catch (_) {}
       }
       data['engine'] = engine.index;
@@ -77,7 +79,8 @@ class EngineConfig {
       Map<String, dynamic> data = {};
       if (configFile.existsSync()) {
         try {
-          data = Map<String, dynamic>.from(jsonDecode(configFile.readAsStringSync()));
+          data = Map<String, dynamic>.from(
+              jsonDecode(configFile.readAsStringSync()));
         } catch (_) {}
       }
       data['ffmpegBuild'] = buildType.index;
@@ -87,7 +90,9 @@ class EngineConfig {
   }
 
   static File _getConfigFile() {
-    final home = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'] ?? '.';
+    final home = Platform.environment['HOME'] ??
+        Platform.environment['USERPROFILE'] ??
+        '.';
     return File('$home/.config/vaivart/config.json');
   }
 
@@ -132,4 +137,3 @@ class EngineConfig {
     return path != null;
   }
 }
-

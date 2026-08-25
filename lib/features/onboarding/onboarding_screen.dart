@@ -88,7 +88,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     // Check if Powerful engine is selected and binary needs downloading on desktop
     if (!_isAndroid && _selected == 1 && !_detectedTools.hasFfmpeg) {
-      final isAlreadyDownloaded = await BinaryDownloaderService.isToolDownloaded('ffmpeg');
+      final isAlreadyDownloaded =
+          await BinaryDownloaderService.isToolDownloaded('ffmpeg');
       if (!isAlreadyDownloaded) {
         await _startToolDownload('ffmpeg');
         return;
@@ -141,8 +142,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bg = isDark ? AppColors.darkBg : AppColors.lightBg;
     final textPrimary = isDark ? AppColors.darkText : AppColors.lightText;
-    final textSecondary = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
-    final textTertiary = isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
+    final textSecondary =
+        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final textTertiary =
+        isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
 
     final installedTools = _detectedTools.installedTools;
@@ -158,18 +161,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Vaivart', style: AppTypography.label.copyWith(color: AppColors.teal, letterSpacing: 0.1)),
+                Text('Vaivart',
+                    style: AppTypography.label
+                        .copyWith(color: AppColors.teal, letterSpacing: 0.1)),
                 const SizedBox(height: 12),
-                Text('How should it work?', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: textPrimary)),
+                Text('How should it work?',
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: textPrimary)),
                 const SizedBox(height: 6),
-                Text('You can change this anytime in settings.', style: AppTypography.body.copyWith(color: textTertiary)),
-                
+                Text('You can change this anytime in settings.',
+                    style: AppTypography.body.copyWith(color: textTertiary)),
+
                 // System Tool Detection Status Banner
                 const SizedBox(height: 16),
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: isDark ? AppColors.darkBgSecondary : AppColors.lightBgSecondary,
+                    color: isDark
+                        ? AppColors.darkBgSecondary
+                        : AppColors.lightBgSecondary,
                     border: Border.all(color: border, width: 0.5),
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -179,14 +191,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         const SizedBox(
                           width: 16,
                           height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.teal),
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2, color: AppColors.teal),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
-                          child: Text('Scanning system for conversion tools...', style: AppTypography.caption.copyWith(color: textSecondary)),
+                          child: Text('Scanning system for conversion tools...',
+                              style: AppTypography.caption
+                                  .copyWith(color: textSecondary)),
                         ),
                       ] else if (installedTools.isNotEmpty) ...[
-                        const Icon(Icons.check_circle_rounded, size: 18, color: AppColors.teal),
+                        const Icon(Icons.check_circle_rounded,
+                            size: 18, color: AppColors.teal),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Column(
@@ -194,7 +210,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             children: [
                               Text(
                                 'Detected ${installedTools.length} tool${installedTools.length > 1 ? 's' : ''} on your system:',
-                                style: AppTypography.caption.copyWith(color: textPrimary, fontWeight: FontWeight.w600),
+                                style: AppTypography.caption.copyWith(
+                                    color: textPrimary,
+                                    fontWeight: FontWeight.w600),
                               ),
                               const SizedBox(height: 4),
                               Wrap(
@@ -202,14 +220,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 runSpacing: 4,
                                 children: installedTools.map((t) {
                                   return Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 6, vertical: 2),
                                     decoration: BoxDecoration(
-                                      color: AppColors.teal.withValues(alpha: 0.15),
+                                      color: AppColors.teal
+                                          .withValues(alpha: 0.15),
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: Text(
                                       t.name,
-                                      style: AppTypography.caption.copyWith(color: AppColors.teal, fontSize: 10, fontWeight: FontWeight.w600),
+                                      style: AppTypography.caption.copyWith(
+                                          color: AppColors.teal,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   );
                                 }).toList(),
@@ -218,12 +241,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           ),
                         ),
                       ] else ...[
-                        Icon(Icons.info_outline_rounded, size: 18, color: textTertiary),
+                        Icon(Icons.info_outline_rounded,
+                            size: 18, color: textTertiary),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
                             'No pre-installed system tools detected. Select Lightweight or download tools below.',
-                            style: AppTypography.caption.copyWith(color: textSecondary),
+                            style: AppTypography.caption
+                                .copyWith(color: textSecondary),
                           ),
                         ),
                       ],
@@ -237,9 +262,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: isDark ? AppColors.darkBgSecondary : AppColors.lightBgSecondary,
+                      color: isDark
+                          ? AppColors.darkBgSecondary
+                          : AppColors.lightBgSecondary,
                       border: Border.all(
-                        color: _downloadError != null ? const Color(0xFFE24B4A) : AppColors.teal,
+                        color: _downloadError != null
+                            ? const Color(0xFFE24B4A)
+                            : AppColors.teal,
                         width: 1,
                       ),
                       borderRadius: BorderRadius.circular(10),
@@ -250,21 +279,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Row(
                           children: [
                             Icon(
-                              _downloadError != null ? Icons.error_outline_rounded : Icons.cloud_download_rounded,
+                              _downloadError != null
+                                  ? Icons.error_outline_rounded
+                                  : Icons.cloud_download_rounded,
                               size: 20,
-                              color: _downloadError != null ? const Color(0xFFE24B4A) : AppColors.teal,
+                              color: _downloadError != null
+                                  ? const Color(0xFFE24B4A)
+                                  : AppColors.teal,
                             ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(
-                                _downloadError != null ? 'Download Failed' : _downloadStatus,
-                                style: AppTypography.label.copyWith(color: textPrimary, fontSize: 13),
+                                _downloadError != null
+                                    ? 'Download Failed'
+                                    : _downloadStatus,
+                                style: AppTypography.label
+                                    .copyWith(color: textPrimary, fontSize: 13),
                               ),
                             ),
                             if (_isDownloading)
                               Text(
                                 '${(_downloadProgress * 100).toStringAsFixed(0)}%',
-                                style: AppTypography.caption.copyWith(color: AppColors.teal, fontWeight: FontWeight.w600),
+                                style: AppTypography.caption.copyWith(
+                                    color: AppColors.teal,
+                                    fontWeight: FontWeight.w600),
                               ),
                           ],
                         ),
@@ -282,7 +320,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ],
                         if (_downloadError != null) ...[
                           const SizedBox(height: 8),
-                          Text(_downloadError!, style: AppTypography.caption.copyWith(color: const Color(0xFFE24B4A))),
+                          Text(_downloadError!,
+                              style: AppTypography.caption
+                                  .copyWith(color: const Color(0xFFE24B4A))),
                           const SizedBox(height: 12),
                           Row(
                             children: [
@@ -297,11 +337,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               ),
                               const SizedBox(width: 8),
                               OutlinedButton(
-                                onPressed: () => _finishOnboarding(0), // Fallback to Lightweight
+                                onPressed: () => _finishOnboarding(
+                                    0), // Fallback to Lightweight
                                 style: OutlinedButton.styleFrom(
                                   side: BorderSide(color: border),
                                 ),
-                                child: Text('Continue with Lightweight', style: TextStyle(color: textSecondary)),
+                                child: Text('Continue with Lightweight',
+                                    style: TextStyle(color: textSecondary)),
                               ),
                             ],
                           ),
@@ -313,27 +355,39 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                 if (_isAndroid) ...[
                   const SizedBox(height: 6),
-                  Text('Note: DOCX, PPTX, and EPUB conversion is desktop-only.', style: AppTypography.caption.copyWith(color: textTertiary)),
+                  Text('Note: DOCX, PPTX, and EPUB conversion is desktop-only.',
+                      style:
+                          AppTypography.caption.copyWith(color: textTertiary)),
                 ],
                 const SizedBox(height: 24),
                 ...List.generate(_engines.length, (i) {
                   final e = _engines[i];
                   final isSelected = _selected == i;
-                  final isRecommended = installedTools.isNotEmpty && (i == 1 || i == 2);
+                  final isRecommended =
+                      installedTools.isNotEmpty && (i == 1 || i == 2);
 
                   return GestureDetector(
-                    onTap: _isDownloading ? null : () => setState(() => _selected = i),
+                    onTap: _isDownloading
+                        ? null
+                        : () => setState(() => _selected = i),
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 10),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: isSelected ? (isDark ? AppColors.darkBgSecondary : AppColors.lightBgSecondary) : Colors.transparent,
-                        border: Border.all(color: isSelected ? AppColors.teal : border, width: isSelected ? 1.5 : 0.5),
+                        color: isSelected
+                            ? (isDark
+                                ? AppColors.darkBgSecondary
+                                : AppColors.lightBgSecondary)
+                            : Colors.transparent,
+                        border: Border.all(
+                            color: isSelected ? AppColors.teal : border,
+                            width: isSelected ? 1.5 : 0.5),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
                         children: [
-                          Text(e['icon']!, style: const TextStyle(fontSize: 22)),
+                          Text(e['icon']!,
+                              style: const TextStyle(fontSize: 22)),
                           const SizedBox(width: 14),
                           Expanded(
                             child: Column(
@@ -341,29 +395,41 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    Text(e['title']!, style: AppTypography.label.copyWith(color: textPrimary, fontSize: 13)),
+                                    Text(e['title']!,
+                                        style: AppTypography.label.copyWith(
+                                            color: textPrimary, fontSize: 13)),
                                     if (isRecommended) ...[
                                       const SizedBox(width: 8),
                                       Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 6, vertical: 1),
                                         decoration: BoxDecoration(
-                                          color: AppColors.teal.withValues(alpha: 0.15),
-                                          borderRadius: BorderRadius.circular(4),
+                                          color: AppColors.teal
+                                              .withValues(alpha: 0.15),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
                                         ),
                                         child: Text(
                                           'Recommended',
-                                          style: AppTypography.caption.copyWith(color: AppColors.teal, fontSize: 9, fontWeight: FontWeight.w600),
+                                          style: AppTypography.caption.copyWith(
+                                              color: AppColors.teal,
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w600),
                                         ),
                                       ),
                                     ],
                                   ],
                                 ),
                                 const SizedBox(height: 2),
-                                Text(e['sub']!, style: AppTypography.caption.copyWith(color: textSecondary)),
+                                Text(e['sub']!,
+                                    style: AppTypography.caption
+                                        .copyWith(color: textSecondary)),
                               ],
                             ),
                           ),
-                          Text(e['size']!, style: AppTypography.caption.copyWith(color: textTertiary)),
+                          Text(e['size']!,
+                              style: AppTypography.caption
+                                  .copyWith(color: textTertiary)),
                         ],
                       ),
                     ),
@@ -373,19 +439,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
-                    onPressed: (_selected == -1 || _isDownloading) ? null : _confirm,
+                    onPressed:
+                        (_selected == -1 || _isDownloading) ? null : _confirm,
                     style: TextButton.styleFrom(
-                      backgroundColor: (_selected == -1 || _isDownloading) ? border : AppColors.teal,
+                      backgroundColor: (_selected == -1 || _isDownloading)
+                          ? border
+                          : AppColors.teal,
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
                     ),
                     child: _isDownloading
                         ? const SizedBox(
                             width: 18,
                             height: 18,
-                            child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.tealLight),
+                            child: CircularProgressIndicator(
+                                strokeWidth: 2, color: AppColors.tealLight),
                           )
-                        : Text('Continue', style: AppTypography.label.copyWith(color: _selected == -1 ? textTertiary : AppColors.tealLight)),
+                        : Text('Continue',
+                            style: AppTypography.label.copyWith(
+                                color: _selected == -1
+                                    ? textTertiary
+                                    : AppColors.tealLight)),
                   ),
                 ),
               ],

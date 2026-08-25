@@ -39,7 +39,8 @@ class DataConverter {
     final sheet = excel.tables.values.first;
 
     final rows = sheet.rows
-        .map((row) => row.map((cell) => cell?.value?.toString() ?? '').join(','))
+        .map(
+            (row) => row.map((cell) => cell?.value?.toString() ?? '').join(','))
         .join('\n');
 
     final baseName = p.basenameWithoutExtension(sourcePath);
@@ -64,7 +65,9 @@ class DataConverter {
 
     for (final item in decoded) {
       if (item is Map<String, dynamic>) {
-        buffer.writeln(headers.map((h) => _csvEscape(item[h]?.toString() ?? '')).join(','));
+        buffer.writeln(headers
+            .map((h) => _csvEscape(item[h]?.toString() ?? ''))
+            .join(','));
       }
     }
 
@@ -97,7 +100,8 @@ class DataConverter {
 
     final baseName = p.basenameWithoutExtension(sourcePath);
     final outPath = p.join(outputDir, '$baseName.json');
-    await File(outPath).writeAsString(const JsonEncoder.withIndent('  ').convert(rows));
+    await File(outPath)
+        .writeAsString(const JsonEncoder.withIndent('  ').convert(rows));
     return outPath;
   }
 
@@ -141,9 +145,8 @@ class DataConverter {
     final sheet = excel.tables.values.first;
     if (sheet.rows.isEmpty) throw Exception('Excel file is empty');
 
-    final headers = sheet.rows.first
-        .map((cell) => cell?.value?.toString() ?? '')
-        .toList();
+    final headers =
+        sheet.rows.first.map((cell) => cell?.value?.toString() ?? '').toList();
     final rows = <Map<String, String>>[];
 
     for (int i = 1; i < sheet.rows.length; i++) {
@@ -158,7 +161,8 @@ class DataConverter {
 
     final baseName = p.basenameWithoutExtension(sourcePath);
     final outPath = p.join(outputDir, '$baseName.json');
-    await File(outPath).writeAsString(const JsonEncoder.withIndent('  ').convert(rows));
+    await File(outPath)
+        .writeAsString(const JsonEncoder.withIndent('  ').convert(rows));
     return outPath;
   }
 
@@ -173,7 +177,8 @@ class DataConverter {
     final pdf = pw.Document();
     // Split into chunks of 30 rows per page
     for (var i = 0; i < rows.length; i += 30) {
-      final chunk = rows.sublist(i, i + 30 > rows.length ? rows.length : i + 30);
+      final chunk =
+          rows.sublist(i, i + 30 > rows.length ? rows.length : i + 30);
       pdf.addPage(pw.Page(
         pageFormat: PdfPageFormat.a4,
         orientation: pw.PageOrientation.landscape,
@@ -182,7 +187,8 @@ class DataConverter {
           data: chunk,
           headerCount: i == 0 ? 1 : 0,
           cellStyle: const pw.TextStyle(fontSize: 8),
-          headerStyle: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold),
+          headerStyle:
+              pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold),
         ),
       ));
     }

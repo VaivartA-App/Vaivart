@@ -2,7 +2,16 @@ import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
 
-enum SidebarItem { converter, batch, pdfMerge, pdfSplit, history, settings, compression }
+enum SidebarItem {
+  converter,
+  batch,
+  pdfMerge,
+  pdfSplit,
+  history,
+  settings,
+  compression
+}
+
 class AppSidebar extends StatelessWidget {
   final SidebarItem selected;
   final ValueChanged<SidebarItem> onSelect;
@@ -47,16 +56,20 @@ class AppSidebar extends StatelessWidget {
   Widget _section(BuildContext context, String label) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-      child: Text(label, style: AppTypography.sectionHeader.copyWith(color: AppColors.darkTextTertiary)),
+      child: Text(label,
+          style: AppTypography.sectionHeader
+              .copyWith(color: AppColors.darkTextTertiary)),
     );
   }
 
   Widget _item(BuildContext context, SidebarItem item, String label) {
     final isActive = selected == item;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final activeBg = isDark ? AppColors.darkBgTertiary : AppColors.lightBgTertiary;
+    final activeBg =
+        isDark ? AppColors.darkBgTertiary : AppColors.lightBgTertiary;
     final activeText = isDark ? AppColors.darkText : AppColors.lightText;
-    final inactiveText = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final inactiveText =
+        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
 
     return GestureDetector(
       onTap: () => onSelect(item),
@@ -66,10 +79,13 @@ class AppSidebar extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 6, height: 6,
+              width: 6,
+              height: 6,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isActive ? AppColors.teal : (isDark ? AppColors.darkBorder : AppColors.lightBorder),
+                color: isActive
+                    ? AppColors.teal
+                    : (isDark ? AppColors.darkBorder : AppColors.lightBorder),
               ),
             ),
             const SizedBox(width: 10),

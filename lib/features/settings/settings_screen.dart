@@ -100,7 +100,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Download failed: ${e.toString().replaceAll("Exception: ", "")}')),
+          SnackBar(
+              content: Text(
+                  'Download failed: ${e.toString().replaceAll("Exception: ", "")}')),
         );
       }
     } finally {
@@ -120,7 +122,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _setFfmpegBuildType(int val) async {
     if (val == _ffmpegBuildType) return;
     final newBuild = FfmpegBuildType.values[val];
-    final isDownloaded = await BinaryDownloaderService.isToolDownloaded('ffmpeg');
+    final isDownloaded =
+        await BinaryDownloaderService.isToolDownloaded('ffmpeg');
 
     if (isDownloaded && mounted) {
       final confirmed = await showDialog<bool>(
@@ -128,10 +131,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
         builder: (ctx) {
           final isDark = Theme.of(ctx).brightness == Brightness.dark;
           final textPrimary = isDark ? AppColors.darkText : AppColors.lightText;
-          final textSecondary = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+          final textSecondary = isDark
+              ? AppColors.darkTextSecondary
+              : AppColors.lightTextSecondary;
           return AlertDialog(
-            backgroundColor: isDark ? AppColors.darkBgSecondary : AppColors.lightBgSecondary,
-            title: Text('Switch FFmpeg Build?', style: TextStyle(color: textPrimary, fontSize: 15, fontWeight: FontWeight.w600)),
+            backgroundColor:
+                isDark ? AppColors.darkBgSecondary : AppColors.lightBgSecondary,
+            title: Text('Switch FFmpeg Build?',
+                style: TextStyle(
+                    color: textPrimary,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600)),
             content: Text(
               'Switching build type requires re-downloading FFmpeg. The existing binary will be replaced.\n\nContinue?',
               style: TextStyle(color: textSecondary, fontSize: 13),
@@ -143,7 +153,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               TextButton(
                 onPressed: () => Navigator.of(ctx).pop(true),
-                child: const Text('Re-download', style: TextStyle(color: AppColors.teal)),
+                child: const Text('Re-download',
+                    style: TextStyle(color: AppColors.teal)),
               ),
             ],
           );
@@ -159,7 +170,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       // Delete old binary and version file, then re-download
       try {
         final binDir = await ToolResolver.getAppBinDir();
-        final info = BinaryDownloaderService.getDownloadInfo('ffmpeg', buildType: FfmpegBuildType.values[_ffmpegBuildType == 0 ? 1 : 0]);
+        final info = BinaryDownloaderService.getDownloadInfo('ffmpeg',
+            buildType: FfmpegBuildType.values[_ffmpegBuildType == 0 ? 1 : 0]);
         if (info != null) {
           final oldBinary = File('${binDir.path}/${info.binaryFileName}');
           final oldVersion = File('${binDir.path}/ffmpeg.version.json');
@@ -194,8 +206,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final bg = isDark ? AppColors.darkBgSecondary : AppColors.lightBgSecondary;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
     final textPrimary = isDark ? AppColors.darkText : AppColors.lightText;
-    final textSecondary = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
-    final textTertiary = isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
+    final textSecondary =
+        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final textTertiary =
+        isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBg : AppColors.lightBg,
@@ -204,9 +218,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Settings', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: textPrimary)),
+            Text('Settings',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: textPrimary)),
             const SizedBox(height: 24),
-            _SectionHeader(label: 'CONVERSION ENGINE', textTertiary: textTertiary),
+            _SectionHeader(
+                label: 'CONVERSION ENGINE', textTertiary: textTertiary),
             const SizedBox(height: 10),
             ...List.generate(_engines.length, (i) {
               final isSelected = _engine == i;
@@ -216,8 +235,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   margin: const EdgeInsets.only(bottom: 8),
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: isSelected ? (isDark ? AppColors.darkBgTertiary : AppColors.lightBgTertiary) : bg,
-                    border: Border.all(color: isSelected ? AppColors.teal : border, width: isSelected ? 1 : 0.5),
+                    color: isSelected
+                        ? (isDark
+                            ? AppColors.darkBgTertiary
+                            : AppColors.lightBgTertiary)
+                        : bg,
+                    border: Border.all(
+                        color: isSelected ? AppColors.teal : border,
+                        width: isSelected ? 1 : 0.5),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -226,16 +251,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(_engines[i], style: AppTypography.label.copyWith(color: textPrimary)),
+                            Text(_engines[i],
+                                style: AppTypography.label
+                                    .copyWith(color: textPrimary)),
                             const SizedBox(height: 2),
-                            Text(_engineSubs[i], style: AppTypography.caption.copyWith(color: textTertiary)),
+                            Text(_engineSubs[i],
+                                style: AppTypography.caption
+                                    .copyWith(color: textTertiary)),
                           ],
                         ),
                       ),
                       if (isSelected)
                         Container(
-                          width: 8, height: 8,
-                          decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.teal),
+                          width: 8,
+                          height: 8,
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: AppColors.teal),
                         ),
                     ],
                   ),
@@ -246,7 +277,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // FFmpeg Build Type section — only visible for Powerful / Manual engines
             if (_engine != 0) ...[
               const SizedBox(height: 24),
-              _SectionHeader(label: 'FFMPEG BUILD TYPE', textTertiary: textTertiary),
+              _SectionHeader(
+                  label: 'FFMPEG BUILD TYPE', textTertiary: textTertiary),
               const SizedBox(height: 4),
               Text(
                 Platform.isMacOS
@@ -259,25 +291,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ...[
                   {
                     'title': 'GPL',
-                    'sub': 'Full codec support — x264, x265, libfdk-aac, libass. Larger download.',
+                    'sub':
+                        'Full codec support — x264, x265, libfdk-aac, libass. Larger download.',
                     'index': 0,
                   },
                   {
                     'title': 'LGPL',
-                    'sub': 'Lighter build, fewer codecs. More permissive license.',
+                    'sub':
+                        'Lighter build, fewer codecs. More permissive license.',
                     'index': 1,
                   },
                 ].map((opt) {
                   final i = opt['index'] as int;
                   final isSelected = _ffmpegBuildType == i;
                   return GestureDetector(
-                    onTap: _isDownloadingTool ? null : () => _setFfmpegBuildType(i),
+                    onTap: _isDownloadingTool
+                        ? null
+                        : () => _setFfmpegBuildType(i),
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 8),
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: isSelected ? (isDark ? AppColors.darkBgTertiary : AppColors.lightBgTertiary) : bg,
-                        border: Border.all(color: isSelected ? AppColors.teal : border, width: isSelected ? 1 : 0.5),
+                        color: isSelected
+                            ? (isDark
+                                ? AppColors.darkBgTertiary
+                                : AppColors.lightBgTertiary)
+                            : bg,
+                        border: Border.all(
+                            color: isSelected ? AppColors.teal : border,
+                            width: isSelected ? 1 : 0.5),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
@@ -286,16 +328,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(opt['title'] as String, style: AppTypography.label.copyWith(color: textPrimary)),
+                                Text(opt['title'] as String,
+                                    style: AppTypography.label
+                                        .copyWith(color: textPrimary)),
                                 const SizedBox(height: 2),
-                                Text(opt['sub'] as String, style: AppTypography.caption.copyWith(color: textTertiary)),
+                                Text(opt['sub'] as String,
+                                    style: AppTypography.caption
+                                        .copyWith(color: textTertiary)),
                               ],
                             ),
                           ),
                           if (isSelected)
                             Container(
-                              width: 8, height: 8,
-                              decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.teal),
+                              width: 8,
+                              height: 8,
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.teal),
                             ),
                         ],
                       ),
@@ -309,7 +358,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _SectionHeader(label: 'ENGINE DIAGNOSTICS & SYSTEM TOOLS', textTertiary: textTertiary),
+                _SectionHeader(
+                    label: 'ENGINE DIAGNOSTICS & SYSTEM TOOLS',
+                    textTertiary: textTertiary),
                 IconButton(
                   icon: const Icon(Icons.refresh, size: 16),
                   color: AppColors.teal,
@@ -328,7 +379,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: _loadingTools
-                  ? const Center(child: Padding(
+                  ? const Center(
+                      child: Padding(
                       padding: EdgeInsets.all(12.0),
                       child: CircularProgressIndicator(strokeWidth: 2),
                     ))
@@ -340,8 +392,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             padding: const EdgeInsets.all(12),
                             margin: const EdgeInsets.only(bottom: 12),
                             decoration: BoxDecoration(
-                              color: isDark ? AppColors.darkBgTertiary : AppColors.lightBgTertiary,
-                              border: Border.all(color: AppColors.teal, width: 0.5),
+                              color: isDark
+                                  ? AppColors.darkBgTertiary
+                                  : AppColors.lightBgTertiary,
+                              border:
+                                  Border.all(color: AppColors.teal, width: 0.5),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Column(
@@ -349,14 +404,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(Icons.cloud_download_rounded, size: 16, color: AppColors.teal),
+                                    const Icon(Icons.cloud_download_rounded,
+                                        size: 16, color: AppColors.teal),
                                     const SizedBox(width: 8),
                                     Expanded(
-                                      child: Text(_downloadStatus, style: AppTypography.caption.copyWith(color: textPrimary, fontWeight: FontWeight.w600)),
+                                      child: Text(_downloadStatus,
+                                          style: AppTypography.caption.copyWith(
+                                              color: textPrimary,
+                                              fontWeight: FontWeight.w600)),
                                     ),
                                     Text(
                                       '${(_downloadProgress * 100).toStringAsFixed(0)}%',
-                                      style: AppTypography.caption.copyWith(color: AppColors.teal, fontWeight: FontWeight.w600),
+                                      style: AppTypography.caption.copyWith(
+                                          color: AppColors.teal,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ],
                                 ),
@@ -375,12 +436,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ],
                         ..._toolStatuses.map((t) {
-                          final canDownload = !t.isInstalled && BinaryDownloaderService.getDownloadInfo(t.name) != null;
-                          final updateStatus = _updateStatuses.cast<ToolUpdateStatus?>().firstWhere(
-                            (u) => u?.toolName == t.name,
-                            orElse: () => null,
-                          );
-                          final hasUpdate = updateStatus != null && updateStatus.updateAvailable && t.isInstalled;
+                          final canDownload = !t.isInstalled &&
+                              BinaryDownloaderService.getDownloadInfo(t.name) !=
+                                  null;
+                          final updateStatus = _updateStatuses
+                              .cast<ToolUpdateStatus?>()
+                              .firstWhere(
+                                (u) => u?.toolName == t.name,
+                                orElse: () => null,
+                              );
+                          final hasUpdate = updateStatus != null &&
+                              updateStatus.updateAvailable &&
+                              t.isInstalled;
 
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -392,31 +459,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: t.isInstalled
-                                        ? (hasUpdate ? Colors.amber : AppColors.teal)
+                                        ? (hasUpdate
+                                            ? Colors.amber
+                                            : AppColors.teal)
                                         : Colors.orangeAccent,
                                   ),
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
                                   t.name,
-                                  style: AppTypography.label.copyWith(color: textPrimary),
+                                  style: AppTypography.label
+                                      .copyWith(color: textPrimary),
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
                                   '(${t.category})',
-                                  style: AppTypography.caption.copyWith(color: textTertiary),
+                                  style: AppTypography.caption
+                                      .copyWith(color: textTertiary),
                                 ),
                                 if (hasUpdate) ...[
                                   const SizedBox(width: 8),
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 6, vertical: 2),
                                     decoration: BoxDecoration(
-                                      color: Colors.amber.withValues(alpha: 0.15),
+                                      color:
+                                          Colors.amber.withValues(alpha: 0.15),
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: Text(
                                       'v${updateStatus.installedVersion ?? "?"} → v${updateStatus.latestVersion}',
-                                      style: AppTypography.caption.copyWith(color: Colors.amber.shade700, fontSize: 9, fontWeight: FontWeight.w600),
+                                      style: AppTypography.caption.copyWith(
+                                          color: Colors.amber.shade700,
+                                          fontSize: 9,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ),
                                 ],
@@ -425,35 +501,56 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   GestureDetector(
                                     onTap: () => _downloadTool(t.name),
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 3),
                                       decoration: BoxDecoration(
-                                        color: Colors.amber.withValues(alpha: 0.15),
+                                        color: Colors.amber
+                                            .withValues(alpha: 0.15),
                                         borderRadius: BorderRadius.circular(4),
                                       ),
                                       child: Row(
                                         children: [
-                                          Icon(Icons.system_update_alt_rounded, size: 12, color: Colors.amber.shade700),
+                                          Icon(Icons.system_update_alt_rounded,
+                                              size: 12,
+                                              color: Colors.amber.shade700),
                                           const SizedBox(width: 4),
-                                          Text('Update', style: AppTypography.caption.copyWith(color: Colors.amber.shade700, fontSize: 10, fontWeight: FontWeight.w600)),
+                                          Text('Update',
+                                              style: AppTypography.caption
+                                                  .copyWith(
+                                                      color:
+                                                          Colors.amber.shade700,
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w600)),
                                         ],
                                       ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
-                                ] else if (canDownload && !_isDownloadingTool) ...[
+                                ] else if (canDownload &&
+                                    !_isDownloadingTool) ...[
                                   GestureDetector(
                                     onTap: () => _downloadTool(t.name),
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 3),
                                       decoration: BoxDecoration(
-                                        color: AppColors.teal.withValues(alpha: 0.15),
+                                        color: AppColors.teal
+                                            .withValues(alpha: 0.15),
                                         borderRadius: BorderRadius.circular(4),
                                       ),
                                       child: Row(
                                         children: [
-                                          const Icon(Icons.download_rounded, size: 12, color: AppColors.teal),
+                                          const Icon(Icons.download_rounded,
+                                              size: 12, color: AppColors.teal),
                                           const SizedBox(width: 4),
-                                          Text('Download', style: AppTypography.caption.copyWith(color: AppColors.teal, fontSize: 10, fontWeight: FontWeight.w600)),
+                                          Text('Download',
+                                              style: AppTypography.caption
+                                                  .copyWith(
+                                                      color: AppColors.teal,
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w600)),
                                         ],
                                       ),
                                     ),
@@ -461,9 +558,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   const SizedBox(width: 8),
                                 ],
                                 Text(
-                                  t.isInstalled ? (t.path ?? 'Installed') : 'Not Found',
+                                  t.isInstalled
+                                      ? (t.path ?? 'Installed')
+                                      : 'Not Found',
                                   style: AppTypography.caption.copyWith(
-                                    color: t.isInstalled ? AppColors.teal : textTertiary,
+                                    color: t.isInstalled
+                                        ? AppColors.teal
+                                        : textTertiary,
                                     fontSize: 11,
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -476,13 +577,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           const Divider(height: 20),
                           Text(
                             'Install missing tools for ${_installCommand!.osName}:',
-                            style: AppTypography.caption.copyWith(color: textSecondary, fontWeight: FontWeight.w600),
+                            style: AppTypography.caption.copyWith(
+                                color: textSecondary,
+                                fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(height: 6),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 8),
                             decoration: BoxDecoration(
-                              color: isDark ? Colors.black26 : Colors.black.withValues(alpha: 0.05),
+                              color: isDark
+                                  ? Colors.black26
+                                  : Colors.black.withValues(alpha: 0.05),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Row(
@@ -498,7 +604,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ),
                                 ),
                                 IconButton(
-                                  icon: Icon(_copied ? Icons.check : Icons.copy, size: 14),
+                                  icon: Icon(_copied ? Icons.check : Icons.copy,
+                                      size: 14),
                                   color: AppColors.teal,
                                   onPressed: _copyCommand,
                                   tooltip: 'Copy command',
@@ -512,7 +619,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
 
             const SizedBox(height: 24),
-            _SectionHeader(label: 'OUTPUT DIRECTORY', textTertiary: textTertiary),
+            _SectionHeader(
+                label: 'OUTPUT DIRECTORY', textTertiary: textTertiary),
             const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.all(14),
@@ -526,7 +634,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Expanded(
                     child: Text(
                       _outputDir.isEmpty ? 'Loading...' : _outputDir,
-                      style: AppTypography.body.copyWith(color: textPrimary, fontSize: 12),
+                      style: AppTypography.body
+                          .copyWith(color: textPrimary, fontSize: 12),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -538,7 +647,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     style: OutlinedButton.styleFrom(
                       foregroundColor: textPrimary,
                       side: BorderSide(color: border, width: 0.5),
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
                       textStyle: AppTypography.caption,
                     ),
                   ),
@@ -561,7 +671,10 @@ class _SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       label,
-      style: AppTypography.caption.copyWith(color: textTertiary, fontWeight: FontWeight.w600, letterSpacing: 0.08),
+      style: AppTypography.caption.copyWith(
+          color: textTertiary,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.08),
     );
   }
 }

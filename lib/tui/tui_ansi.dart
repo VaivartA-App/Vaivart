@@ -35,18 +35,26 @@ class TuiAnsi {
   /// Print stylized ASCII banner for Vaivart
   static String getBanner() {
     final sb = StringBuffer();
-    sb.writeln('$cyan$bold  ██╗   ██╗ █████╗ ██╗██╗   ██╗█████╗ ██████╗ ████████╗$reset');
-    sb.writeln('$cyan$bold  ██║   ██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗╚══██╔══╝$reset');
-    sb.writeln('$neonPurple$bold  ██║   ██║███████║██║██║   ██║███████║██████╔╝   ██║   $reset');
-    sb.writeln('$neonPurple$bold  ╚██╗ ██╔╝██╔══██║██║╚██╗ ██╔╝██╔══██║██╔══██╗   ██║   $reset');
-    sb.writeln('$skyBlue$bold   ╚████╔╝ ██║  ██║██║ ╚████╔╝ ██║  ██║██║  ██║   ██║   $reset');
-    sb.writeln('$skyBlue$bold    ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   $reset');
-    sb.writeln('$dim$gray  ────────────── Offline Universal File Converter TUI v1.1.1 ──────────────$reset\n');
+    sb.writeln(
+        '$cyan$bold  ██╗   ██╗ █████╗ ██╗██╗   ██╗█████╗ ██████╗ ████████╗$reset');
+    sb.writeln(
+        '$cyan$bold  ██║   ██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗╚══██╔══╝$reset');
+    sb.writeln(
+        '$neonPurple$bold  ██║   ██║███████║██║██║   ██║███████║██████╔╝   ██║   $reset');
+    sb.writeln(
+        '$neonPurple$bold  ╚██╗ ██╔╝██╔══██║██║╚██╗ ██╔╝██╔══██║██╔══██╗   ██║   $reset');
+    sb.writeln(
+        '$skyBlue$bold   ╚████╔╝ ██║  ██║██║ ╚████╔╝ ██║  ██║██║  ██║   ██║   $reset');
+    sb.writeln(
+        '$skyBlue$bold    ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   $reset');
+    sb.writeln(
+        '$dim$gray  ────────────── Offline Universal File Converter TUI v1.1.1 ──────────────$reset\n');
     return sb.toString();
   }
 
   /// Format status badge
-  static String statusBadge(String status, {bool success = true, bool warning = false}) {
+  static String statusBadge(String status,
+      {bool success = true, bool warning = false}) {
     if (warning) {
       return '$gold$bold[ $status ]$reset';
     }
@@ -79,7 +87,8 @@ class TuiAnsi {
     final visibleTitleLen = title.length + 2;
     final topDashCount = (width - visibleTitleLen - 2).clamp(2, 200);
 
-    sb.writeln('$borderColor╔$reset$titleFormatted$borderColor${'═' * topDashCount}╗$reset');
+    sb.writeln(
+        '$borderColor╔$reset$titleFormatted$borderColor${'═' * topDashCount}╗$reset');
     for (final line in content) {
       sb.writeln('$borderColor║$reset $line');
     }

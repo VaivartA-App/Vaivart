@@ -17,7 +17,9 @@ class OutputService {
         }
       } catch (_) {}
     }
-    final home = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'] ?? '.';
+    final home = Platform.environment['HOME'] ??
+        Platform.environment['USERPROFILE'] ??
+        '.';
     final downloadsDir = Directory('$home/Downloads');
     if (downloadsDir.existsSync()) return downloadsDir.path;
     return Directory.current.path;
@@ -30,7 +32,8 @@ class OutputService {
       Map<String, dynamic> data = {};
       if (configFile.existsSync()) {
         try {
-          data = Map<String, dynamic>.from(jsonDecode(configFile.readAsStringSync()));
+          data = Map<String, dynamic>.from(
+              jsonDecode(configFile.readAsStringSync()));
         } catch (_) {}
       }
       data[_key] = path;
@@ -40,7 +43,9 @@ class OutputService {
   }
 
   static File _getConfigFile() {
-    final home = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'] ?? '.';
+    final home = Platform.environment['HOME'] ??
+        Platform.environment['USERPROFILE'] ??
+        '.';
     return File('$home/.config/vaivart/config.json');
   }
 }

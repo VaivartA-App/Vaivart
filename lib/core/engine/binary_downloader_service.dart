@@ -31,7 +31,8 @@ class DownloadToolInfo {
 class BinaryDownloaderService {
   /// Get static download URL and info per tool, platform, and build type.
   /// If [buildType] is null, reads the persisted preference from EngineConfig.
-  static DownloadToolInfo? getDownloadInfo(String toolName, {FfmpegBuildType? buildType}) {
+  static DownloadToolInfo? getDownloadInfo(String toolName,
+      {FfmpegBuildType? buildType}) {
     final name = toolName.toLowerCase();
     if (name == 'ffmpeg') {
       // Default to GPL if no build type provided (sync context fallback)
@@ -41,22 +42,26 @@ class BinaryDownloaderService {
         if (build == FfmpegBuildType.lgpl) {
           return const DownloadToolInfo(
             toolName: 'ffmpeg',
-            url: 'https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2025-08-31-13-00/ffmpeg-n6.1.3-linux64-lgpl-6.1.tar.xz',
+            url:
+                'https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2025-08-31-13-00/ffmpeg-n6.1.3-linux64-lgpl-6.1.tar.xz',
             archiveType: 'tar.xz',
             binaryFileName: 'ffmpeg',
             fileSizeMB: '~89MB',
-            expectedSha256: 'd90adf46b8fb2682989dd8de06db639fe438c5d34ef263abd8bc045034dbc11b',
+            expectedSha256:
+                'd90adf46b8fb2682989dd8de06db639fe438c5d34ef263abd8bc045034dbc11b',
             version: '6.1.3-lgpl',
             buildType: 'lgpl',
           );
         }
         return const DownloadToolInfo(
           toolName: 'ffmpeg',
-          url: 'https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2025-08-31-13-00/ffmpeg-n6.1.3-linux64-gpl-6.1.tar.xz',
+          url:
+              'https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2025-08-31-13-00/ffmpeg-n6.1.3-linux64-gpl-6.1.tar.xz',
           archiveType: 'tar.xz',
           binaryFileName: 'ffmpeg',
           fileSizeMB: '~100MB',
-          expectedSha256: '400f9ca9d8ea3f812660cf7a00b9bfed944175cd9d6bd0c9b6257cf99376a75c',
+          expectedSha256:
+              '400f9ca9d8ea3f812660cf7a00b9bfed944175cd9d6bd0c9b6257cf99376a75c',
           version: '6.1.3-gpl',
           buildType: 'gpl',
         );
@@ -64,22 +69,26 @@ class BinaryDownloaderService {
         if (build == FfmpegBuildType.lgpl) {
           return const DownloadToolInfo(
             toolName: 'ffmpeg',
-            url: 'https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2025-08-31-13-00/ffmpeg-n6.1.3-win64-lgpl-6.1.zip',
+            url:
+                'https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2025-08-31-13-00/ffmpeg-n6.1.3-win64-lgpl-6.1.zip',
             archiveType: 'zip',
             binaryFileName: 'ffmpeg.exe',
             fileSizeMB: '~114MB',
-            expectedSha256: '1b4ed0f88fd12a1df096c318f27e8da8d77a64bc970af3e813166726591f5d52',
+            expectedSha256:
+                '1b4ed0f88fd12a1df096c318f27e8da8d77a64bc970af3e813166726591f5d52',
             version: '6.1.3-lgpl',
             buildType: 'lgpl',
           );
         }
         return const DownloadToolInfo(
           toolName: 'ffmpeg',
-          url: 'https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2025-08-31-13-00/ffmpeg-n6.1.3-win64-gpl-6.1.zip',
+          url:
+              'https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2025-08-31-13-00/ffmpeg-n6.1.3-win64-gpl-6.1.zip',
           archiveType: 'zip',
           binaryFileName: 'ffmpeg.exe',
           fileSizeMB: '~130MB',
-          expectedSha256: '7142408984a0b63de725e885632af4d80e7824c0d86161577fd227641a6749dc',
+          expectedSha256:
+              '7142408984a0b63de725e885632af4d80e7824c0d86161577fd227641a6749dc',
           version: '6.1.3-gpl',
           buildType: 'gpl',
         );
@@ -91,7 +100,8 @@ class BinaryDownloaderService {
           archiveType: 'zip',
           binaryFileName: 'ffmpeg',
           fileSizeMB: '~25MB',
-          expectedSha256: '7de74c26a20dd172ed49c7de6035ee0790c83e69e461c3a6895b33ae0787e513',
+          expectedSha256:
+              '7de74c26a20dd172ed49c7de6035ee0790c83e69e461c3a6895b33ae0787e513',
           version: '6.1.1-gpl',
           buildType: 'gpl',
         );
@@ -122,10 +132,12 @@ class BinaryDownloaderService {
   }) async {
     final info = await getDownloadInfoAsync(toolName);
     if (info == null) {
-      throw Exception('No static download configuration found for $toolName on this platform.');
+      throw Exception(
+          'No static download configuration found for $toolName on this platform.');
     }
 
-    onProgress(0.05, 'Preparing download for ${info.toolName} (${info.fileSizeMB})...');
+    onProgress(0.05,
+        'Preparing download for ${info.toolName} (${info.fileSizeMB})...');
 
     final binDir = await ToolResolver.getAppBinDir();
     final client = HttpClient();
@@ -136,11 +148,13 @@ class BinaryDownloaderService {
       final response = await request.close();
 
       if (response.statusCode != 200) {
-        throw Exception('Download failed with HTTP status code ${response.statusCode}');
+        throw Exception(
+            'Download failed with HTTP status code ${response.statusCode}');
       }
 
       final contentLength = response.contentLength;
-      final tempFile = File(p.join(binDir.path, '${info.toolName}_temp.${info.archiveType}'));
+      final tempFile = File(
+          p.join(binDir.path, '${info.toolName}_temp.${info.archiveType}'));
       final sink = tempFile.openWrite();
 
       int downloaded = 0;
@@ -153,7 +167,8 @@ class BinaryDownloaderService {
           final percentStr = (progress * 100).toStringAsFixed(0);
           onProgress(progress, 'Downloading ${info.toolName}... $percentStr%');
         } else {
-          onProgress(0.5, 'Downloading ${info.toolName}... (${(downloaded / (1024 * 1024)).toStringAsFixed(1)} MB)');
+          onProgress(0.5,
+              'Downloading ${info.toolName}... (${(downloaded / (1024 * 1024)).toStringAsFixed(1)} MB)');
         }
       }
 
@@ -170,7 +185,8 @@ class BinaryDownloaderService {
           if (await tempFile.exists()) {
             await tempFile.delete();
           }
-          throw Exception('Security Error: Checksum mismatch. The downloaded file may be corrupted.\nExpected: ${info.expectedSha256}\nGot: $actualSha256');
+          throw Exception(
+              'Security Error: Checksum mismatch. The downloaded file may be corrupted.\nExpected: ${info.expectedSha256}\nGot: $actualSha256');
         }
       }
 
@@ -213,7 +229,9 @@ class BinaryDownloaderService {
         final bytes = await archiveFile.readAsBytes();
         final archive = ZipDecoder().decodeBytes(bytes);
         for (final file in archive) {
-          if (file.isFile && (file.name.endsWith(info.binaryFileName) || p.basename(file.name) == info.binaryFileName)) {
+          if (file.isFile &&
+              (file.name.endsWith(info.binaryFileName) ||
+                  p.basename(file.name) == info.binaryFileName)) {
             final data = file.content as List<int>;
             await targetFile.writeAsBytes(data);
             break;
@@ -222,21 +240,26 @@ class BinaryDownloaderService {
       } catch (_) {
         // Fallback: try native unzip if system has it
         if (Platform.isLinux || Platform.isMacOS) {
-          await Process.run('unzip', ['-o', archiveFile.path, info.binaryFileName, '-d', binDir.path]);
+          await Process.run('unzip',
+              ['-o', archiveFile.path, info.binaryFileName, '-d', binDir.path]);
         }
       }
     } else if (info.archiveType == 'tar.xz') {
       // Use native tar for fast .tar.xz extraction on Linux/macOS
       try {
         final result = await Process.run('tar', [
-          '-xvf', archiveFile.path,
+          '-xvf',
+          archiveFile.path,
           '--strip-components=1',
-          '--wildcards', '*/${info.binaryFileName}',
-          '-C', binDir.path,
+          '--wildcards',
+          '*/${info.binaryFileName}',
+          '-C',
+          binDir.path,
         ]);
         if (result.exitCode != 0) {
           // Alternative tar syntax without wildcards
-          await Process.run('tar', ['-xf', archiveFile.path, '-C', binDir.path]);
+          await Process.run(
+              'tar', ['-xf', archiveFile.path, '-C', binDir.path]);
         }
       } catch (_) {}
     } else {

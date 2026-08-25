@@ -23,7 +23,8 @@ class QueueItemTile extends StatelessWidget {
     final bg = isDark ? AppColors.darkBgSecondary : AppColors.lightBg;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
     final textPrimary = isDark ? AppColors.darkText : AppColors.lightText;
-    final textTertiary = isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
+    final textTertiary =
+        isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -40,7 +41,8 @@ class QueueItemTile extends StatelessWidget {
             child: Text(
               job.fileName,
               overflow: TextOverflow.ellipsis,
-              style: AppTypography.body.copyWith(color: textPrimary, fontWeight: FontWeight.w500),
+              style: AppTypography.body
+                  .copyWith(color: textPrimary, fontWeight: FontWeight.w500),
             ),
           ),
           if (job.isVideo && onResolutionChanged != null) ...[
@@ -51,18 +53,22 @@ class QueueItemTile extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border.all(color: border, width: 0.5),
                   borderRadius: BorderRadius.circular(6),
-                  color: isDark ? AppColors.darkBgTertiary : AppColors.lightBgSecondary,
+                  color: isDark
+                      ? AppColors.darkBgTertiary
+                      : AppColors.lightBgSecondary,
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: job.resolution ?? 'Original',
                     isDense: true,
                     isExpanded: true,
-                    style: AppTypography.caption.copyWith(color: textPrimary, fontSize: 11),
+                    style: AppTypography.caption
+                        .copyWith(color: textPrimary, fontSize: 11),
                     items: ConversionJob.videoResolutions
                         .map((res) => DropdownMenuItem(
                               value: res,
-                              child: Text(res == 'Original' ? 'Res: Auto' : res),
+                              child:
+                                  Text(res == 'Original' ? 'Res: Auto' : res),
                             ))
                         .toList(),
                     onChanged: (v) {
@@ -82,7 +88,9 @@ class QueueItemTile extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border.all(color: border, width: 0.5),
                   borderRadius: BorderRadius.circular(6),
-                  color: isDark ? AppColors.darkBgTertiary : AppColors.lightBgSecondary,
+                  color: isDark
+                      ? AppColors.darkBgTertiary
+                      : AppColors.lightBgSecondary,
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
@@ -91,9 +99,12 @@ class QueueItemTile extends StatelessWidget {
                     isExpanded: true,
                     style: AppTypography.caption.copyWith(color: textPrimary),
                     items: job.availableFormats
-                        .map((f) => DropdownMenuItem(value: f, child: Text('→ $f')))
+                        .map((f) =>
+                            DropdownMenuItem(value: f, child: Text('→ $f')))
                         .toList(),
-                    onChanged: (v) { if (v != null) onFormatChanged(v); },
+                    onChanged: (v) {
+                      if (v != null) onFormatChanged(v);
+                    },
                   ),
                 ),
               ),
@@ -119,7 +130,8 @@ class _FilePill extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = _pillColors(ext);
     return Container(
-      width: 36, height: 28,
+      width: 36,
+      height: 28,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: colors[0],
@@ -127,22 +139,33 @@ class _FilePill extends StatelessWidget {
       ),
       child: Text(
         ext.length > 4 ? ext.substring(0, 4) : ext,
-        style: TextStyle(fontSize: 9, fontWeight: FontWeight.w600, color: colors[1]),
+        style: TextStyle(
+            fontSize: 9, fontWeight: FontWeight.w600, color: colors[1]),
       ),
     );
   }
 
   List<Color> _pillColors(String ext) {
     switch (ext.toLowerCase()) {
-      case 'jpg': case 'jpeg': case 'png': case 'webp': case 'bmp':
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'webp':
+      case 'bmp':
         return [AppColors.imgBg, AppColors.imgFg];
       case 'pdf':
         return [AppColors.pdfBg, AppColors.pdfFg];
-      case 'docx': case 'doc':
+      case 'docx':
+      case 'doc':
         return [AppColors.docBg, AppColors.docFg];
-      case 'csv': case 'xlsx':
+      case 'csv':
+      case 'xlsx':
         return [AppColors.csvBg, AppColors.csvFg];
-      case 'mp4': case 'avi': case 'mkv': case 'webm': case 'mov':
+      case 'mp4':
+      case 'avi':
+      case 'mkv':
+      case 'webm':
+      case 'mov':
         return [AppColors.vidBg, AppColors.vidFg];
       default:
         return [AppColors.lightBgTertiary, AppColors.lightTextSecondary];
@@ -163,7 +186,8 @@ class _StatusDot extends StatelessWidget {
       JobStatus.failed => const Color(0xFFE24B4A),
     };
     return Container(
-      width: 7, height: 7,
+      width: 7,
+      height: 7,
       decoration: BoxDecoration(shape: BoxShape.circle, color: color),
     );
   }

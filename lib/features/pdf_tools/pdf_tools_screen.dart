@@ -29,9 +29,15 @@ class _PdfToolsScreenState extends State<PdfToolsScreen> {
           ),
           child: Row(
             children: [
-              _TabBtn(label: 'Merge', active: _tab == 0, onTap: () => setState(() => _tab = 0)),
+              _TabBtn(
+                  label: 'Merge',
+                  active: _tab == 0,
+                  onTap: () => setState(() => _tab = 0)),
               const SizedBox(width: 24),
-              _TabBtn(label: 'Split', active: _tab == 1, onTap: () => setState(() => _tab = 1)),
+              _TabBtn(
+                  label: 'Split',
+                  active: _tab == 1,
+                  onTap: () => setState(() => _tab = 1)),
             ],
           ),
         ),
@@ -48,7 +54,8 @@ class _TabBtn extends StatelessWidget {
   final bool active;
   final VoidCallback onTap;
 
-  const _TabBtn({required this.label, required this.active, required this.onTap});
+  const _TabBtn(
+      {required this.label, required this.active, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

@@ -13,7 +13,8 @@ class VideoConverter {
     String? resolution,
   }) async {
     final baseName = p.basenameWithoutExtension(sourcePath);
-    final outPath = p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
+    final outPath =
+        p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
     final args = _buildArgs(
       sourcePath: sourcePath,
       outPath: outPath,
@@ -34,7 +35,8 @@ class VideoConverter {
       // Desktop: ffmpeg resolved dynamically
       final ffmpegPath = await ToolResolver.findExecutable('ffmpeg');
       if (ffmpegPath == null) {
-        throw Exception('ffmpeg not found. Please install ffmpeg or check Settings.');
+        throw Exception(
+            'ffmpeg not found. Please install ffmpeg or check Settings.');
       }
       final result = await Process.run(ffmpegPath, args);
       if (result.exitCode != 0) {
@@ -117,11 +119,29 @@ class VideoConverter {
           outPath,
         ];
       case 'WEBM':
-        return [...base, '-c:v', 'libvpx-vp9', '-c:a', 'libopus', '-b:v', '2M', outPath];
+        return [
+          ...base,
+          '-c:v',
+          'libvpx-vp9',
+          '-c:a',
+          'libopus',
+          '-b:v',
+          '2M',
+          outPath
+        ];
       case 'MOV':
         return [...base, '-c:v', 'libx264', '-c:a', 'aac', outPath];
       case 'FLV':
-        return [...base, '-c:v', 'libx264', '-c:a', 'aac', '-f', 'flv', outPath];
+        return [
+          ...base,
+          '-c:v',
+          'libx264',
+          '-c:a',
+          'aac',
+          '-f',
+          'flv',
+          outPath
+        ];
       case 'WMV':
         return [...base, '-c:v', 'wmv2', '-c:a', 'wmav2', outPath];
       case '3GP':
@@ -131,12 +151,39 @@ class VideoConverter {
         };
         return [...base, '-c:v', 'h263', '-c:a', 'aac', '-s', size, outPath];
       case 'VOB':
-        return [...base, '-c:v', 'mpeg2video', '-c:a', 'mp2', '-f', 'vob', outPath];
+        return [
+          ...base,
+          '-c:v',
+          'mpeg2video',
+          '-c:a',
+          'mp2',
+          '-f',
+          'vob',
+          outPath
+        ];
       case 'MTS':
       case 'M2TS':
-        return [...base, '-c:v', 'libx264', '-c:a', 'aac', '-f', 'mpegts', outPath];
+        return [
+          ...base,
+          '-c:v',
+          'libx264',
+          '-c:a',
+          'aac',
+          '-f',
+          'mpegts',
+          outPath
+        ];
       case 'TS':
-        return [...base, '-c:v', 'libx264', '-c:a', 'aac', '-f', 'mpegts', outPath];
+        return [
+          ...base,
+          '-c:v',
+          'libx264',
+          '-c:a',
+          'aac',
+          '-f',
+          'mpegts',
+          outPath
+        ];
       case 'ASF':
         return [...base, '-c:v', 'wmv2', '-c:a', 'wmav2', '-f', 'asf', outPath];
       default:
@@ -150,7 +197,8 @@ class VideoConverter {
     required String outputDir,
   }) async {
     final baseName = p.basenameWithoutExtension(sourcePath);
-    final outPath = p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
+    final outPath =
+        p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
     final args = ['-i', sourcePath, '-y', '-vn', '-codec:a', 'copy', outPath];
 
     if (Platform.isAndroid) {
@@ -164,7 +212,8 @@ class VideoConverter {
     } else {
       final ffmpegPath = await ToolResolver.findExecutable('ffmpeg');
       if (ffmpegPath == null) {
-        throw Exception('ffmpeg not found. Please install ffmpeg or check Settings.');
+        throw Exception(
+            'ffmpeg not found. Please install ffmpeg or check Settings.');
       }
       final result = await Process.run(ffmpegPath, args);
       if (result.exitCode != 0) {

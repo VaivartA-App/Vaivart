@@ -25,7 +25,8 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
     );
     if (result == null) return;
     setState(() {
-      _files.addAll(result.files.map((f) => f.path!).where((p) => !_files.contains(p)));
+      _files.addAll(
+          result.files.map((f) => f.path!).where((p) => !_files.contains(p)));
     });
   }
 
@@ -49,7 +50,10 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
 
   Future<void> _merge() async {
     if (_files.length < 2) return;
-    setState(() { _merging = true; _result = null; });
+    setState(() {
+      _merging = true;
+      _result = null;
+    });
     try {
       final outputDir = await OutputService.getOutputDir();
       final out = await PdfToolsConverter.merge(
@@ -70,17 +74,21 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
     final bg = isDark ? AppColors.darkBgSecondary : AppColors.lightBgSecondary;
     final textPrimary = isDark ? AppColors.darkText : AppColors.lightText;
-    final textSecondary = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
-    final textTertiary = isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
+    final textSecondary =
+        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final textTertiary =
+        isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
 
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Merge PDFs', style: AppTypography.label.copyWith(color: textSecondary)),
+          Text('Merge PDFs',
+              style: AppTypography.label.copyWith(color: textSecondary)),
           const SizedBox(height: 4),
-          Text('Add PDFs in order. Drag to reorder.', style: AppTypography.caption.copyWith(color: textTertiary)),
+          Text('Add PDFs in order. Drag to reorder.',
+              style: AppTypography.caption.copyWith(color: textTertiary)),
           const SizedBox(height: 16),
           GestureDetector(
             onTap: _pickFiles,
@@ -96,7 +104,9 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                 children: [
                   Icon(Icons.add, size: 14, color: AppColors.teal),
                   const SizedBox(width: 6),
-                  Text('Add PDFs', style: AppTypography.caption.copyWith(color: AppColors.teal)),
+                  Text('Add PDFs',
+                      style: AppTypography.caption
+                          .copyWith(color: AppColors.teal)),
                 ],
               ),
             ),
@@ -104,14 +114,18 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
           const SizedBox(height: 12),
           Expanded(
             child: _files.isEmpty
-                ? Center(child: Text('No PDFs added yet', style: AppTypography.body.copyWith(color: textTertiary)))
+                ? Center(
+                    child: Text('No PDFs added yet',
+                        style:
+                            AppTypography.body.copyWith(color: textTertiary)))
                 : ListView.separated(
                     itemCount: _files.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 6),
                     itemBuilder: (context, i) {
                       final name = _files[i].split('/').last;
                       return Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 10),
                         decoration: BoxDecoration(
                           color: bg,
                           border: Border.all(color: border, width: 0.5),
@@ -120,18 +134,42 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                         child: Row(
                           children: [
                             Container(
-                              width: 28, height: 24,
+                              width: 28,
+                              height: 24,
                               alignment: Alignment.center,
-                              decoration: BoxDecoration(color: AppColors.pdfBg, borderRadius: BorderRadius.circular(4)),
-                              child: Text('PDF', style: TextStyle(fontSize: 8, fontWeight: FontWeight.w600, color: AppColors.pdfFg)),
+                              decoration: BoxDecoration(
+                                  color: AppColors.pdfBg,
+                                  borderRadius: BorderRadius.circular(4)),
+                              child: Text('PDF',
+                                  style: TextStyle(
+                                      fontSize: 8,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.pdfFg)),
                             ),
                             const SizedBox(width: 10),
-                            Expanded(child: Text(name, style: AppTypography.body.copyWith(color: textPrimary), overflow: TextOverflow.ellipsis)),
-                            IconButton(onPressed: () => _moveUp(i), icon: Icon(Icons.arrow_upward, size: 14, color: textTertiary), padding: EdgeInsets.zero, constraints: const BoxConstraints()),
+                            Expanded(
+                                child: Text(name,
+                                    style: AppTypography.body
+                                        .copyWith(color: textPrimary),
+                                    overflow: TextOverflow.ellipsis)),
+                            IconButton(
+                                onPressed: () => _moveUp(i),
+                                icon: Icon(Icons.arrow_upward,
+                                    size: 14, color: textTertiary),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints()),
                             const SizedBox(width: 8),
-                            IconButton(onPressed: () => _moveDown(i), icon: Icon(Icons.arrow_downward, size: 14, color: textTertiary), padding: EdgeInsets.zero, constraints: const BoxConstraints()),
+                            IconButton(
+                                onPressed: () => _moveDown(i),
+                                icon: Icon(Icons.arrow_downward,
+                                    size: 14, color: textTertiary),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints()),
                             const SizedBox(width: 8),
-                            GestureDetector(onTap: () => _removeFile(i), child: Icon(Icons.close, size: 14, color: textTertiary)),
+                            GestureDetector(
+                                onTap: () => _removeFile(i),
+                                child: Icon(Icons.close,
+                                    size: 14, color: textTertiary)),
                           ],
                         ),
                       );
@@ -143,7 +181,9 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
             Text(
               _result!.startsWith('Error') ? _result! : '✓ Saved to $_result',
               style: AppTypography.caption.copyWith(
-                color: _result!.startsWith('Error') ? const Color(0xFFE24B4A) : AppColors.teal,
+                color: _result!.startsWith('Error')
+                    ? const Color(0xFFE24B4A)
+                    : AppColors.teal,
               ),
             ),
           ],
@@ -155,7 +195,8 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
               style: TextButton.styleFrom(
                 backgroundColor: _files.length < 2 ? border : AppColors.teal,
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
               ),
               child: Text(
                 _merging ? 'Merging...' : 'Merge PDFs',

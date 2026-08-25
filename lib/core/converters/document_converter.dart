@@ -38,7 +38,8 @@ class DocumentConverter {
     final chunks = <List<String>>[];
 
     for (var i = 0; i < lines.length; i += 40) {
-      chunks.add(lines.sublist(i, i + 40 > lines.length ? lines.length : i + 40));
+      chunks
+          .add(lines.sublist(i, i + 40 > lines.length ? lines.length : i + 40));
     }
 
     for (final chunk in chunks) {
@@ -48,7 +49,8 @@ class DocumentConverter {
         build: (_) => pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: chunk
-              .map((line) => pw.Text(line, style: const pw.TextStyle(fontSize: 11)))
+              .map((line) =>
+                  pw.Text(line, style: const pw.TextStyle(fontSize: 11)))
               .toList(),
         ),
       ));
@@ -67,8 +69,10 @@ class DocumentConverter {
     final soffice = await _getSoffice();
     final result = await Process.run(soffice, [
       '--headless',
-      '--convert-to', 'pdf',
-      '--outdir', outputDir,
+      '--convert-to',
+      'pdf',
+      '--outdir',
+      outputDir,
       sourcePath,
     ]);
 
@@ -103,7 +107,9 @@ class DocumentConverter {
           .replaceAll(RegExp(r'\(([^)]*)\)\s*Tj'), r'$1')
           .replaceAll(RegExp(r'[^\x20-\x7E\n]'), '')
           .trim();
-      return cleaned.isEmpty ? 'Could not extract text from this PDF.' : cleaned;
+      return cleaned.isEmpty
+          ? 'Could not extract text from this PDF.'
+          : cleaned;
     } catch (_) {
       return 'Could not extract text from this PDF.';
     }
@@ -136,8 +142,10 @@ class DocumentConverter {
     final soffice = await _getSoffice();
     final result = await Process.run(soffice, [
       '--headless',
-      '--convert-to', 'pdf',
-      '--outdir', outputDir,
+      '--convert-to',
+      'pdf',
+      '--outdir',
+      outputDir,
       sourcePath,
     ]);
 
@@ -156,8 +164,10 @@ class DocumentConverter {
     final soffice = await _getSoffice();
     final result = await Process.run(soffice, [
       '--headless',
-      '--convert-to', 'pdf',
-      '--outdir', outputDir,
+      '--convert-to',
+      'pdf',
+      '--outdir',
+      outputDir,
       sourcePath,
     ]);
 
@@ -165,9 +175,9 @@ class DocumentConverter {
       throw Exception('LibreOffice error: ${result.stderr}');
     }
 
-  final baseName = p.basenameWithoutExtension(sourcePath);
-  return p.join(outputDir, '$baseName.pdf');
-}
+    final baseName = p.basenameWithoutExtension(sourcePath);
+    return p.join(outputDir, '$baseName.pdf');
+  }
 
   /// ──────────── Markdown → PDF ────────────
   static Future<String> mdToPdf({
@@ -258,12 +268,18 @@ class DocumentConverter {
           pw.Container(
             padding: const pw.EdgeInsets.only(left: 12, top: 4, bottom: 4),
             decoration: pw.BoxDecoration(
-              border: pw.Border(left: pw.BorderSide(width: 3, color: PdfColors.grey400)),
+              border: pw.Border(
+                  left: pw.BorderSide(width: 3, color: PdfColors.grey400)),
             ),
-            child: pw.RichText(text: pw.TextSpan(
-              children: _parseInlineSpans(quoteText, pw.TextStyle(
-                fontSize: 11, color: PdfColors.grey700, fontStyle: pw.FontStyle.italic,
-              )),
+            child: pw.RichText(
+                text: pw.TextSpan(
+              children: _parseInlineSpans(
+                  quoteText,
+                  pw.TextStyle(
+                    fontSize: 11,
+                    color: PdfColors.grey700,
+                    fontStyle: pw.FontStyle.italic,
+                  )),
             )),
           ),
         );
@@ -282,8 +298,11 @@ class DocumentConverter {
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text('•  ', style: const pw.TextStyle(fontSize: 11)),
-              pw.Expanded(child: pw.RichText(text: pw.TextSpan(
-                children: _parseInlineSpans(text, const pw.TextStyle(fontSize: 11)),
+              pw.Expanded(
+                  child: pw.RichText(
+                      text: pw.TextSpan(
+                children:
+                    _parseInlineSpans(text, const pw.TextStyle(fontSize: 11)),
               ))),
             ],
           ),
@@ -304,8 +323,11 @@ class DocumentConverter {
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text('$number. ', style: const pw.TextStyle(fontSize: 11)),
-              pw.Expanded(child: pw.RichText(text: pw.TextSpan(
-                children: _parseInlineSpans(text, const pw.TextStyle(fontSize: 11)),
+              pw.Expanded(
+                  child: pw.RichText(
+                      text: pw.TextSpan(
+                children:
+                    _parseInlineSpans(text, const pw.TextStyle(fontSize: 11)),
               ))),
             ],
           ),
@@ -315,7 +337,8 @@ class DocumentConverter {
       }
 
       // ── normal paragraph ───
-      widgets.add(pw.RichText(text: pw.TextSpan(
+      widgets.add(pw.RichText(
+          text: pw.TextSpan(
         children: _parseInlineSpans(line, const pw.TextStyle(fontSize: 11)),
       )));
       widgets.add(pw.SizedBox(height: 4));
@@ -352,18 +375,18 @@ class DocumentConverter {
   /// Parse inline Markdown spans: **bold**, *italic*, ***both***, `code`
   static List<pw.InlineSpan> _parseInlineSpans(String text, pw.TextStyle base) {
     final spans = <pw.InlineSpan>[];
-    final pattern = RegExp(
-      r'(`[^`]+`)'           // inline code
-      r'|(\*\*\*[^*]+\*\*\*)' // bold+italic
-      r'|(\*\*[^*]+\*\*)'     // bold
-      r'|(\*[^*]+\*)'         // italic
-    );
+    final pattern = RegExp(r'(`[^`]+`)' // inline code
+        r'|(\*\*\*[^*]+\*\*\*)' // bold+italic
+        r'|(\*\*[^*]+\*\*)' // bold
+        r'|(\*[^*]+\*)' // italic
+        );
 
     int cursor = 0;
     for (final match in pattern.allMatches(text)) {
       // Text before this match
       if (match.start > cursor) {
-        spans.add(pw.TextSpan(text: text.substring(cursor, match.start), style: base));
+        spans.add(pw.TextSpan(
+            text: text.substring(cursor, match.start), style: base));
       }
 
       final raw = match.group(0)!;
@@ -371,12 +394,14 @@ class DocumentConverter {
         // inline code
         spans.add(pw.TextSpan(
           text: raw.substring(1, raw.length - 1),
-          style: base.copyWith(font: pw.Font.courier(), fontSize: (base.fontSize ?? 11) - 1),
+          style: base.copyWith(
+              font: pw.Font.courier(), fontSize: (base.fontSize ?? 11) - 1),
         ));
       } else if (raw.startsWith('***')) {
         spans.add(pw.TextSpan(
           text: raw.substring(3, raw.length - 3),
-          style: base.copyWith(fontWeight: pw.FontWeight.bold, fontStyle: pw.FontStyle.italic),
+          style: base.copyWith(
+              fontWeight: pw.FontWeight.bold, fontStyle: pw.FontStyle.italic),
         ));
       } else if (raw.startsWith('**')) {
         spans.add(pw.TextSpan(
@@ -424,7 +449,8 @@ class DocumentConverter {
     // Reuse txtToPdf logic by writing to a temp file
     final tempTxt = File('${sourcePath}_temp.txt');
     await tempTxt.writeAsString(text);
-    final result = await txtToPdf(sourcePath: tempTxt.path, outputDir: outputDir);
+    final result =
+        await txtToPdf(sourcePath: tempTxt.path, outputDir: outputDir);
     await tempTxt.delete();
 
     // Rename output to match original html filename
@@ -441,8 +467,10 @@ class DocumentConverter {
     final soffice = await _getSoffice();
     final result = await Process.run(soffice, [
       '--headless',
-      '--convert-to', 'pdf',
-      '--outdir', outputDir,
+      '--convert-to',
+      'pdf',
+      '--outdir',
+      outputDir,
       sourcePath,
     ]);
 
@@ -461,8 +489,10 @@ class DocumentConverter {
     final soffice = await _getSoffice();
     final result = await Process.run(soffice, [
       '--headless',
-      '--convert-to', 'pdf',
-      '--outdir', outputDir,
+      '--convert-to',
+      'pdf',
+      '--outdir',
+      outputDir,
       sourcePath,
     ]);
 
@@ -481,8 +511,10 @@ class DocumentConverter {
     final soffice = await _getSoffice();
     final result = await Process.run(soffice, [
       '--headless',
-      '--convert-to', 'pdf',
-      '--outdir', outputDir,
+      '--convert-to',
+      'pdf',
+      '--outdir',
+      outputDir,
       sourcePath,
     ]);
 
@@ -509,7 +541,8 @@ class DocumentConverter {
 
     final tempTxt = File('${sourcePath}_temp.txt');
     await tempTxt.writeAsString(prettyJson);
-    final result = await txtToPdf(sourcePath: tempTxt.path, outputDir: outputDir);
+    final result =
+        await txtToPdf(sourcePath: tempTxt.path, outputDir: outputDir);
     await tempTxt.delete();
 
     final baseName = p.basenameWithoutExtension(sourcePath);

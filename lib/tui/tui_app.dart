@@ -15,10 +15,54 @@ class TuiApp {
   // Supported extensions map
   static const Map<String, List<String>> _targetFormatMap = {
     // Images
-    'png': ['JPG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF', 'TGA', 'RES', 'TRES'],
-    'jpg': ['PNG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF', 'TGA', 'RES', 'TRES'],
-    'jpeg': ['PNG', 'WEBP', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF', 'TGA', 'RES', 'TRES'],
-    'webp': ['PNG', 'JPG', 'PDF', 'BMP', 'GIF', 'ICO', 'TIFF', 'TGA', 'RES', 'TRES'],
+    'png': [
+      'JPG',
+      'WEBP',
+      'PDF',
+      'BMP',
+      'GIF',
+      'ICO',
+      'TIFF',
+      'TGA',
+      'RES',
+      'TRES'
+    ],
+    'jpg': [
+      'PNG',
+      'WEBP',
+      'PDF',
+      'BMP',
+      'GIF',
+      'ICO',
+      'TIFF',
+      'TGA',
+      'RES',
+      'TRES'
+    ],
+    'jpeg': [
+      'PNG',
+      'WEBP',
+      'PDF',
+      'BMP',
+      'GIF',
+      'ICO',
+      'TIFF',
+      'TGA',
+      'RES',
+      'TRES'
+    ],
+    'webp': [
+      'PNG',
+      'JPG',
+      'PDF',
+      'BMP',
+      'GIF',
+      'ICO',
+      'TIFF',
+      'TGA',
+      'RES',
+      'TRES'
+    ],
     'bmp': ['PNG', 'JPG', 'WEBP', 'PDF', 'TIFF', 'TGA', 'RES', 'TRES'],
     'gif': ['PNG', 'JPG', 'MP4', 'WEBP', 'BMP', 'RES', 'TRES'],
     'svg': ['PNG', 'JPG', 'PDF', 'RES', 'TRES'],
@@ -73,16 +117,23 @@ class TuiApp {
         '${TuiAnsi.bold}${TuiAnsi.white}Output Dir:${TuiAnsi.reset} ${TuiAnsi.skyBlue}$outputDir${TuiAnsi.reset}\n',
       );
 
-      stdout.writeln('${TuiAnsi.bold}${TuiAnsi.cyan}  MAIN MENU${TuiAnsi.reset}');
+      stdout
+          .writeln('${TuiAnsi.bold}${TuiAnsi.cyan}  MAIN MENU${TuiAnsi.reset}');
       stdout.writeln('  ${TuiAnsi.gold}[1]${TuiAnsi.reset} 📁  Convert a File');
-      stdout.writeln('  ${TuiAnsi.gold}[2]${TuiAnsi.reset} ⚡  Batch File Conversion Queue');
-      stdout.writeln('  ${TuiAnsi.gold}[3]${TuiAnsi.reset} 📊  System & Tool Inspector');
-      stdout.writeln('  ${TuiAnsi.gold}[4]${TuiAnsi.reset} 📜  Conversion History Log');
-      stdout.writeln('  ${TuiAnsi.gold}[5]${TuiAnsi.reset} ⚙️   Settings & Configuration');
-      stdout.writeln('  ${TuiAnsi.gold}[6]${TuiAnsi.reset} ❓  Supported Formats Matrix');
+      stdout.writeln(
+          '  ${TuiAnsi.gold}[2]${TuiAnsi.reset} ⚡  Batch File Conversion Queue');
+      stdout.writeln(
+          '  ${TuiAnsi.gold}[3]${TuiAnsi.reset} 📊  System & Tool Inspector');
+      stdout.writeln(
+          '  ${TuiAnsi.gold}[4]${TuiAnsi.reset} 📜  Conversion History Log');
+      stdout.writeln(
+          '  ${TuiAnsi.gold}[5]${TuiAnsi.reset} ⚙️   Settings & Configuration');
+      stdout.writeln(
+          '  ${TuiAnsi.gold}[6]${TuiAnsi.reset} ❓  Supported Formats Matrix');
       stdout.writeln('  ${TuiAnsi.gold}[q]${TuiAnsi.reset} 🚪  Exit TUI\n');
 
-      stdout.write('${TuiAnsi.cyan}${TuiAnsi.bold}Select option [1-6, q]: ${TuiAnsi.reset}');
+      stdout.write(
+          '${TuiAnsi.cyan}${TuiAnsi.bold}Select option [1-6, q]: ${TuiAnsi.reset}');
       final choice = _readLine().trim().toLowerCase();
 
       switch (choice) {
@@ -108,10 +159,12 @@ class TuiApp {
         case 'exit':
           _running = false;
           TuiAnsi.clearScreen();
-          stdout.writeln('${TuiAnsi.emerald}Thank you for using Vaivart TUI. Goodbye!${TuiAnsi.reset}\n');
+          stdout.writeln(
+              '${TuiAnsi.emerald}Thank you for using Vaivart TUI. Goodbye!${TuiAnsi.reset}\n');
           return;
         default:
-          stdout.writeln('${TuiAnsi.coralRed}Invalid choice. Press Enter to try again.${TuiAnsi.reset}');
+          stdout.writeln(
+              '${TuiAnsi.coralRed}Invalid choice. Press Enter to try again.${TuiAnsi.reset}');
           _readLine();
       }
     }
@@ -121,9 +174,11 @@ class TuiApp {
   Future<void> _convertSingleFile() async {
     TuiAnsi.clearScreen();
     stdout.write(TuiAnsi.getBanner());
-    stdout.writeln('${TuiAnsi.bold}${TuiAnsi.cyan}📁 SINGLE FILE CONVERTER${TuiAnsi.reset}\n');
+    stdout.writeln(
+        '${TuiAnsi.bold}${TuiAnsi.cyan}📁 SINGLE FILE CONVERTER${TuiAnsi.reset}\n');
 
-    stdout.write('${TuiAnsi.bold}${TuiAnsi.white}Enter source file path (or drag & drop file here): ${TuiAnsi.reset}');
+    stdout.write(
+        '${TuiAnsi.bold}${TuiAnsi.white}Enter source file path (or drag & drop file here): ${TuiAnsi.reset}');
     var inputPath = _readLine().trim();
 
     // Clean drag & drop quotes if any
@@ -136,28 +191,36 @@ class TuiApp {
 
     final file = File(inputPath);
     if (!file.existsSync()) {
-      stdout.writeln('\n${TuiAnsi.coralRed}Error: File does not exist at path: "$inputPath"${TuiAnsi.reset}');
+      stdout.writeln(
+          '\n${TuiAnsi.coralRed}Error: File does not exist at path: "$inputPath"${TuiAnsi.reset}');
       _promptPressEnter();
       return;
     }
 
     final ext = p.extension(inputPath).toLowerCase().replaceAll('.', '');
     final job = ConversionJob.fromFile(inputPath);
-    final targets = job.availableFormats.isNotEmpty ? job.availableFormats : _targetFormatMap[ext];
+    final targets = job.availableFormats.isNotEmpty
+        ? job.availableFormats
+        : _targetFormatMap[ext];
 
-    stdout.writeln('\n${TuiAnsi.emerald}✔ File verified:${TuiAnsi.reset} ${p.basename(inputPath)} (${(file.lengthSync() / 1024).toStringAsFixed(1)} KB)');
+    stdout.writeln(
+        '\n${TuiAnsi.emerald}✔ File verified:${TuiAnsi.reset} ${p.basename(inputPath)} (${(file.lengthSync() / 1024).toStringAsFixed(1)} KB)');
     stdout.writeln('${TuiAnsi.dim}Detected extension: .$ext${TuiAnsi.reset}\n');
 
     String targetFormat;
     if (targets == null || targets.isEmpty) {
-      stdout.write('${TuiAnsi.bold}${TuiAnsi.gold}Unknown format extension .$ext. Type desired output format manually (e.g. PDF, PNG, MP3): ${TuiAnsi.reset}');
+      stdout.write(
+          '${TuiAnsi.bold}${TuiAnsi.gold}Unknown format extension .$ext. Type desired output format manually (e.g. PDF, PNG, MP3): ${TuiAnsi.reset}');
       targetFormat = _readLine().trim().toUpperCase();
     } else {
-      stdout.writeln('${TuiAnsi.bold}${TuiAnsi.cyan}Select target format:${TuiAnsi.reset}');
+      stdout.writeln(
+          '${TuiAnsi.bold}${TuiAnsi.cyan}Select target format:${TuiAnsi.reset}');
       for (var i = 0; i < targets.length; i++) {
-        stdout.writeln('  ${TuiAnsi.gold}[${i + 1}]${TuiAnsi.reset} ${targets[i]}');
+        stdout.writeln(
+            '  ${TuiAnsi.gold}[${i + 1}]${TuiAnsi.reset} ${targets[i]}');
       }
-      stdout.write('\n${TuiAnsi.cyan}Select target [1-${targets.length}] or type extension: ${TuiAnsi.reset}');
+      stdout.write(
+          '\n${TuiAnsi.cyan}Select target [1-${targets.length}] or type extension: ${TuiAnsi.reset}');
       final inputFmt = _readLine().trim();
       final selIdx = int.tryParse(inputFmt);
       if (selIdx != null && selIdx >= 1 && selIdx <= targets.length) {
@@ -168,36 +231,45 @@ class TuiApp {
     }
 
     if (targetFormat.isEmpty) {
-      stdout.writeln('${TuiAnsi.coralRed}No target format specified. Aborting.${TuiAnsi.reset}');
+      stdout.writeln(
+          '${TuiAnsi.coralRed}No target format specified. Aborting.${TuiAnsi.reset}');
       _promptPressEnter();
       return;
     }
 
     String? resolution;
     if (job.isVideo) {
-      stdout.writeln('\n${TuiAnsi.bold}${TuiAnsi.cyan}Select target video resolution (optional):${TuiAnsi.reset}');
+      stdout.writeln(
+          '\n${TuiAnsi.bold}${TuiAnsi.cyan}Select target video resolution (optional):${TuiAnsi.reset}');
       for (var i = 0; i < ConversionJob.videoResolutions.length; i++) {
         final res = ConversionJob.videoResolutions[i];
         stdout.writeln('  ${TuiAnsi.gold}[${i + 1}]${TuiAnsi.reset} $res');
       }
-      stdout.write('\n${TuiAnsi.cyan}Select resolution [1-${ConversionJob.videoResolutions.length}] (default: Original): ${TuiAnsi.reset}');
+      stdout.write(
+          '\n${TuiAnsi.cyan}Select resolution [1-${ConversionJob.videoResolutions.length}] (default: Original): ${TuiAnsi.reset}');
       final resInput = _readLine().trim();
       final resIdx = int.tryParse(resInput);
-      if (resIdx != null && resIdx >= 1 && resIdx <= ConversionJob.videoResolutions.length) {
+      if (resIdx != null &&
+          resIdx >= 1 &&
+          resIdx <= ConversionJob.videoResolutions.length) {
         resolution = ConversionJob.videoResolutions[resIdx - 1];
       } else if (resInput.isNotEmpty) {
         resolution = resInput;
       }
     } else if (job.isImage) {
-      stdout.writeln('\n${TuiAnsi.bold}${TuiAnsi.cyan}Select target image resolution (optional):${TuiAnsi.reset}');
+      stdout.writeln(
+          '\n${TuiAnsi.bold}${TuiAnsi.cyan}Select target image resolution (optional):${TuiAnsi.reset}');
       for (var i = 0; i < ConversionJob.imageResolutions.length; i++) {
         final res = ConversionJob.imageResolutions[i];
         stdout.writeln('  ${TuiAnsi.gold}[${i + 1}]${TuiAnsi.reset} $res');
       }
-      stdout.write('\n${TuiAnsi.cyan}Select resolution [1-${ConversionJob.imageResolutions.length}] (default: Original) or enter custom (e.g. 800x600): ${TuiAnsi.reset}');
+      stdout.write(
+          '\n${TuiAnsi.cyan}Select resolution [1-${ConversionJob.imageResolutions.length}] (default: Original) or enter custom (e.g. 800x600): ${TuiAnsi.reset}');
       final resInput = _readLine().trim();
       final resIdx = int.tryParse(resInput);
-      if (resIdx != null && resIdx >= 1 && resIdx <= ConversionJob.imageResolutions.length) {
+      if (resIdx != null &&
+          resIdx >= 1 &&
+          resIdx <= ConversionJob.imageResolutions.length) {
         resolution = ConversionJob.imageResolutions[resIdx - 1];
       } else if (resInput.isNotEmpty) {
         resolution = resInput;
@@ -212,13 +284,16 @@ class TuiApp {
   Future<void> _convertBatchQueue() async {
     TuiAnsi.clearScreen();
     stdout.write(TuiAnsi.getBanner());
-    stdout.writeln('${TuiAnsi.bold}${TuiAnsi.cyan}⚡ BATCH FILE CONVERSION QUEUE${TuiAnsi.reset}\n');
+    stdout.writeln(
+        '${TuiAnsi.bold}${TuiAnsi.cyan}⚡ BATCH FILE CONVERSION QUEUE${TuiAnsi.reset}\n');
 
-    stdout.writeln('${TuiAnsi.dim}Enter multiple file paths separated by commas or newlines (empty line to finish):${TuiAnsi.reset}');
+    stdout.writeln(
+        '${TuiAnsi.dim}Enter multiple file paths separated by commas or newlines (empty line to finish):${TuiAnsi.reset}');
 
     final paths = <String>[];
     while (true) {
-      stdout.write('${TuiAnsi.gold}File ${paths.length + 1} path > ${TuiAnsi.reset}');
+      stdout.write(
+          '${TuiAnsi.gold}File ${paths.length + 1} path > ${TuiAnsi.reset}');
       var line = _readLine().trim();
       if (line.isEmpty) break;
 
@@ -228,33 +303,40 @@ class TuiApp {
         line = line.substring(1, line.length - 1);
       }
 
-      final splits = line.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty);
+      final splits =
+          line.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty);
       for (final s in splits) {
         if (File(s).existsSync()) {
           paths.add(s);
-          stdout.writeln('  ${TuiAnsi.emerald}+ Added:${TuiAnsi.reset} ${p.basename(s)}');
+          stdout.writeln(
+              '  ${TuiAnsi.emerald}+ Added:${TuiAnsi.reset} ${p.basename(s)}');
         } else {
-          stdout.writeln('  ${TuiAnsi.coralRed}x File not found:${TuiAnsi.reset} $s');
+          stdout.writeln(
+              '  ${TuiAnsi.coralRed}x File not found:${TuiAnsi.reset} $s');
         }
       }
     }
 
     if (paths.isEmpty) {
-      stdout.writeln('\n${TuiAnsi.gold}No valid files in batch queue.${TuiAnsi.reset}');
+      stdout.writeln(
+          '\n${TuiAnsi.gold}No valid files in batch queue.${TuiAnsi.reset}');
       _promptPressEnter();
       return;
     }
 
-    stdout.write('\n${TuiAnsi.bold}${TuiAnsi.cyan}Enter target format for all queued files (e.g. PDF, PNG, MP3): ${TuiAnsi.reset}');
+    stdout.write(
+        '\n${TuiAnsi.bold}${TuiAnsi.cyan}Enter target format for all queued files (e.g. PDF, PNG, MP3): ${TuiAnsi.reset}');
     final targetFmt = _readLine().trim().toUpperCase();
 
     if (targetFmt.isEmpty) {
-      stdout.writeln('${TuiAnsi.coralRed}Target format required.${TuiAnsi.reset}');
+      stdout.writeln(
+          '${TuiAnsi.coralRed}Target format required.${TuiAnsi.reset}');
       _promptPressEnter();
       return;
     }
 
-    stdout.writeln('\n${TuiAnsi.bold}${TuiAnsi.cyan}Starting batch process of ${paths.length} file(s)...${TuiAnsi.reset}\n');
+    stdout.writeln(
+        '\n${TuiAnsi.bold}${TuiAnsi.cyan}Starting batch process of ${paths.length} file(s)...${TuiAnsi.reset}\n');
 
     int successCount = 0;
     final stopwatch = Stopwatch()..start();
@@ -262,7 +344,8 @@ class TuiApp {
     for (int i = 0; i < paths.length; i++) {
       final currentPath = paths[i];
       stdout.writeln('--------------------------------------------------');
-      stdout.writeln('${TuiAnsi.bold}[${i + 1}/${paths.length}]${TuiAnsi.reset} Processing: ${p.basename(currentPath)}');
+      stdout.writeln(
+          '${TuiAnsi.bold}[${i + 1}/${paths.length}]${TuiAnsi.reset} Processing: ${p.basename(currentPath)}');
 
       final ok = await _executeJob(currentPath, targetFmt);
       if (ok) successCount++;
@@ -289,7 +372,8 @@ class TuiApp {
     final label = resolution != null && resolution != 'Original'
         ? '$fileName → $targetFormat ($resolution)'
         : '$fileName → $targetFormat';
-    stdout.writeln('\n${TuiAnsi.statusBadge("CONVERTING...", warning: true)} $label');
+    stdout.writeln(
+        '\n${TuiAnsi.statusBadge("CONVERTING...", warning: true)} $label');
 
     // Progress animation state
     double progress = 0.05;
@@ -317,7 +401,8 @@ class TuiApp {
                   : 'Finalizing output...';
 
       // \x1B[2K clears entire line, \r resets cursor position
-      stdout.write('\x1B[2K\r${TuiAnsi.progressBar(progress)} $spinner ${TuiAnsi.cyan}$phase${TuiAnsi.reset} ${TuiAnsi.dim}(${elapsedSec}s)${TuiAnsi.reset}');
+      stdout.write(
+          '\x1B[2K\r${TuiAnsi.progressBar(progress)} $spinner ${TuiAnsi.cyan}$phase${TuiAnsi.reset} ${TuiAnsi.dim}(${elapsedSec}s)${TuiAnsi.reset}');
     });
 
     try {
@@ -333,9 +418,11 @@ class TuiApp {
       final elapsedMs = DateTime.now().difference(startTime).inMilliseconds;
       final elapsedSec = (elapsedMs / 1000).toStringAsFixed(2);
 
-      stdout.writeln('\x1B[2K\r${TuiAnsi.progressBar(1.0)} ${TuiAnsi.emerald}✔ Finished${TuiAnsi.reset} ${TuiAnsi.dim}(${elapsedSec}s)${TuiAnsi.reset}');
+      stdout.writeln(
+          '\x1B[2K\r${TuiAnsi.progressBar(1.0)} ${TuiAnsi.emerald}✔ Finished${TuiAnsi.reset} ${TuiAnsi.dim}(${elapsedSec}s)${TuiAnsi.reset}');
       stdout.writeln('${TuiAnsi.statusBadge("SUCCESS")} Output saved to:');
-      stdout.writeln('  ${TuiAnsi.bold}${TuiAnsi.skyBlue}$outPath${TuiAnsi.reset}');
+      stdout.writeln(
+          '  ${TuiAnsi.bold}${TuiAnsi.skyBlue}$outPath${TuiAnsi.reset}');
 
       await HistoryService.addEntry(
         HistoryEntry(
@@ -352,8 +439,10 @@ class TuiApp {
       done = true;
       timer.cancel();
 
-      stdout.writeln('\x1B[2K\r${TuiAnsi.progressBar(progress)} ${TuiAnsi.coralRed}✖ Failed${TuiAnsi.reset}');
-      stdout.writeln('\n${TuiAnsi.statusBadge("FAILED", success: false)} Error: $e');
+      stdout.writeln(
+          '\x1B[2K\r${TuiAnsi.progressBar(progress)} ${TuiAnsi.coralRed}✖ Failed${TuiAnsi.reset}');
+      stdout.writeln(
+          '\n${TuiAnsi.statusBadge("FAILED", success: false)} Error: $e');
 
       await HistoryService.addEntry(
         HistoryEntry(
@@ -373,13 +462,17 @@ class TuiApp {
   Future<void> _showSystemTools() async {
     TuiAnsi.clearScreen();
     stdout.write(TuiAnsi.getBanner());
-    stdout.writeln('${TuiAnsi.bold}${TuiAnsi.cyan}📊 SYSTEM & ENGINE INSPECTOR${TuiAnsi.reset}\n');
+    stdout.writeln(
+        '${TuiAnsi.bold}${TuiAnsi.cyan}📊 SYSTEM & ENGINE INSPECTOR${TuiAnsi.reset}\n');
 
     final engine = await EngineConfig.getEngine();
-    stdout.writeln('  ${TuiAnsi.bold}Current Engine Setting:${TuiAnsi.reset} ${TuiAnsi.emerald}${engine.name.toUpperCase()}${TuiAnsi.reset}');
-    stdout.writeln('  ${TuiAnsi.dim}Platform: ${Platform.operatingSystem} (${Platform.operatingSystemVersion})${TuiAnsi.reset}\n');
+    stdout.writeln(
+        '  ${TuiAnsi.bold}Current Engine Setting:${TuiAnsi.reset} ${TuiAnsi.emerald}${engine.name.toUpperCase()}${TuiAnsi.reset}');
+    stdout.writeln(
+        '  ${TuiAnsi.dim}Platform: ${Platform.operatingSystem} (${Platform.operatingSystemVersion})${TuiAnsi.reset}\n');
 
-    stdout.writeln('${TuiAnsi.bold}${TuiAnsi.white}Installed Binary Tools Matrix:${TuiAnsi.reset}');
+    stdout.writeln(
+        '${TuiAnsi.bold}${TuiAnsi.white}Installed Binary Tools Matrix:${TuiAnsi.reset}');
 
     final tools = [
       {'name': 'FFmpeg (Video/Audio)', 'exe': 'ffmpeg'},
@@ -397,7 +490,8 @@ class TuiApp {
         stdout.writeln('  ${TuiAnsi.emerald}✔ ${tool['name']}${TuiAnsi.reset}');
         stdout.writeln('    ${TuiAnsi.dim}Path: $path${TuiAnsi.reset}');
       } else {
-        stdout.writeln('  ${TuiAnsi.coralRed}✖ ${tool['name']}${TuiAnsi.reset} ${TuiAnsi.dim}(Not found in PATH)${TuiAnsi.reset}');
+        stdout.writeln(
+            '  ${TuiAnsi.coralRed}✖ ${tool['name']}${TuiAnsi.reset} ${TuiAnsi.dim}(Not found in PATH)${TuiAnsi.reset}');
       }
     }
 
@@ -408,28 +502,35 @@ class TuiApp {
   Future<void> _showHistory() async {
     TuiAnsi.clearScreen();
     stdout.write(TuiAnsi.getBanner());
-    stdout.writeln('${TuiAnsi.bold}${TuiAnsi.cyan}📜 CONVERSION HISTORY LOG${TuiAnsi.reset}\n');
+    stdout.writeln(
+        '${TuiAnsi.bold}${TuiAnsi.cyan}📜 CONVERSION HISTORY LOG${TuiAnsi.reset}\n');
 
     final history = await HistoryService.getHistory();
 
     if (history.isEmpty) {
-      stdout.writeln('  ${TuiAnsi.dim}No conversion history recorded yet.${TuiAnsi.reset}');
+      stdout.writeln(
+          '  ${TuiAnsi.dim}No conversion history recorded yet.${TuiAnsi.reset}');
     } else {
-      stdout.writeln('  ${TuiAnsi.bold}${TuiAnsi.white}Recent Jobs (Total: ${history.length}):${TuiAnsi.reset}\n');
+      stdout.writeln(
+          '  ${TuiAnsi.bold}${TuiAnsi.white}Recent Jobs (Total: ${history.length}):${TuiAnsi.reset}\n');
       for (var i = 0; i < history.length && i < 20; i++) {
         final item = history[i];
         final badge = item.success
             ? '${TuiAnsi.emerald}[ OK ]${TuiAnsi.reset}'
             : '${TuiAnsi.coralRed}[FAIL]${TuiAnsi.reset}';
-        final timeStr = '${item.convertedAt.hour.toString().padLeft(2, '0')}:${item.convertedAt.minute.toString().padLeft(2, '0')}';
-        stdout.writeln('  $badge ${TuiAnsi.dim}$timeStr${TuiAnsi.reset} ${TuiAnsi.bold}${item.fileName}${TuiAnsi.reset} (${item.fromFormat} → ${item.toFormat})');
+        final timeStr =
+            '${item.convertedAt.hour.toString().padLeft(2, '0')}:${item.convertedAt.minute.toString().padLeft(2, '0')}';
+        stdout.writeln(
+            '  $badge ${TuiAnsi.dim}$timeStr${TuiAnsi.reset} ${TuiAnsi.bold}${item.fileName}${TuiAnsi.reset} (${item.fromFormat} → ${item.toFormat})');
         if (item.success) {
-          stdout.writeln('         ${TuiAnsi.dim}└─ ${item.outputPath}${TuiAnsi.reset}');
+          stdout.writeln(
+              '         ${TuiAnsi.dim}└─ ${item.outputPath}${TuiAnsi.reset}');
         }
       }
     }
 
-    stdout.writeln('\n  ${TuiAnsi.gold}[c]${TuiAnsi.reset} Clear history  │  ${TuiAnsi.gold}[Enter]${TuiAnsi.reset} Back');
+    stdout.writeln(
+        '\n  ${TuiAnsi.gold}[c]${TuiAnsi.reset} Clear history  │  ${TuiAnsi.gold}[Enter]${TuiAnsi.reset} Back');
     stdout.write('\nSelect option: ');
     final ans = _readLine().trim().toLowerCase();
     if (ans == 'c') {
@@ -443,20 +544,25 @@ class TuiApp {
   Future<void> _showSettings() async {
     TuiAnsi.clearScreen();
     stdout.write(TuiAnsi.getBanner());
-    stdout.writeln('${TuiAnsi.bold}${TuiAnsi.cyan}⚙️ SETTINGS & CONFIGURATION${TuiAnsi.reset}\n');
+    stdout.writeln(
+        '${TuiAnsi.bold}${TuiAnsi.cyan}⚙️ SETTINGS & CONFIGURATION${TuiAnsi.reset}\n');
 
     final currentOutput = await OutputService.getOutputDir();
     final currentEngine = await EngineConfig.getEngine();
 
-    stdout.writeln('  ${TuiAnsi.bold}[1]${TuiAnsi.reset} Output Directory: ${TuiAnsi.skyBlue}$currentOutput${TuiAnsi.reset}');
-    stdout.writeln('  ${TuiAnsi.bold}[2]${TuiAnsi.reset} Conversion Engine: ${TuiAnsi.emerald}${currentEngine.name.toUpperCase()}${TuiAnsi.reset}');
+    stdout.writeln(
+        '  ${TuiAnsi.bold}[1]${TuiAnsi.reset} Output Directory: ${TuiAnsi.skyBlue}$currentOutput${TuiAnsi.reset}');
+    stdout.writeln(
+        '  ${TuiAnsi.bold}[2]${TuiAnsi.reset} Conversion Engine: ${TuiAnsi.emerald}${currentEngine.name.toUpperCase()}${TuiAnsi.reset}');
     stdout.writeln('  ${TuiAnsi.bold}[q]${TuiAnsi.reset} Back to Main Menu\n');
 
-    stdout.write('${TuiAnsi.cyan}Select option to change [1-2, q]: ${TuiAnsi.reset}');
+    stdout.write(
+        '${TuiAnsi.cyan}Select option to change [1-2, q]: ${TuiAnsi.reset}');
     final choice = _readLine().trim().toLowerCase();
 
     if (choice == '1') {
-      stdout.write('\n${TuiAnsi.bold}Enter new absolute output directory path: ${TuiAnsi.reset}');
+      stdout.write(
+          '\n${TuiAnsi.bold}Enter new absolute output directory path: ${TuiAnsi.reset}');
       final newPath = _readLine().trim();
       if (newPath.isNotEmpty) {
         final dir = Directory(newPath);
@@ -464,25 +570,30 @@ class TuiApp {
           try {
             dir.createSync(recursive: true);
           } catch (e) {
-            stdout.writeln('${TuiAnsi.coralRed}Failed to create directory: $e${TuiAnsi.reset}');
+            stdout.writeln(
+                '${TuiAnsi.coralRed}Failed to create directory: $e${TuiAnsi.reset}');
             _promptPressEnter();
             return;
           }
         }
         await OutputService.setOutputDir(newPath);
-        stdout.writeln('${TuiAnsi.emerald}Output directory updated to: $newPath${TuiAnsi.reset}');
+        stdout.writeln(
+            '${TuiAnsi.emerald}Output directory updated to: $newPath${TuiAnsi.reset}');
         _promptPressEnter();
       }
     } else if (choice == '2') {
       stdout.writeln('\n${TuiAnsi.bold}Select Engine Mode:${TuiAnsi.reset}');
-      stdout.writeln('  [0] Lightweight (Pure Dart, zero system tool requirements)');
-      stdout.writeln('  [1] Powerful (Uses system binaries FFmpeg/LibreOffice when available)');
+      stdout.writeln(
+          '  [0] Lightweight (Pure Dart, zero system tool requirements)');
+      stdout.writeln(
+          '  [1] Powerful (Uses system binaries FFmpeg/LibreOffice when available)');
       stdout.writeln('  [2] Manual');
       stdout.write('Select [0-2]: ');
       final sel = int.tryParse(_readLine().trim());
       if (sel != null && sel >= 0 && sel <= 2) {
         await EngineConfig.setEngine(EngineType.values[sel]);
-        stdout.writeln('${TuiAnsi.emerald}Engine set to ${EngineType.values[sel].name.toUpperCase()}${TuiAnsi.reset}');
+        stdout.writeln(
+            '${TuiAnsi.emerald}Engine set to ${EngineType.values[sel].name.toUpperCase()}${TuiAnsi.reset}');
         _promptPressEnter();
       }
     }
@@ -492,16 +603,24 @@ class TuiApp {
   Future<void> _showFormatMatrix() async {
     TuiAnsi.clearScreen();
     stdout.write(TuiAnsi.getBanner());
-    stdout.writeln('${TuiAnsi.bold}${TuiAnsi.cyan}❓ SUPPORTED FORMATS MATRIX${TuiAnsi.reset}\n');
+    stdout.writeln(
+        '${TuiAnsi.bold}${TuiAnsi.cyan}❓ SUPPORTED FORMATS MATRIX${TuiAnsi.reset}\n');
 
-    stdout.writeln('  ${TuiAnsi.bold}${TuiAnsi.emerald}Category        Supported Input -> Target Formats${TuiAnsi.reset}');
-    stdout.writeln('  ─────────────── ───────────────────────────────────────────────────');
-    stdout.writeln('  📷 Images        PNG, JPG, WEBP, BMP, GIF, SVG, ICO -> PNG/JPG/WEBP/PDF');
-    stdout.writeln('  📄 Documents     DOCX, PPTX, PPT, EPUB, TXT, MD, HTML -> PDF/HTML/TXT');
-    stdout.writeln('  🎵 Audio         MP3, WAV, FLAC, M4A, OGG, AAC, OPUS -> MP3/WAV/FLAC');
-    stdout.writeln('  🎬 Video         MP4, MKV, AVI, MOV, WEBM, FLV -> MP4/MKV/GIF/MP3');
+    stdout.writeln(
+        '  ${TuiAnsi.bold}${TuiAnsi.emerald}Category        Supported Input -> Target Formats${TuiAnsi.reset}');
+    stdout.writeln(
+        '  ─────────────── ───────────────────────────────────────────────────');
+    stdout.writeln(
+        '  📷 Images        PNG, JPG, WEBP, BMP, GIF, SVG, ICO -> PNG/JPG/WEBP/PDF');
+    stdout.writeln(
+        '  📄 Documents     DOCX, PPTX, PPT, EPUB, TXT, MD, HTML -> PDF/HTML/TXT');
+    stdout.writeln(
+        '  🎵 Audio         MP3, WAV, FLAC, M4A, OGG, AAC, OPUS -> MP3/WAV/FLAC');
+    stdout.writeln(
+        '  🎬 Video         MP4, MKV, AVI, MOV, WEBM, FLV -> MP4/MKV/GIF/MP3');
     stdout.writeln('  📊 Data          CSV, JSON, XLSX -> CSV/JSON/XLSX');
-    stdout.writeln('  📕 PDF Tools     Extract text/images, convert to images, merge/split');
+    stdout.writeln(
+        '  📕 PDF Tools     Extract text/images, convert to images, merge/split');
 
     _promptPressEnter();
   }
