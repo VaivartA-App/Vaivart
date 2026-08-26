@@ -22,6 +22,7 @@ dependencies:
   syncfusion_flutter_pdf: ^33.2.13
   ffmpeg_kit_flutter_new: ^4.6.2   # Maintained ffmpeg fork for Flutter
   crypto: ^3.0.3
+  desktop_drop: ^0.8.2
 
 dev_dependencies:
   flutter_test:

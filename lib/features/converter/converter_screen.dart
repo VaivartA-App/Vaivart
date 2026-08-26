@@ -45,6 +45,14 @@ class _ConverterScreenState extends State<ConverterScreen> {
     });
   }
 
+  void _addDroppedFiles(List<String> paths) {
+    setState(() {
+      for (final path in paths) {
+        _queue.add(ConversionJob.fromFile(path));
+      }
+    });
+  }
+
   Future<void> _pickOutputDir() async {
     final result = await FilePicker.getDirectoryPath();
     if (result == null) return;
@@ -136,7 +144,7 @@ class _ConverterScreenState extends State<ConverterScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          DropZone(onFilesDropped: _pickFiles),
+          DropZone(onFilesDropped: _addDroppedFiles, onBrowse: _pickFiles),
           const SizedBox(height: 10),
           GestureDetector(
             onTap: _pickOutputDir,
