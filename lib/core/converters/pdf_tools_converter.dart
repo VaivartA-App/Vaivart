@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'pdf_tools_helper.dart';
 import 'package:path/path.dart' as p;
-// ignore: unused_import
-import 'dart:ui';
 
 /// Handles PDF manipulations such as document merging, page splitting, and page extraction.
 class PdfToolsConverter {
