@@ -48,9 +48,10 @@ Type=Application
 Categories=Utility;FileTools;
 EOF
 
-  # Install icon
-  install -Dm644 assets/icons/icon_128.png "$pkgdir/usr/share/pixmaps/$_pkgname.png"
-
+  # Install icons in hicolor format
+  for res in 16 32 48 64 128 256 512; do
+    install -Dm644 "assets/icons/icon_${res}.png" "$pkgdir/usr/share/icons/hicolor/${res}x${res}/apps/$_pkgname.png"
+  done
   # Install license
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
