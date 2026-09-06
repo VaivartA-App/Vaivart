@@ -1,10 +1,15 @@
 import 'dart:io';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
+import 'dart:async';
+import 'dart:isolate';
 import 'package:excel/excel.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path/path.dart' as p;
+
+Future<R> compute<Q, R>(FutureOr<R> Function(Q message) callback, Q message) {
+  return Isolate.run(() => callback(message));
+}
 
 Map<String, dynamic> _csvToXlsxIsolate(Map<String, dynamic> args) {
   final sourcePath = args['sourcePath'] as String;

@@ -1,10 +1,15 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:flutter/foundation.dart';
+import 'dart:async';
+import 'dart:isolate';
 import 'package:image/image.dart' as img;
 import 'package:path/path.dart' as p;
 
 import '../engine/tool_resolver.dart';
+
+Future<R> compute<Q, R>(FutureOr<R> Function(Q message) callback, Q message) {
+  return Isolate.run(() => callback(message));
+}
 
 Map<String, dynamic> _convertIsolate(Map<String, dynamic> args) {
   final sourcePath = args['sourcePath'] as String;
