@@ -199,7 +199,7 @@ class VideoConverter {
     final baseName = p.basenameWithoutExtension(sourcePath);
     final outPath =
         p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
-    final args = ['-i', sourcePath, '-y', '-vn', '-codec:a', 'copy', outPath];
+    final args = ['-i', sourcePath, '-y', '-vn', outPath];
 
     if (Platform.isAndroid) {
       final cmd = args.join(' ');
