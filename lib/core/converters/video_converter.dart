@@ -223,4 +223,55 @@ class VideoConverter {
 
     return outPath;
   }
+
+  static Future<String> mergeVideos({
+    required List<String> sourcePaths,
+    required String outputDir,
+  }) async {
+    if (sourcePaths.length < 2) {
+      throw Exception('Need at least 2 videos to merge');
+    }
+    
+    // Create a temporary list file for ffmpeg concat demuxer
+    final tempDir = Directory.systemTemp.createTempSync('vaivart_video_merge');
+    final listFile = File(p.join(tempDir.path, 'list.txt'));
+    
+    final lines = sourcePaths.map((path) => "file '${path.replaceAll("'", "'\\''")}'");
+    listFile.writeAsStringSync(lines.join('\n'));
+
+    final outPath = p.join(outputDir, 'merged_video_${DateTime.now().millisecondsSinceEpoch}.mp4');
+    
+    // We use the concat demuxer. It requires the videos to have the same codecs/parameters.
+    final args = ['-f', 'concat', '-safe', '0', '-i', listFile.path, '-c', 'copy', '-y', outPath];
+
+    if (Platform.isAndroid) {
+      final cmd = args.join(' ');
+      final session = await FFmpegKit.execute(cmd);
+      final rc = await session.getReturnCode();
+      
+      // Cleanup temp
+      try { tempDir.deleteSync(recursive: true); } catch(_) {}
+      
+      if (!ReturnCode.isSuccess(rc)) {
+        final logs = await session.getLogsAsString();
+        throw Exception('ffmpeg merge error: $logs');
+      }
+    } else {
+      final ffmpegPath = await ToolResolver.findExecutable('ffmpeg');
+      if (ffmpegPath == null) {
+        try { tempDir.deleteSync(recursive: true); } catch(_) {}
+        throw Exception('ffmpeg not found. Please install ffmpeg or check Settings.');
+      }
+      final result = await Process.run(ffmpegPath, args);
+      
+      // Cleanup temp
+      try { tempDir.deleteSync(recursive: true); } catch(_) {}
+      
+      if (result.exitCode != 0) {
+        throw Exception('ffmpeg merge error: ${result.stderr}');
+      }
+    }
+
+    return outPath;
+  }
 }
