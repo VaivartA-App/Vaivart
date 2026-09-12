@@ -6,6 +6,7 @@ import 'package:vaivart/core/engine/tool_resolver.dart';
 import 'package:vaivart/core/models/conversion_job.dart';
 import 'package:vaivart/core/services/history_service.dart';
 import 'package:vaivart/core/services/output_service.dart';
+import 'package:vaivart/core/converters/video_converter.dart';
 import 'package:vaivart/tui/tui_ansi.dart';
 import 'package:vaivart/tui/tui_app.dart';
 
@@ -27,6 +28,11 @@ void main(List<String> args) async {
     case 'tools':
     case 'inspector':
       await _handleToolsCli();
+      break;
+
+    case 'merge-video':
+    case 'merge-videos':
+      await _handleMergeVideoCli(args.sublist(1));
       break;
 
     case 'history':
@@ -146,6 +152,54 @@ Future<void> _handleConvertCli(List<String> args) async {
   }
 }
 
+Future<void> _handleMergeVideoCli(List<String> args) async {
+  if (args.length < 2) {
+    stdout.writeln('${TuiAnsi.coralRed}Error: At least two video files are required to merge.${TuiAnsi.reset}');
+    stdout.writeln('Usage: vaivart merge-video <video1> <video2> [video3...] [-o <output_dir>]\n');
+    exit(1);
+  }
+
+  final files = <String>[];
+  String? outputDir;
+
+  for (int i = 0; i < args.length; i++) {
+    final arg = args[i];
+    if ((arg == '-o' || arg == '--output') && i + 1 < args.length) {
+      outputDir = args[i + 1];
+      i++;
+    } else if (!arg.startsWith('-')) {
+      if (!File(arg).existsSync()) {
+        stdout.writeln('${TuiAnsi.coralRed}Error: File not found: $arg${TuiAnsi.reset}');
+        exit(1);
+      }
+      files.add(arg);
+    }
+  }
+
+  if (files.length < 2) {
+    stdout.writeln('${TuiAnsi.coralRed}Error: At least two video files are required to merge.${TuiAnsi.reset}');
+    exit(1);
+  }
+
+  if (outputDir != null) {
+    await OutputService.setOutputDir(outputDir);
+  }
+  final targetDir = await OutputService.getOutputDir();
+
+  stdout.writeln('${TuiAnsi.cyan}${TuiAnsi.bold}Vaivart CLI Video Merge${TuiAnsi.reset}');
+  stdout.writeln('  Merging ${files.length} videos...');
+
+  try {
+    final outPath = await VideoConverter.mergeVideos(sourcePaths: files, outputDir: targetDir);
+    stdout.writeln('\n${TuiAnsi.emerald}${TuiAnsi.bold}✔ Merge successful!${TuiAnsi.reset}');
+    stdout.writeln('  Output file: ${TuiAnsi.skyBlue}$outPath${TuiAnsi.reset}');
+  } catch (e) {
+    stdout.writeln('\n${TuiAnsi.coralRed}${TuiAnsi.bold}✖ Merge failed!${TuiAnsi.reset}');
+    stdout.writeln('  Reason: $e');
+    exit(1);
+  }
+}
+
 Future<void> _handleToolsCli() async {
   final engine = await EngineConfig.getEngine();
   stdout.writeln('${TuiAnsi.cyan}${TuiAnsi.bold}Vaivart System Tools & Engine Matrix${TuiAnsi.reset}');
@@ -181,6 +235,7 @@ ${TuiAnsi.bold}${TuiAnsi.cyan}USAGE:${TuiAnsi.reset}
 ${TuiAnsi.bold}${TuiAnsi.cyan}COMMANDS:${TuiAnsi.reset}
   (no args)                        Launch interactive Terminal UI (TUI)
   convert <file> -t <target>       Convert file to specified target format
+  merge-video <f1> <f2>...         Merge multiple videos into one
   tools                            Check system conversion tools (FFmpeg, LibreOffice, etc.)
   history                          Show past conversion logs
   help                             Show this help message
@@ -196,5 +251,6 @@ ${TuiAnsi.bold}${TuiAnsi.cyan}EXAMPLES:${TuiAnsi.reset}
   dart run bin/vaivart_tui.dart convert document.docx -t pdf
   dart run bin/vaivart_tui.dart convert video.mp4 -t avi -r 720p
   dart run bin/vaivart_tui.dart convert video.mp4 -t mp3 -o ~/Music
+  dart run bin/vaivart_tui.dart merge-video part1.mp4 part2.mp4
 ''');
 }
