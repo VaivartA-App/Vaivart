@@ -9,9 +9,10 @@ import 'core/constants/app_colors.dart';
 import 'shared/widgets/app_sidebar.dart';
 import 'features/converter/converter_screen.dart';
 import 'features/onboarding/onboarding_screen.dart';
-import 'features/pdf_tools/pdf_tools_screen.dart';
 import 'features/history/history_screen.dart';
+import 'features/pdf_tools/pdf_tools_screen.dart';
 import 'features/settings/settings_screen.dart';
+import 'features/video_tools/merge/video_merge_screen.dart';
 import 'features/compression/compression_screen.dart';
 import 'core/engine/update_checker_service.dart';
 
@@ -119,6 +120,7 @@ class _MainShellState extends State<MainShell> {
       SidebarItem.batch => const ConverterScreen(),
       SidebarItem.pdfMerge => const PdfToolsScreen(),
       SidebarItem.pdfSplit => const PdfToolsScreen(),
+      SidebarItem.videoMerge => const VideoMergeScreen(),
       SidebarItem.history => const HistoryScreen(),
       SidebarItem.settings => const SettingsScreen(),
       SidebarItem.compression => const CompressionScreen(),

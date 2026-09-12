@@ -7,6 +7,7 @@ enum SidebarItem {
   batch,
   pdfMerge,
   pdfSplit,
+  videoMerge,
   history,
   settings,
   compression
@@ -44,6 +45,7 @@ class AppSidebar extends StatelessWidget {
           _section(context, 'TOOLS'),
           _item(context, SidebarItem.pdfMerge, 'PDF merge'),
           _item(context, SidebarItem.pdfSplit, 'PDF split'),
+          _item(context, SidebarItem.videoMerge, 'Video merge'),
           _section(context, 'OTHER'),
           _item(context, SidebarItem.history, 'History'),
           _item(context, SidebarItem.settings, 'Settings'),
