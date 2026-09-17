@@ -48,7 +48,7 @@ class TuiAnsi {
     sb.writeln(
         '$skyBlue$bold    ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   $reset');
     sb.writeln(
-        '$dim$gray  ────────────── Offline Universal File Converter TUI v1.1.1 ──────────────$reset\n');
+        '$dim$gray  ────────────── Offline Universal File Converter TUI v1.2.0 ──────────────$reset\n');
     return sb.toString();
   }
 

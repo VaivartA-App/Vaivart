@@ -1,6 +1,6 @@
 ; Script generated for Inno Setup 6.x
 #define MyAppName "Vaivart"
-#define MyAppVersion "1.1.1"
+#define MyAppVersion "1.2.0"
 #define MyAppPublisher "VaivartA App"
 #define MyAppURL "https://github.com/VaivartA-App/Vaivart"
 #define MyAppExeName "vaivart.exe"
