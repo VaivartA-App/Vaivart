@@ -199,19 +199,19 @@ jobs:
           ls -la release_dist/
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: release_dist/*
-          body: |
-            ## Vaivart Release ${{ github.ref_name }} 🎉
-            
-            Free. Offline. Open source. Forever.
-            
-            ### Download Packages
-            - **🪟 Windows (Setup Wizard Installer)**: `Vaivart-Setup-x64.exe`
-            - **🪟 Windows (Portable Zip)**: `Vaivart-windows-x64.zip`
-            - **🐧 Linux (Debian / Ubuntu)**: `Vaivart-linux-amd64.deb`
-            - **🐧 Linux (Portable Tarball)**: `Vaivart-linux-x64.tar.gz`
-            - **🍎 macOS (App Zip)**: `Vaivart-macos.zip`
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NOTES="Free. Offline. Open source. Forever.
+
+          ### Download Packages
+          - **🪟 Windows (Setup Wizard Installer)**: \`Vaivart-Setup-x64.exe\`
+          - **🪟 Windows (Portable Zip)**: \`Vaivart-windows-x64.zip\`
+          - **🐧 Linux (Debian / Ubuntu)**: \`Vaivart-linux-amd64.deb\`
+          - **🐧 Linux (Portable Tarball)**: \`Vaivart-linux-x64.tar.gz\`
+          - **🍎 macOS (App Zip)**: \`Vaivart-macos.zip\`"
+
+          gh release create ${{ github.ref_name }} release_dist/* \
+            --title "Vaivart Release ${{ github.ref_name }} 🎉" \
+            --notes "$NOTES" || \
+          gh release upload ${{ github.ref_name }} release_dist/* --clobber
