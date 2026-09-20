@@ -487,6 +487,12 @@ class ConverterDispatcher {
         sourcePath: job.sourcePath,
         outputDir: outputDir,
       );
+    } else if (ext == 'pdf' && _imageFormats.contains(target.toLowerCase())) {
+      outPath = await PdfConverter.pdfToImage(
+        sourcePath: job.sourcePath,
+        targetFormat: target,
+        outputDir: outputDir,
+      );
     } else {
       throw Exception('Unsupported conversion: $ext → $target');
     }
