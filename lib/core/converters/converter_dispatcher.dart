@@ -487,6 +487,15 @@ class ConverterDispatcher {
         sourcePath: job.sourcePath,
         outputDir: outputDir,
       );
+    } else if (ext == 'pdf' && (target == 'MD' || target == 'MARKDOWN')) {
+      if (Platform.isAndroid) {
+        throw Exception(
+            'PDF → MD is not supported on Android.\nUse the desktop app for this conversion.');
+      }
+      outPath = await DocumentConverter.pdfToMd(
+        sourcePath: job.sourcePath,
+        outputDir: outputDir,
+      );
     } else if (ext == 'pdf' && _imageFormats.contains(target.toLowerCase())) {
       outPath = await PdfConverter.pdfToImage(
         sourcePath: job.sourcePath,

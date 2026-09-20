@@ -459,7 +459,7 @@ class ConversionJob {
 
       // ── Documents ──
       case 'pdf':
-        return ['DOCX', 'PNG', 'JPG'];
+        return ['DOCX', 'MD', 'PNG', 'JPG'];
       case 'docx':
       case 'doc':
         return ['PDF'];

@@ -96,6 +96,18 @@ class DocumentConverter {
     return outPath;
   }
 
+  static Future<String> pdfToMd({
+    required String sourcePath,
+    required String outputDir,
+  }) async {
+    final bytes = await File(sourcePath).readAsBytes();
+    final text = _extractTextFromPdf(bytes);
+    final baseName = p.basenameWithoutExtension(sourcePath);
+    final outPath = p.join(outputDir, '$baseName.md');
+    await File(outPath).writeAsString(text);
+    return outPath;
+  }
+
   static String _extractTextFromPdf(List<int> bytes) {
     try {
       final raw = String.fromCharCodes(bytes);
