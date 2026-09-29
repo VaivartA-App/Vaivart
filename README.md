@@ -49,7 +49,7 @@ Inspired by WinRAR's philosophy: simple, reliable, always there when you need it
 | 📊 Data | CSV ↔ XLSX |
 | 📄 Documents | DOCX → PDF, TXT → PDF, EPUB → PDF, HTML → PDF, MD → PDF, PDF → DOCX |
 | 🔧 PDF Tools | Merge PDFs, Split by range / every N pages / odd-even |
-| 🎬 Video | MP4 ↔ AVI ↔ MKV ↔ WebM, Video → GIF |
+| 🎬 Video | MP4 ↔ AVI ↔ MKV ↔ WebM ↔ RECORDLY, Video → GIF |
 | 🎵 Audio | MP3 ↔ WAV ↔ OGG |
 | 📊 Presentations | PPTX → PDF |
 

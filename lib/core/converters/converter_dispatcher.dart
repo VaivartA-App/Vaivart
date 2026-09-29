@@ -1,3 +1,5 @@
+// || श्री ||
+
 import 'dart:io';
 import 'package:vaivart/core/services/output_service.dart';
 import 'package:vaivart/core/services/history_service.dart';
@@ -28,7 +30,8 @@ class ConverterDispatcher {
     'm2ts',
     'ts',
     'divx',
-    'asf'
+    'asf',
+    'recordly'
   };
   static const _audioFormats = {
     'mp3',
@@ -434,8 +437,9 @@ class ConverterDispatcher {
         outputDir,
         job.sourcePath,
       ]);
-      if (result.exitCode != 0)
+      if (result.exitCode != 0) {
         throw Exception('LibreOffice error: ${result.stderr}');
+      }
       final baseName = job.fileName.split('.').first;
       outPath = '$outputDir/$baseName.pdf';
     } else if (ext == 'xps' || ext == 'oxps') {
@@ -455,8 +459,9 @@ class ConverterDispatcher {
         outputDir,
         job.sourcePath,
       ]);
-      if (result.exitCode != 0)
+      if (result.exitCode != 0) {
         throw Exception('LibreOffice error: ${result.stderr}');
+      }
       final baseName = job.fileName.split('.').first;
       outPath = '$outputDir/$baseName.pdf';
     } else if (ext == 'djvu' || ext == 'djv') {
@@ -476,8 +481,9 @@ class ConverterDispatcher {
         job.sourcePath,
         outPath,
       ]);
-      if (result.exitCode != 0)
+      if (result.exitCode != 0) {
         throw Exception('ddjvu error: ${result.stderr}');
+      }
     } else if (ext == 'pdf' && target == 'DOCX') {
       if (Platform.isAndroid) {
         throw Exception(

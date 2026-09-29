@@ -1,7 +1,11 @@
+// || श्री ||
+
 /// The main application widget for Vaivart Desktop.
 ///
 /// This module configures the [MaterialApp] and its primary shell,
 /// handling navigation via the [AppSidebar] and routing to all major features.
+library;
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';

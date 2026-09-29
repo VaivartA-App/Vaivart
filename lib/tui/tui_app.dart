@@ -95,6 +95,7 @@ class TuiApp {
     'mov': ['MP4', 'MKV', 'AVI', 'WEBM', 'MP3', 'WAV'],
     'webm': ['MP4', 'MKV', 'AVI', 'MP3', 'WAV'],
     'flv': ['MP4', 'MP3', 'WAV'],
+    'recordly': ['MP4', 'MKV', 'AVI', 'WEBM', 'MOV', 'GIF', 'MP3', 'WAV'],
 
     // Data
     'csv': ['JSON', 'XLSX'],

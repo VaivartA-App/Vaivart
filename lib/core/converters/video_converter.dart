@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:archive/archive.dart';
 import 'package:path/path.dart' as p;
 import 'ffmpeg_kit_helper.dart';
 
@@ -12,11 +13,12 @@ class VideoConverter {
     required String outputDir,
     String? resolution,
   }) async {
+    final actualSourcePath = await unpackRecordlyIfNeeded(sourcePath);
     final baseName = p.basenameWithoutExtension(sourcePath);
     final outPath =
         p.join(outputDir, '$baseName.${targetFormat.toLowerCase()}');
     final args = _buildArgs(
-      sourcePath: sourcePath,
+      sourcePath: actualSourcePath,
       outPath: outPath,
       targetFormat: targetFormat.toUpperCase(),
       resolution: resolution,
@@ -273,5 +275,54 @@ class VideoConverter {
     }
 
     return outPath;
+  }
+
+  static Future<String> unpackRecordlyIfNeeded(String sourcePath) async {
+    final ext = p.extension(sourcePath).toLowerCase();
+    if (ext != '.recordly') return sourcePath;
+
+    final file = File(sourcePath);
+    if (!file.existsSync()) return sourcePath;
+
+    try {
+      final bytes = await file.readAsBytes();
+      // Check for ZIP magic bytes: PK\x03\x04
+      if (bytes.length >= 4 &&
+          bytes[0] == 0x50 &&
+          bytes[1] == 0x4B &&
+          bytes[2] == 0x03 &&
+          bytes[3] == 0x04) {
+        final archive = ZipDecoder().decodeBytes(bytes);
+        ArchiveFile? videoFile;
+        for (final archiveFile in archive) {
+          if (archiveFile.isFile) {
+            final name = archiveFile.name.toLowerCase();
+            if (name.endsWith('.webm') ||
+                name.endsWith('.mp4') ||
+                name.endsWith('.mkv') ||
+                name.endsWith('.h264') ||
+                name.endsWith('.mov') ||
+                name.endsWith('.avi')) {
+              videoFile = archiveFile;
+              break;
+            }
+          }
+        }
+
+        if (videoFile != null) {
+          final tempDir =
+              await Directory.systemTemp.createTemp('recordly_unpack_');
+          final extractedPath =
+              p.join(tempDir.path, p.basename(videoFile.name));
+          await File(extractedPath)
+              .writeAsBytes(videoFile.content as List<int>);
+          return extractedPath;
+        }
+      }
+    } catch (_) {
+      // Fallback to direct file path
+    }
+
+    return sourcePath;
   }
 }

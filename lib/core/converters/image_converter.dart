@@ -80,8 +80,9 @@ Map<String, dynamic> _imageToTresIsolate(Map<String, dynamic> args) {
 
   final bytes = File(sourcePath).readAsBytesSync();
   final decoded = img.decodeImage(bytes);
-  if (decoded == null)
+  if (decoded == null) {
     throw Exception('Could not decode image for TRES conversion');
+  }
 
   final width = decoded.width;
   final height = decoded.height;
@@ -170,8 +171,9 @@ Map<String, dynamic> _imageToResIsolate(Map<String, dynamic> args) {
 
   final bytes = File(sourcePath).readAsBytesSync();
   final decoded = img.decodeImage(bytes);
-  if (decoded == null)
+  if (decoded == null) {
     throw Exception('Could not decode image for RES conversion');
+  }
 
   final width = decoded.width;
   final height = decoded.height;
@@ -212,8 +214,9 @@ Map<String, dynamic> _resToImageIsolate(Map<String, dynamic> args) {
   final outPath = args['outPath'] as String;
 
   final bytes = File(sourcePath).readAsBytesSync();
-  if (bytes.length < 16)
+  if (bytes.length < 16) {
     throw Exception('Invalid .res image file: file too short');
+  }
 
   int width, height;
   int dataOffset = 16;
@@ -355,8 +358,9 @@ class ImageConverter {
       throw Exception('heif-convert not found. Please install libheif tools.');
     }
     final result = await Process.run(binPath, [sourcePath, outPath]);
-    if (result.exitCode != 0)
+    if (result.exitCode != 0) {
       throw Exception('heif-convert error: ${result.stderr}');
+    }
     return outPath;
   }
 
@@ -374,8 +378,9 @@ class ImageConverter {
     }
     final result = await Process.run(
         binPath, ['-f', targetFormat.toLowerCase(), '-o', outPath, sourcePath]);
-    if (result.exitCode != 0)
+    if (result.exitCode != 0) {
       throw Exception('rsvg-convert error: ${result.stderr}');
+    }
     return outPath;
   }
 }

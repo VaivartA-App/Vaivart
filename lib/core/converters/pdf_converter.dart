@@ -36,11 +36,17 @@ class PdfConverter {
     final tf = targetFormat.toLowerCase();
     
     String device;
-    if (tf == 'jpg' || tf == 'jpeg') device = 'jpeg';
-    else if (tf == 'png') device = 'png16m';
-    else if (tf == 'bmp') device = 'bmp16m';
-    else if (tf == 'tiff' || tf == 'tif') device = 'tiff24nc';
-    else throw Exception('Unsupported PDF to Image target: $targetFormat');
+    if (tf == 'jpg' || tf == 'jpeg') {
+      device = 'jpeg';
+    } else if (tf == 'png') {
+      device = 'png16m';
+    } else if (tf == 'bmp') {
+      device = 'bmp16m';
+    } else if (tf == 'tiff' || tf == 'tif') {
+      device = 'tiff24nc';
+    } else {
+      throw Exception('Unsupported PDF to Image target: $targetFormat');
+    }
 
     final outPath = p.join(outputDir, '$baseName.$tf');
     final gs = await ToolResolver.findExecutable('gs') ?? 

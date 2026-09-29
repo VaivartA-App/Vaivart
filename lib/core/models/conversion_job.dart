@@ -57,7 +57,8 @@ class ConversionJob {
       'm2ts',
       'ts',
       'divx',
-      'asf'
+      'asf',
+      'recordly'
     }.contains(ext);
   }
 
@@ -249,6 +250,20 @@ class ConversionJob {
           'TS',
           'GIF',
           'MP3'
+        ];
+      case 'recordly':
+        return [
+          'MP4',
+          'MKV',
+          'AVI',
+          'WEBM',
+          'MOV',
+          'FLV',
+          'WMV',
+          '3GP',
+          'GIF',
+          'MP3',
+          'WAV'
         ];
       case 'flv':
         return [
