@@ -1,6 +1,7 @@
 // || श्री ||
 
 import 'dart:io';
+import 'package:path/path.dart' as p;
 import 'package:vaivart/core/services/output_service.dart';
 import 'package:vaivart/core/services/history_service.dart';
 import 'package:vaivart/core/engine/engine_config.dart';
@@ -98,6 +99,16 @@ class ConverterDispatcher {
     final engine = await EngineConfig.getEngine();
 
     String outPath;
+
+    // ── Same Format (Copy) ─────────────────────────────────────────
+    if (ext == target.toLowerCase()) {
+      final baseName = job.fileName.split('.').first;
+      outPath = p.join(outputDir, '$baseName.$ext');
+      if (p.absolute(job.sourcePath) != p.absolute(outPath)) {
+        await File(job.sourcePath).copy(outPath);
+      }
+      return outPath;
+    }
 
     // ── Video ──────────────────────────────────────────────────────
     if (_videoFormats.contains(ext)) {
