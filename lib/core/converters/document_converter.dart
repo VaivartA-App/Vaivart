@@ -119,7 +119,7 @@ class DocumentConverter {
         if (result.exitCode == 0 && result.stdout is String) {
           final out = (result.stdout as String).trim();
           if (out.isNotEmpty) {
-            return out;
+            return _cleanExtractedText(out);
           }
         }
       }
@@ -143,7 +143,7 @@ class DocumentConverter {
         if (result.exitCode == 0 && result.stdout is String) {
           final out = (result.stdout as String).trim();
           if (out.isNotEmpty) {
-            return out;
+            return _cleanExtractedText(out);
           }
         }
       }
@@ -154,7 +154,7 @@ class DocumentConverter {
       final fileBytes = await File(sourcePath).readAsBytes();
       final pureText = _extractTextPureDart(fileBytes);
       if (pureText.trim().isNotEmpty) {
-        return pureText.trim();
+        return _cleanExtractedText(pureText);
       }
     } catch (_) {}
 
@@ -171,12 +171,23 @@ class DocumentConverter {
           tesseract: tesseract,
         );
         if (ocrText.trim().isNotEmpty) {
-          return ocrText.trim();
+          return _cleanExtractedText(ocrText);
         }
       }
     } catch (_) {}
 
     return 'Could not extract text from this PDF.';
+  }
+
+  static String _cleanExtractedText(String raw) {
+    // Replace form feed characters (page breaks in pdftotext / gs)
+    var text = raw.replaceAll('\x0C', '\n\n---\n\n');
+    // Replace common Symbol font / Word bullet points with standard Markdown bullets
+    text = text
+        .replaceAll(RegExp(r'[\uF0B7\u2022\u25CF\u25AA\u25E6]\s*'), '- ');
+    // Clean up excessive blank lines (more than 2 consecutive newlines)
+    text = text.replaceAll(RegExp(r'\n{3,}'), '\n\n');
+    return text.trim();
   }
 
   static String _extractTextPureDart(List<int> bytes) {
