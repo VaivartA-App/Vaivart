@@ -361,6 +361,38 @@ class DocumentConverter {
     required String sourcePath,
     required String outputDir,
   }) async {
+    // 1. Try LibreOffice on desktop platforms for high-fidelity markdown rendering
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      try {
+        final soffice = await ToolResolver.findExecutable('soffice');
+        if (soffice != null) {
+          final result = await Process.run(soffice, [
+            '--headless',
+            '--convert-to',
+            'pdf',
+            '--outdir',
+            outputDir,
+            sourcePath,
+          ]);
+          if (result.exitCode == 0) {
+            final baseName = p.basenameWithoutExtension(sourcePath);
+            final outPath = p.join(outputDir, '$baseName.pdf');
+            if (await File(outPath).exists()) {
+              return outPath;
+            }
+          }
+        }
+      } catch (_) {}
+    }
+
+    // 2. Pure Dart fallback
+    return mdToPdfDart(sourcePath: sourcePath, outputDir: outputDir);
+  }
+
+  static Future<String> mdToPdfDart({
+    required String sourcePath,
+    required String outputDir,
+  }) async {
     final content = await File(sourcePath).readAsString();
     final lines = content.split('\n');
     final pdf = pw.Document();
