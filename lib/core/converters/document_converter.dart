@@ -88,8 +88,7 @@ class DocumentConverter {
     required String sourcePath,
     required String outputDir,
   }) async {
-    final bytes = await File(sourcePath).readAsBytes();
-    final text = _extractTextFromPdf(bytes);
+    final text = await _extractTextFromPdf(sourcePath: sourcePath);
     final baseName = p.basenameWithoutExtension(sourcePath);
     final outPath = p.join(outputDir, '$baseName.docx');
     await File(outPath).writeAsString(text);
@@ -100,31 +99,33 @@ class DocumentConverter {
     required String sourcePath,
     required String outputDir,
   }) async {
-    final bytes = await File(sourcePath).readAsBytes();
-    final text = _extractTextFromPdf(bytes);
+    final text = await _extractTextFromPdf(sourcePath: sourcePath);
     final baseName = p.basenameWithoutExtension(sourcePath);
     final outPath = p.join(outputDir, '$baseName.md');
     await File(outPath).writeAsString(text);
     return outPath;
   }
 
-  static String _extractTextFromPdf(List<int> bytes) {
+  static Future<String> _extractTextFromPdf({
+    required String sourcePath,
+    List<int>? bytes,
+  }) async {
+    // 1. Try poppler pdftotext (highest fidelity, preserves layout & tables)
     try {
-      final raw = String.fromCharCodes(bytes);
-      final matches = RegExp(r'BT(.*?)ET', dotAll: true)
-          .allMatches(raw)
-          .map((m) => m.group(1) ?? '')
-          .join('\n');
-      final cleaned = matches
-          .replaceAll(RegExp(r'\(([^)]*)\)\s*Tj'), r'$1')
-          .replaceAll(RegExp(r'[^\x20-\x7E\n]'), '')
-          .trim();
-      return cleaned.isEmpty
-          ? 'Could not extract text from this PDF.'
-          : cleaned;
-    } catch (_) {
-      return 'Could not extract text from this PDF.';
-    }
+      final pdftotext = await ToolResolver.findExecutable('pdftotext');
+      if (pdftotext != null) {
+        final result =
+            await Process.run(pdftotext, ['-layout', sourcePath, '-']);
+        if (result.exitCode == 0 && result.stdout is String) {
+          final out = (result.stdout as String).trim();
+          if (out.isNotEmpty) {
+            return out;
+          }
+        }
+      }
+    } catch (_) {}
+
+    return 'Could not extract text from this PDF.';
   }
 
   static Future<String> epubToPdf({
