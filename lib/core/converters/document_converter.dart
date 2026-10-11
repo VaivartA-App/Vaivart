@@ -370,7 +370,8 @@ class DocumentConverter {
     bool inCodeBlock = false;
     final codeBuffer = StringBuffer();
 
-    for (final rawLine in lines) {
+    for (int i = 0; i < lines.length; i++) {
+      final rawLine = lines[i];
       // ── fenced code blocks ───
       if (rawLine.trimLeft().startsWith('```')) {
         if (inCodeBlock) {
@@ -407,6 +408,49 @@ class DocumentConverter {
       // ── blank line → spacer ───
       if (line.trim().isEmpty) {
         widgets.add(pw.SizedBox(height: 8));
+        continue;
+      }
+
+      // ── table ───
+      if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
+        final tableLines = <String>[line.trim()];
+        while (i + 1 < lines.length &&
+            lines[i + 1].trim().startsWith('|') &&
+            lines[i + 1].trim().endsWith('|')) {
+          i++;
+          tableLines.add(lines[i].trim());
+        }
+
+        final rows = <List<String>>[];
+        for (final tl in tableLines) {
+          if (RegExp(r'^\|[\s\-:]+(\|[\s\-:]+)+\|$').hasMatch(tl)) {
+            continue;
+          }
+          final cells = tl.split('|').map((c) => c.trim()).toList();
+          if (cells.isNotEmpty && cells.first.isEmpty) cells.removeAt(0);
+          if (cells.isNotEmpty && cells.last.isEmpty) cells.removeLast();
+          if (cells.isNotEmpty) {
+            rows.add(cells);
+          }
+        }
+
+        if (rows.isNotEmpty) {
+          widgets.add(pw.TableHelper.fromTextArray(
+            data: rows,
+            headerStyle: pw.TextStyle(
+              fontWeight: pw.FontWeight.bold,
+              fontSize: 10,
+            ),
+            cellStyle: const pw.TextStyle(fontSize: 9),
+            cellAlignment: pw.Alignment.centerLeft,
+            headerDecoration: pw.BoxDecoration(
+              color: PdfColor.fromHex('#EEEEEE'),
+            ),
+            cellPadding:
+                const pw.EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+          ));
+          widgets.add(pw.SizedBox(height: 8));
+        }
         continue;
       }
 
@@ -549,8 +593,20 @@ class DocumentConverter {
     return outPath;
   }
 
+  static String _sanitizeForPdf(String text) {
+    return text
+        .replaceAll('•', '-')
+        .replaceAll('—', '--')
+        .replaceAll('–', '-')
+        .replaceAll('“', '"')
+        .replaceAll('”', '"')
+        .replaceAll('‘', "'")
+        .replaceAll('’', "'");
+  }
+
   /// Parse inline Markdown spans: **bold**, *italic*, ***both***, `code`
-  static List<pw.InlineSpan> _parseInlineSpans(String text, pw.TextStyle base) {
+  static List<pw.InlineSpan> _parseInlineSpans(String rawText, pw.TextStyle base) {
+    final text = _sanitizeForPdf(rawText);
     final spans = <pw.InlineSpan>[];
     final pattern = RegExp(r'(`[^`]+`)' // inline code
         r'|(\*\*\*[^*]+\*\*\*)' // bold+italic
