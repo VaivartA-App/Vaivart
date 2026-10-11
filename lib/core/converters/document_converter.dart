@@ -108,7 +108,6 @@ class DocumentConverter {
 
   static Future<String> _extractTextFromPdf({
     required String sourcePath,
-    List<int>? bytes,
   }) async {
     // 1. Try poppler pdftotext (highest fidelity, preserves layout & tables)
     try {
@@ -116,6 +115,30 @@ class DocumentConverter {
       if (pdftotext != null) {
         final result =
             await Process.run(pdftotext, ['-layout', sourcePath, '-']);
+        if (result.exitCode == 0 && result.stdout is String) {
+          final out = (result.stdout as String).trim();
+          if (out.isNotEmpty) {
+            return out;
+          }
+        }
+      }
+    } catch (_) {}
+
+    // 2. Try Ghostscript txtwrite device (gs / gswin64c / gswin32c)
+    try {
+      final gs = await ToolResolver.findExecutable('gs') ??
+          await ToolResolver.findExecutable('gswin64c') ??
+          await ToolResolver.findExecutable('gswin32c');
+      if (gs != null) {
+        final result = await Process.run(gs, [
+          '-sDEVICE=txtwrite',
+          '-dBATCH',
+          '-dNOPAUSE',
+          '-dSAFER',
+          '-q',
+          '-sOutputFile=-',
+          sourcePath,
+        ]);
         if (result.exitCode == 0 && result.stdout is String) {
           final out = (result.stdout as String).trim();
           if (out.isNotEmpty) {
