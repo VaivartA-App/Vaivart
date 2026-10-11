@@ -158,6 +158,24 @@ class DocumentConverter {
       }
     } catch (_) {}
 
+    // 4. Try Tesseract OCR if scanned PDF
+    try {
+      final tesseract = await ToolResolver.findExecutable('tesseract');
+      final gs = await ToolResolver.findExecutable('gs') ??
+          await ToolResolver.findExecutable('gswin64c') ??
+          await ToolResolver.findExecutable('gswin32c');
+      if (tesseract != null && gs != null) {
+        final ocrText = await _extractViaOcr(
+          sourcePath: sourcePath,
+          gs: gs,
+          tesseract: tesseract,
+        );
+        if (ocrText.trim().isNotEmpty) {
+          return ocrText.trim();
+        }
+      }
+    } catch (_) {}
+
     return 'Could not extract text from this PDF.';
   }
 
@@ -214,6 +232,53 @@ class DocumentConverter {
       }
     }
     return sb.toString();
+  }
+
+  static Future<String> _extractViaOcr({
+    required String sourcePath,
+    required String gs,
+    required String tesseract,
+  }) async {
+    final tempDir = await Directory.systemTemp.createTemp('vaivart_ocr_');
+    try {
+      final pagePattern = p.join(tempDir.path, 'page_%03d.png');
+      final gsResult = await Process.run(gs, [
+        '-dSAFER',
+        '-dBATCH',
+        '-dNOPAUSE',
+        '-sDEVICE=png16m',
+        '-r300',
+        '-sOutputFile=$pagePattern',
+        sourcePath,
+      ]);
+      if (gsResult.exitCode != 0) return '';
+
+      final pngFiles = tempDir
+          .listSync()
+          .whereType<File>()
+          .where((f) => f.path.endsWith('.png'))
+          .toList()
+        ..sort((a, b) => a.path.compareTo(b.path));
+
+      final sb = StringBuffer();
+      for (final png in pngFiles) {
+        final tessResult = await Process.run(tesseract, [
+          png.path,
+          'stdout',
+        ]);
+        if (tessResult.exitCode == 0 && tessResult.stdout is String) {
+          sb.writeln(tessResult.stdout as String);
+          sb.writeln('\n---\n');
+        }
+      }
+      return sb.toString().trim();
+    } catch (_) {
+      return '';
+    } finally {
+      try {
+        await tempDir.delete(recursive: true);
+      } catch (_) {}
+    }
   }
 
   static Future<String> epubToPdf({
