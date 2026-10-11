@@ -4,6 +4,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path/path.dart' as p;
 
+import 'package:archive/archive.dart';
 import '../engine/tool_resolver.dart';
 
 /// Handles document conversions for text, markdown, HTML, office formats, e-books, and code files.
@@ -148,7 +149,71 @@ class DocumentConverter {
       }
     } catch (_) {}
 
+    // 3. Try pure Dart stream decompression using archive (FlateDecode)
+    try {
+      final fileBytes = await File(sourcePath).readAsBytes();
+      final pureText = _extractTextPureDart(fileBytes);
+      if (pureText.trim().isNotEmpty) {
+        return pureText.trim();
+      }
+    } catch (_) {}
+
     return 'Could not extract text from this PDF.';
+  }
+
+  static String _extractTextPureDart(List<int> bytes) {
+    final buffer = StringBuffer();
+    final latinString = latin1.decode(bytes, allowInvalid: true);
+    final streamRegExp = RegExp(r'stream\r?\n');
+
+    for (final match in streamRegExp.allMatches(latinString)) {
+      final streamStart = match.end;
+      final endIdx = latinString.indexOf('endstream', streamStart);
+      if (endIdx == -1) continue;
+
+      final streamBytes = bytes.sublist(streamStart, endIdx);
+      List<int>? decompressed;
+      try {
+        decompressed = ZLibDecoder().decodeBytes(streamBytes);
+      } catch (_) {}
+
+      final content = decompressed != null
+          ? latin1.decode(decompressed, allowInvalid: true)
+          : latin1.decode(streamBytes, allowInvalid: true);
+
+      final extracted = _extractTextFromContentStream(content);
+      if (extracted.isNotEmpty) {
+        buffer.writeln(extracted);
+      }
+    }
+
+    return buffer.toString().trim();
+  }
+
+  static String _extractTextFromContentStream(String stream) {
+    final sb = StringBuffer();
+    final btMatches = RegExp(r'BT(.*?)ET', dotAll: true).allMatches(stream);
+    for (final bt in btMatches) {
+      final block = bt.group(1) ?? '';
+      final tjMatches = RegExp(r"\(([^)]*)\)\s*(?:Tj|')").allMatches(block);
+      for (final tj in tjMatches) {
+        final t = tj.group(1)?.trim();
+        if (t != null && t.isNotEmpty) sb.writeln(t);
+      }
+
+      final tjArrayMatches = RegExp(r'\[(.*?)\]\s*TJ').allMatches(block);
+      for (final arrayMatch in tjArrayMatches) {
+        final inner = arrayMatch.group(1) ?? '';
+        final strParts = RegExp(r'\(([^)]*)\)')
+            .allMatches(inner)
+            .map((m) => m.group(1) ?? '')
+            .join();
+        if (strParts.trim().isNotEmpty) {
+          sb.writeln(strParts.trim());
+        }
+      }
+    }
+    return sb.toString();
   }
 
   static Future<String> epubToPdf({
